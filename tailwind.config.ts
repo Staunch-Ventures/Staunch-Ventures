@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        '9xl': '96rem',
+      },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Inter', 'sans-serif'],
@@ -68,8 +71,16 @@ export default {
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        md: 'calc(var(--radius) - 4px)',
+        sm: 'calc(var(--radius) - 8px)',
+      },
+      boxShadow: {
+        'glass': '0 8px 32px 0 hsla(229, 50%, 10%, 0.37)',
+        'primary-glow': '0 0 20px 0 hsl(var(--primary) / 0.5)',
+      },
+      backgroundImage: {
+        'glass-gradient': 'radial-gradient(ellipse 60% 80% at top right, hsla(0, 0%, 100%, 0.2), transparent), radial-gradient(ellipse 60% 80% at bottom left, hsla(0, 0%, 100%, 0.1), transparent)',
+        'glass-gradient-primary': 'radial-gradient(ellipse 60% 80% at top right, hsl(var(--primary) / 0.25), transparent), radial-gradient(ellipse 60% 80% at bottom left, hsl(var(--primary) / 0.15), transparent)',
       },
       keyframes: {
         'accordion-down': {

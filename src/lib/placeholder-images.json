@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "1",
+      "description": "Partner Logo 1",
+      "imageUrl": "https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMGdlb21ldHJpY3xlbnwwfHx8fDE3Njg1Mzk2ODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract geometric"
+    },
+    {
+      "id": "2",
+      "description": "Partner Logo 2",
+      "imageUrl": "https://images.unsplash.com/photo-1616197151166-93dc9b4528d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtaW5pbWFsaXN0JTIwc2hhcGV8ZW58MHx8fHwxNzY4NTgxMzUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "minimalist shape"
+    },
+    {
+      "id": "3",
+      "description": "Partner Logo 3",
+      "imageUrl": "https://images.unsplash.com/photo-1663124178703-d2d6a333e6c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx0ZWNoJTIwbG9nb3xlbnwwfHx8fDE3Njg1MjY5MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tech logo"
+    },
+    {
+      "id": "4",
+      "description": "Partner Logo 4",
+      "imageUrl": "https://images.unsplash.com/photo-1560272197-6eed4801462f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxuYXR1cmUlMjBpbnNwaXJlZHxlbnwwfHx8fDE3Njg1ODEzNTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "nature inspired"
+    },
+    {
+      "id": "5",
+      "description": "Partner Logo 5",
+      "imageUrl": "https://images.unsplash.com/photo-1758813531657-2aac59128515?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxib2xkJTIwdHlwb2dyYXBoeXxlbnwwfHx8fDE3Njg1MjEwNTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bold typography"
+    },
+    {
+      "id": "6",
+      "description": "Partner Logo 6",
+      "imageUrl": "https://images.unsplash.com/photo-1741298167153-6faaed2e4822?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxncmFkaWVudCUyMGNpcmNsZXxlbnwwfHx8fDE3Njg1ODEzNTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gradient circle"
+    }
+  ]
 }
