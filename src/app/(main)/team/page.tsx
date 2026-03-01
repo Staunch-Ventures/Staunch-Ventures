@@ -15,6 +15,7 @@ const teamMembers = [
     role: "Venture Associate",
     image: PlaceHolderImages.find(img => img.id === 'team-adam')?.imageUrl || "",
     fallback: "AL",
+    quote: "You cannot simply throw money at founders and expect a thriving business. I want to help African startups fulfil their potential as global players by working directly with founders, providing hands-on support to achieve their vision.",
   },
   {
     name: "William Raw",
@@ -37,7 +38,7 @@ export default function TeamPage() {
       </section>
 
       <section>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {teamMembers.map((member) => (
                 <Card key={member.name} className="p-8 transition-all duration-300 hover:border-primary/50 hover:bg-glass-gradient-primary flex flex-col items-center">
                     <div className="text-center flex flex-col items-center h-full">
