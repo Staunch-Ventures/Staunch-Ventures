@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 const teamMembers = [
   {
@@ -13,14 +12,14 @@ const teamMembers = [
   {
     name: "Adam Lamprecht",
     role: "Venture Associate",
-    image: PlaceHolderImages.find(img => img.id === 'team-adam')?.imageUrl || "",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBmYWNlfGVufDB8fHx8MTc3MjI0Mzg0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
     fallback: "AL",
     quote: "You cannot simply throw money at founders and expect thriving businesses. I want to provide African startups with the resource that they actually need: hands-on, operational support and guidance, working inside companies to help founders achieve their vision.",
   },
   {
     name: "William Raw",
     role: "Venture Associate",
-    image: PlaceHolderImages.find(img => img.id === 'team-will')?.imageUrl || "",
+    image: "/Will headshot.png",
     fallback: "WR",
     quote: "Innovation in Africa is a marathon, not a sprint, the finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it is about for me.",
   },
