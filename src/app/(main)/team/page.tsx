@@ -15,7 +15,7 @@ const teamMembers = [
     role: "Venture Associate",
     image: PlaceHolderImages.find(img => img.id === 'team-adam')?.imageUrl || "",
     fallback: "AL",
-    quote: "You cannot simply throw money at founders and expect a thriving business. I want to help African startups fulfil their potential as global players by working directly with founders, providing hands-on support to achieve their vision.",
+    quote: "You cannot simply throw money at founders and expect thriving businesses. I want to provide African startups with the resource that they actually need: hands-on, operational support and guidance, working inside companies to help founders achieve their vision.",
   },
   {
     name: "William Raw",

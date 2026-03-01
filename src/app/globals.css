@@ -25,3 +25,11 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+.shadow-glass {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.shadow-primary-glow {
+  box-shadow: 0 0 20px 0 hsl(var(--primary) / 0.3);
+}
