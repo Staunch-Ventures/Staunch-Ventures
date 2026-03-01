@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const config = {
+module.exports = {
   darkMode: ["class"],
   content: [
     "./src/**/*.{ts,tsx}",
@@ -12,7 +12,6 @@ const config = {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -90,5 +89,3 @@ const config = {
   },
   plugins: [require("tailwindcss-animate")],
 }
-
-export default config;

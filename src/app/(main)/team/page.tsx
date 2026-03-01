@@ -22,6 +22,7 @@ const teamMembers = [
     role: "Venture Associate",
     image: PlaceHolderImages.find(img => img.id === 'team-will')?.imageUrl || "",
     fallback: "WR",
+    quote: "Innovation in Africa is a marathon, not a sprint, the finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it is about for me.",
   },
 ];
 
@@ -38,9 +39,9 @@ export default function TeamPage() {
       </section>
 
       <section>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             {teamMembers.map((member) => (
-                <Card key={member.name} className="p-8 transition-all duration-300 hover:border-primary/50 hover:bg-glass-gradient-primary flex flex-col items-center">
+                <Card key={member.name} className="p-8 transition-all duration-300 hover:border-primary/50 hover:bg-glass-gradient-primary flex flex-col items-center h-full">
                     <div className="text-center flex flex-col items-center h-full">
                         <Avatar className="w-32 h-32 mb-6 border-4 border-primary/20 shadow-lg">
                             <AvatarImage src={member.image} alt={member.name} data-ai-hint="person face" className="object-cover" />
