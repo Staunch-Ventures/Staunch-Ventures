@@ -19,15 +19,17 @@
   }
 }
 
-body {
-  @apply bg-background text-foreground antialiased;
-  font-family: 'Inter', sans-serif;
-}
+@layer components {
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
 
-.shadow-glass {
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
+  .shadow-glass {
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
 
-.shadow-primary-glow {
-  box-shadow: 0 0 20px 0 hsl(var(--primary) / 0.3);
+  .shadow-primary-glow {
+    box-shadow: 0 0 20px 0 hsl(var(--primary) / 0.3);
+  }
 }

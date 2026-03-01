@@ -12,7 +12,7 @@ const teamMembers = [
   {
     name: "Adam Lamprecht",
     role: "Venture Associate",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBmYWNlfGVufDB8fHx8MTc3MjI0Mzg0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+    image: "/Adam headshot.png",
     fallback: "AL",
     quote: "You cannot simply throw money at founders and expect thriving businesses. I want to provide African startups with the resource that they actually need: hands-on, operational support and guidance, working inside companies to help founders achieve their vision.",
   },
