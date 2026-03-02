@@ -131,7 +131,7 @@ export const SidebarProvider = React.forwardRef<
               className
             )}
             ref={ref}
-            ...props
+            {...props}
           >
             {children}
           </div>
@@ -196,7 +196,7 @@ export const Sidebar = React.forwardRef<
             <SheetContent
               data-sidebar="sidebar"
               data-mobile="true"
-              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_90%,transparent_100%)]"
+              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_85%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,black_85%,transparent_100%)]"
               style={
                 {
                   "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
