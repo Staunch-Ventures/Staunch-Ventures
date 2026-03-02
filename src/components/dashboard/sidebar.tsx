@@ -69,7 +69,7 @@ export function DashboardSidebar() {
                 className="shrink-0 opacity-100 transition-opacity duration-200 group-data-[state=collapsed]:opacity-0"
               />
               <Image
-                src="/Original Logo Symbol.png"
+                src="/Logo Symbol Transparent Low Quality.png"
                 alt="Staunch Ventures Symbol"
                 width={32}
                 height={32}
