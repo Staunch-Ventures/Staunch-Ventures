@@ -38,7 +38,7 @@ type SidebarContext = {
 
 const SidebarContext = React.createContext<SidebarContext | null>(null)
 
-function useSidebar() {
+export function useSidebar() {
   const context = React.useContext(SidebarContext)
   if (!context) {
     throw new Error("useSidebar must be used within a SidebarProvider.")
@@ -190,7 +190,7 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar/90 backdrop-blur-xl p-0 text-sidebar-foreground [&>button]:hidden"
+            className="w-[--sidebar-width] bg-sidebar/80 backdrop-blur-xl p-0 text-sidebar-foreground [&>button]:hidden border-none"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -198,7 +198,7 @@ const Sidebar = React.forwardRef<
             }
             side={side}
           >
-            <SheetHeader className="sr-only">
+            <SheetHeader className="sr-only text-left">
               <SheetTitle>Navigation Menu</SheetTitle>
             </SheetHeader>
             <div className="flex h-full w-full flex-col">{children}</div>
@@ -265,40 +265,30 @@ const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-9 w-9", className)}
+      className={cn("h-9 w-9 relative z-[60]", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <motion.line
-          animate={isOpen ? { x1: 18, y1: 6, x2: 6, y2: 18 } : { x1: 3, y1: 6, x2: 21, y2: 6 }}
+      <div className="relative flex items-center justify-center w-6 h-6">
+        <motion.span
+          className="absolute block h-0.5 w-5 bg-current"
+          animate={isOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -6 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         />
-        <motion.line
-          x1="3"
-          y1="12"
-          x2="21"
-          y2="12"
+        <motion.span
+          className="absolute block h-0.5 w-5 bg-current"
           animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
           transition={{ duration: 0.2 }}
         />
-        <motion.line
-          animate={isOpen ? { x1: 6, y1: 6, x2: 18, y2: 18 } : { x1: 3, y1: 18, x2: 21, y2: 18 }}
+        <motion.span
+          className="absolute block h-0.5 w-5 bg-current"
+          animate={isOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 6 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         />
-      </svg>
+      </div>
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -777,5 +767,4 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-  useSidebar,
 }
