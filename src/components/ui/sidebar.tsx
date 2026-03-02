@@ -131,7 +131,7 @@ export const SidebarProvider = React.forwardRef<
               className
             )}
             ref={ref}
-            {...props}
+            ...props
           >
             {children}
           </div>
@@ -188,7 +188,7 @@ export const Sidebar = React.forwardRef<
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setOpenMobile(false)}
-                className="fixed inset-0 z-[55] bg-black/60 backdrop-blur-md md:hidden"
+                className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm md:hidden"
               />
             )}
           </AnimatePresence>
@@ -196,13 +196,20 @@ export const Sidebar = React.forwardRef<
             <SheetContent
               data-sidebar="sidebar"
               data-mobile="true"
-              className="w-[--sidebar-width] bg-sidebar/90 backdrop-blur-2xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl"
+              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_90%,transparent_100%)]"
               style={
                 {
                   "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
                 } as React.CSSProperties
               }
               side={side}
+              onPointerDownOutside={(e) => {
+                // If the click is on the trigger button, don't let the Sheet close itself.
+                // Our button's onClick handler will manage the closing instead.
+                if ((e.target as HTMLElement).closest('[data-sidebar="trigger"]')) {
+                  e.preventDefault();
+                }
+              }}
             >
               <SheetHeader className="sr-only border-none">
                 <SheetTitle>Navigation Menu</SheetTitle>
