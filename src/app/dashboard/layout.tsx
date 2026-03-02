@@ -24,7 +24,7 @@ export default function DashboardLayout({
         <DashboardDisclaimer title="Welcome to the Investor Dashboard Demo" description={disclaimerDescription} />
         <DashboardSidebar />
         <div className="flex flex-1 flex-col">
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background/50 backdrop-blur-xl sticky top-0 z-[60]">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background/50 backdrop-blur-xl sticky top-0 z-[70]">
             <SidebarTrigger className="-ml-1" />
             <div className="font-semibold text-lg">Investor Dashboard</div>
           </header>

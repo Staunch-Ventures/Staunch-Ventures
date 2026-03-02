@@ -38,22 +38,20 @@ export default function TeamPage() {
       </section>
 
       <section>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch justify-center text-center">
             {teamMembers.map((member) => (
                 <Card key={member.name} className="p-8 transition-all duration-300 hover:border-primary/50 hover:bg-glass-gradient-primary flex flex-col items-center h-full">
-                    <div className="text-center flex flex-col items-center h-full">
-                        <Avatar className="w-32 h-32 mb-6 border-4 border-primary/20 shadow-lg">
-                            <AvatarImage src={member.image} alt={member.name} className="object-cover" />
-                            <AvatarFallback>{member.fallback}</AvatarFallback>
-                        </Avatar>
-                        <h3 className="text-2xl font-bold tracking-tight text-foreground">{member.name}</h3>
-                        <p className="text-lg font-medium text-primary mt-1">{member.role}</p>
-                        {member.quote && (
-                            <p className="mt-6 text-sm text-muted-foreground italic leading-relaxed text-center">
-                            "{member.quote}"
-                            </p>
-                        )}
-                    </div>
+                    <Avatar className="w-32 h-32 mb-6 border-4 border-primary/20 shadow-lg">
+                        <AvatarImage src={member.image} alt={member.name} className="object-cover" />
+                        <AvatarFallback>{member.fallback}</AvatarFallback>
+                    </Avatar>
+                    <h3 className="text-2xl font-bold tracking-tight text-foreground">{member.name}</h3>
+                    <p className="text-lg font-medium text-primary mt-1">{member.role}</p>
+                    {member.quote && (
+                        <p className="mt-6 text-sm text-muted-foreground italic leading-relaxed">
+                        "{member.quote}"
+                        </p>
+                    )}
                 </Card>
             ))}
         </div>
