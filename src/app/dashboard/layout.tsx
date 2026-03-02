@@ -25,7 +25,7 @@ export default function DashboardLayout({
         <DashboardSidebar />
         <div className="flex flex-1 flex-col">
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background/50 backdrop-blur-xl sticky top-0 z-[70]">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="-ml-1 md:hidden" />
             <div className="font-semibold text-lg">Investor Dashboard</div>
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4 sm:p-6">

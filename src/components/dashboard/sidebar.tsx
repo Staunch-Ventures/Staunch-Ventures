@@ -28,6 +28,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const menuItems = [
   { href: "/dashboard/dashboard", label: "Dashboard", icon: PieChart },
@@ -39,7 +40,9 @@ const menuItems = [
 
 export function DashboardSidebar() {
   const pathname = usePathname();
+  const { toggleSidebar, state } = useSidebar();
   const [mounted, setMounted] = React.useState(false);
+  const isOpen = state === "expanded";
 
   React.useEffect(() => {
     setMounted(true);
@@ -86,25 +89,54 @@ export function DashboardSidebar() {
       <SidebarContent className="p-2">
         <SidebarMenu>
           {mounted ? (
-            menuItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === item.href}
+            <>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    size="lg"
+                    tooltip={{ children: item.label }}
+                    className={cn(
+                      "text-sidebar-foreground data-[active=true]:text-sidebar-primary",
+                      "hover:text-sidebar-primary"
+                    )}
+                  >
+                    <Link href={item.href}>
+                      <item.icon className="size-5" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+              <SidebarMenuItem className="hidden md:block">
+                <SidebarMenuButton 
+                  onClick={toggleSidebar} 
                   size="lg"
-                  tooltip={{ children: item.label }}
-                  className={cn(
-                    "text-sidebar-foreground data-[active=true]:text-sidebar-primary",
-                    "hover:text-sidebar-primary"
-                  )}
+                  tooltip={{ children: "Collapse" }}
+                  className="text-sidebar-foreground/80 hover:text-sidebar-primary"
                 >
-                  <Link href={item.href}>
-                    <item.icon className="size-5" />
-                    <span>{item.label}</span>
-                  </Link>
+                  <div className="relative flex items-center justify-center w-5 h-5">
+                    <motion.span
+                        className="absolute block h-0.5 w-5 bg-current rounded-full"
+                        animate={isOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -5 }}
+                        transition={{ duration: 0.3, ease: "anticipate" }}
+                      />
+                      <motion.span
+                        className="absolute block h-0.5 w-5 bg-current rounded-full"
+                        animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                      <motion.span
+                        className="absolute block h-0.5 w-5 bg-current rounded-full"
+                        animate={isOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 5 }}
+                        transition={{ duration: 0.3, ease: "anticipate" }}
+                      />
+                  </div>
+                  <span>Collapse</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            ))
+            </>
           ) : (
             skeletonItems
           )}
