@@ -29,27 +29,27 @@ export default function TeamPage() {
   return (
     <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4 space-y-24">
       <section className="text-center">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground">
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground text-center">
           Meet the Team
         </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6">
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 text-center">
           The driving force behind Staunch Ventures, dedicated to your success.
         </p>
       </section>
 
       <section>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch justify-center">
             {teamMembers.map((member) => (
                 <Card key={member.name} className="p-8 transition-all duration-300 hover:border-primary/50 hover:bg-glass-gradient-primary flex flex-col items-center h-full">
                     <div className="text-center flex flex-col items-center h-full">
                         <Avatar className="w-32 h-32 mb-6 border-4 border-primary/20 shadow-lg">
-                            <AvatarImage src={member.image} alt={member.name} data-ai-hint="person face" className="object-cover" />
+                            <AvatarImage src={member.image} alt={member.name} className="object-cover" />
                             <AvatarFallback>{member.fallback}</AvatarFallback>
                         </Avatar>
                         <h3 className="text-2xl font-bold tracking-tight text-foreground">{member.name}</h3>
                         <p className="text-lg font-medium text-primary mt-1">{member.role}</p>
                         {member.quote && (
-                            <p className="mt-6 text-sm text-muted-foreground italic leading-relaxed">
+                            <p className="mt-6 text-sm text-muted-foreground italic leading-relaxed text-center">
                             "{member.quote}"
                             </p>
                         )}
