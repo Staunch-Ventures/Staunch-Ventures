@@ -16,15 +16,28 @@
     --muted-foreground: 0 0% 85%;
     --border: 229 50% 25%;
     --radius: 0.75rem;
+
+    --sidebar-background: 229 50% 12%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 16 80% 54%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 229 50% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 229 50% 25%;
+    --sidebar-ring: 16 80% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
   }
 }
 
 @layer components {
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
-  }
-
   .shadow-glass {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }

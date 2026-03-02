@@ -1,5 +1,5 @@
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardDisclaimer } from "@/components/ui/dashboard-disclaimer";
 
 export default function DashboardLayout({
@@ -24,6 +24,10 @@ export default function DashboardLayout({
         <DashboardDisclaimer title="Welcome to the Investor Dashboard Demo" description={disclaimerDescription} />
         <DashboardSidebar />
         <div className="flex flex-1 flex-col">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 md:hidden">
+            <SidebarTrigger className="-ml-1" />
+            <div className="font-semibold text-lg">Investor Dashboard</div>
+          </header>
           <main className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
             {children}
           </main>
