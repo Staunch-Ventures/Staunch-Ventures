@@ -96,7 +96,7 @@ export function DashboardSidebar() {
                     asChild
                     isActive={pathname === item.href}
                     size="lg"
-                    tooltip={{ children: item.label }}
+                    tooltip={item.label}
                     className={cn(
                       "text-sidebar-foreground data-[active=true]:text-sidebar-primary",
                       "hover:text-sidebar-primary"
@@ -113,7 +113,7 @@ export function DashboardSidebar() {
                 <SidebarMenuButton 
                   onClick={toggleSidebar} 
                   size="lg"
-                  tooltip={{ children: "Collapse" }}
+                  tooltip="Collapse"
                   className="text-sidebar-foreground/80 hover:text-sidebar-primary"
                 >
                   <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
@@ -148,7 +148,7 @@ export function DashboardSidebar() {
             <SidebarMenuButton
               asChild
               isActive={pathname === "/dashboard/settings"}
-              tooltip={{ children: "Settings" }}
+              tooltip="Settings"
               size="lg"
               className="text-sidebar-foreground/80 hover:text-sidebar-primary data-[active=true]:text-sidebar-primary"
             >
@@ -165,7 +165,7 @@ export function DashboardSidebar() {
             <AvatarImage src="https://picsum.photos/seed/user-avatar/100/100" alt="User" data-ai-hint="person face" />
             <AvatarFallback>LP</AvatarFallback>
           </Avatar>
-          <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
+          <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden text-left">
             <p className="text-sm font-medium truncate">Limited Partner</p>
             <p className="text-xs text-muted-foreground truncate">lp@staunch.vc</p>
           </div>
