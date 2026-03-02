@@ -110,13 +110,7 @@ export const SidebarProvider = React.forwardRef<
 
     const contextValue = React.useMemo<SidebarContext>(
       () => ({
-        state,
-        open,
-        setOpen,
-        isMobile,
-        openMobile,
-        setOpenMobile,
-        toggleSidebar,
+        state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar,
       }),
       [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
     )
@@ -194,15 +188,15 @@ export const Sidebar = React.forwardRef<
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setOpenMobile(false)}
-                className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm md:hidden"
+                className="fixed inset-0 z-[55] bg-black/60 backdrop-blur-md md:hidden"
               />
             )}
           </AnimatePresence>
-          <Sheet open={openMobile} onOpenChange={setOpenMobile} modal={false} {...props}>
+          <Sheet open={openMobile} onOpenChange={setOpenMobile} modal={false}>
             <SheetContent
               data-sidebar="sidebar"
               data-mobile="true"
-              className="w-[--sidebar-width] bg-sidebar/80 backdrop-blur-xl p-0 text-sidebar-foreground [&>button]:hidden border-none z-[58]"
+              className="w-[--sidebar-width] bg-sidebar/90 backdrop-blur-2xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl"
               style={
                 {
                   "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -210,7 +204,7 @@ export const Sidebar = React.forwardRef<
               }
               side={side}
             >
-              <SheetHeader className="sr-only">
+              <SheetHeader className="sr-only border-none">
                 <SheetTitle>Navigation Menu</SheetTitle>
               </SheetHeader>
               <div className="flex h-full w-full flex-col">{children}</div>
@@ -268,7 +262,7 @@ Sidebar.displayName = "Sidebar"
 export const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
->(({ className, onClick, ...props }, ref) => {
+>(({ className, ...props }, ref) => {
   const { toggleSidebar, open, openMobile, isMobile } = useSidebar()
   const isOpen = isMobile ? openMobile : open
 
@@ -278,30 +272,30 @@ export const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-9 w-9 relative z-[65]", className)}
+      className={cn("h-10 w-10 relative z-[70] hover:bg-white/10 active:scale-95 transition-transform", className)}
+      type="button"
       onClick={(event) => {
         event.preventDefault()
         event.stopPropagation()
-        onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <div className="relative flex items-center justify-center w-6 h-6">
+      <div className="relative flex items-center justify-center w-6 h-6 pointer-events-none">
         <motion.span
-          className="absolute block h-0.5 w-5 bg-current"
+          className="absolute block h-0.5 w-6 bg-current rounded-full"
           animate={isOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -6 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          transition={{ duration: 0.3, ease: "anticipate" }}
         />
         <motion.span
-          className="absolute block h-0.5 w-5 bg-current"
-          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+          className="absolute block h-0.5 w-6 bg-current rounded-full"
+          animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
           transition={{ duration: 0.2 }}
         />
         <motion.span
-          className="absolute block h-0.5 w-5 bg-current"
+          className="absolute block h-0.5 w-6 bg-current rounded-full"
           animate={isOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 6 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          transition={{ duration: 0.3, ease: "anticipate" }}
         />
       </div>
       <span className="sr-only">Toggle Sidebar</span>
