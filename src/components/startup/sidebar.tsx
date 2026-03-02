@@ -59,22 +59,22 @@ export function StartupSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarRail />
       <SidebarHeader>
-        <div className="flex h-[35px] items-center justify-center">
+        <div className="flex h-[35px] items-center px-2 group-data-[collapsible=icon]:justify-start">
           {mounted ? (
-            <div className="relative flex h-full w-full items-center justify-center">
+            <div className="relative flex h-full w-full items-center">
               <Image
                 src="/Transparent%20Logo.png"
                 alt="Staunch Ventures"
                 width={140}
                 height={35}
-                className="shrink-0 opacity-0 transition-opacity duration-200 group-data-[state=expanded]:opacity-100"
+                className="shrink-0 opacity-100 transition-opacity duration-200 group-data-[state=collapsed]:opacity-0"
               />
               <Image
                 src="/Original Logo Symbol.png"
                 alt="Staunch Ventures Symbol"
                 width={32}
                 height={32}
-                className="absolute shrink-0 opacity-100 transition-opacity duration-200 group-data-[state=expanded]:opacity-0"
+                className="absolute left-1 shrink-0 opacity-0 transition-opacity duration-200 group-data-[state=collapsed]:opacity-100"
               />
             </div>
           ) : (
@@ -100,7 +100,7 @@ export function StartupSidebar() {
                     tooltip={{ children: item.label }}
                   >
                     <Link href={item.href}>
-                      <item.icon className="size-5" />
+                      <item.icon className="size-5 shrink-0" />
                       <span>{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -113,7 +113,7 @@ export function StartupSidebar() {
                   tooltip={{ children: "Collapse" }}
                   className="text-sidebar-foreground/80 hover:text-sidebar-primary"
                 >
-                  <div className="relative flex items-center justify-center w-5 h-5">
+                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
                     <motion.span
                         className="absolute block h-0.5 w-5 bg-current rounded-full"
                         animate={isOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -5 }}
@@ -149,15 +149,15 @@ export function StartupSidebar() {
               size="lg"
             >
               <Link href="#">
-                <Settings />
+                <Settings className="shrink-0" />
                 <span>Settings</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <div className="w-full h-px bg-sidebar-border my-2" />
-        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
-          <Avatar className="h-9 w-9">
+        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:p-1 group-data-[collapsible=icon]:justify-start">
+          <Avatar className="h-9 w-9 shrink-0">
             <AvatarImage src="https://picsum.photos/seed/founder-avatar/100/100" alt="User" data-ai-hint="person face" />
             <AvatarFallback>FN</AvatarFallback>
           </Avatar>

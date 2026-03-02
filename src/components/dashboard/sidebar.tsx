@@ -58,9 +58,9 @@ export function DashboardSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarRail />
       <SidebarHeader>
-        <div className="flex h-[35px] items-center justify-center">
+        <div className="flex h-[35px] items-center px-2 group-data-[collapsible=icon]:justify-start">
           {mounted ? (
-            <div className="relative flex h-full w-full items-center justify-center">
+            <div className="relative flex h-full w-full items-center">
               <Image
                 src="/Transparent%20Logo.png"
                 alt="Staunch Ventures"
@@ -73,7 +73,7 @@ export function DashboardSidebar() {
                 alt="Staunch Ventures Symbol"
                 width={32}
                 height={32}
-                className="absolute shrink-0 opacity-0 transition-opacity duration-200 group-data-[state=collapsed]:opacity-100"
+                className="absolute left-1 shrink-0 opacity-0 transition-opacity duration-200 group-data-[state=collapsed]:opacity-100"
               />
             </div>
           ) : (
@@ -116,7 +116,7 @@ export function DashboardSidebar() {
                   tooltip={{ children: "Collapse" }}
                   className="text-sidebar-foreground/80 hover:text-sidebar-primary"
                 >
-                  <div className="relative flex items-center justify-center w-5 h-5">
+                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
                     <motion.span
                         className="absolute block h-0.5 w-5 bg-current rounded-full"
                         animate={isOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -5 }}
@@ -153,15 +153,15 @@ export function DashboardSidebar() {
               className="text-sidebar-foreground/80 hover:text-sidebar-primary data-[active=true]:text-sidebar-primary"
             >
               <Link href="#">
-                <Settings />
+                <Settings className="shrink-0" />
                 <span>Settings</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <div className="w-full h-px bg-sidebar-border my-2" />
-        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
-          <Avatar className="h-9 w-9">
+        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:p-1 group-data-[collapsible=icon]:justify-start">
+          <Avatar className="h-9 w-9 shrink-0">
             <AvatarImage src="https://picsum.photos/seed/user-avatar/100/100" alt="User" data-ai-hint="person face" />
             <AvatarFallback>LP</AvatarFallback>
           </Avatar>
