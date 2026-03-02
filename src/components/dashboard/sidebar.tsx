@@ -23,7 +23,6 @@ import {
   Settings,
   LogOut,
   Search,
-  PanelLeft,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -40,7 +39,6 @@ const menuItems = [
 
 export function DashboardSidebar() {
   const pathname = usePathname();
-  const { toggleSidebar } = useSidebar();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -114,17 +112,6 @@ export function DashboardSidebar() {
       </SidebarContent>
       <SidebarFooter className="p-2">
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={toggleSidebar}
-              tooltip={{ children: "Collapse" }}
-              size="lg"
-              className="text-sidebar-foreground/80 hover:text-sidebar-primary"
-            >
-              <PanelLeft />
-              <span>Collapse</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild

@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
-import { Menu, PanelLeft } from "lucide-react"
+import { motion } from "framer-motion"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -190,7 +190,7 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar/80 backdrop-blur-xl p-0 text-sidebar-foreground [&>button]:hidden"
+            className="w-[--sidebar-width] bg-sidebar/90 backdrop-blur-xl p-0 text-sidebar-foreground [&>button]:hidden"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -256,7 +256,8 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar, isMobile } = useSidebar()
+  const { toggleSidebar, open, openMobile, isMobile } = useSidebar()
+  const isOpen = isMobile ? openMobile : open
 
   return (
     <Button
@@ -271,7 +272,33 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <Menu className="h-5 w-5" />
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <motion.line
+          animate={isOpen ? { x1: 18, y1: 6, x2: 6, y2: 18 } : { x1: 3, y1: 6, x2: 21, y2: 6 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        />
+        <motion.line
+          x1="3"
+          y1="12"
+          x2="21"
+          y2="12"
+          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        />
+        <motion.line
+          animate={isOpen ? { x1: 6, y1: 6, x2: 18, y2: 18 } : { x1: 3, y1: 18, x2: 21, y2: 18 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        />
+      </svg>
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

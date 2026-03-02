@@ -13,7 +13,6 @@ import {
   SidebarMenuButton,
   SidebarRail,
   SidebarMenuSkeleton,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   PieChart,
@@ -23,13 +22,11 @@ import {
   Settings,
   LogOut,
   Send,
-  PanelLeft,
   Mic,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
 const menuItems = [
   { href: "/startup/dashboard", label: "Dashboard", icon: PieChart },
@@ -42,7 +39,6 @@ const menuItems = [
 
 export function StartupSidebar() {
   const pathname = usePathname();
-  const { toggleSidebar } = useSidebar();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -112,16 +108,6 @@ export function StartupSidebar() {
       </SidebarContent>
       <SidebarFooter className="p-2">
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={toggleSidebar}
-              tooltip={{ children: "Collapse" }}
-              size="lg"
-            >
-              <PanelLeft />
-              <span>Collapse</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
