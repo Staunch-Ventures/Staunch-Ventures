@@ -22,7 +22,7 @@ import {
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
-const SIDEBAR_WIDTH_MOBILE = "18rem"
+const SIDEBAR_WIDTH_MOBILE = "22rem"
 const SIDEBAR_WIDTH_ICON = "4.5rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
@@ -196,7 +196,7 @@ export const Sidebar = React.forwardRef<
             <SheetContent
               data-sidebar="sidebar"
               data-mobile="true"
-              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_25%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,black_25%,transparent_100%)]"
+              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_0%,black_15%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,black_0%,black_15%,transparent_100%)]"
               style={
                 {
                   "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
