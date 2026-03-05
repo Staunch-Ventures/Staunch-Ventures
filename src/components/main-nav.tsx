@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -69,21 +70,29 @@ export function MainNav() {
                 </Link>
               </div>
 
-              <nav className="flex flex-1 justify-center items-center gap-2">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      "px-5 py-2 text-sm font-medium transition-all duration-300 rounded-full border",
-                      pathname === item.href
-                        ? "bg-primary/20 text-primary border-primary/30 backdrop-blur-md shadow-glass"
-                        : "text-muted-foreground border-transparent hover:bg-white/5 hover:text-foreground hover:border-white/10"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+              <nav className="flex flex-1 justify-center items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 backdrop-blur-sm mx-8 max-w-fit px-1">
+                {navItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "relative px-5 py-2 text-sm font-medium transition-colors rounded-full outline-none",
+                        isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="active-nav-item"
+                          className="absolute inset-0 bg-primary/20 border border-primary/30 backdrop-blur-md shadow-glass rounded-full"
+                          transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10">{item.label}</span>
+                    </Link>
+                  );
+                })}
               </nav>
 
               <div className="flex items-center gap-3">
