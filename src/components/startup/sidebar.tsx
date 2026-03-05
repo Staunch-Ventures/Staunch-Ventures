@@ -111,7 +111,7 @@ export function StartupSidebar() {
                         {isActive && (
                           <motion.div
                             layoutId="active-startup-pill"
-                            className="absolute inset-0 -z-10 bg-primary/20 border border-primary/30 backdrop-blur-md shadow-glass rounded-full"
+                            className="absolute inset-y-1 left-1 right-14 -z-10 bg-primary/20 border border-primary/30 backdrop-blur-md shadow-glass rounded-full"
                             transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
                           />
                         )}
@@ -127,9 +127,9 @@ export function StartupSidebar() {
                   onClick={toggleSidebar} 
                   size="lg"
                   tooltip={{ children: "Collapse" }}
-                  className="text-sidebar-foreground/80 hover:text-sidebar-primary"
+                  className="relative text-sidebar-foreground/80 hover:text-sidebar-primary group overflow-hidden"
                 >
-                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0 z-10">
                     <motion.span
                         className="absolute block h-0.5 w-5 bg-current rounded-full"
                         animate={isOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -5 }}
@@ -146,7 +146,7 @@ export function StartupSidebar() {
                         transition={{ duration: 0.3, ease: "anticipate" }}
                       />
                   </div>
-                  <span>{isOpen ? "Collapse" : ""}</span>
+                  <span className="z-10">{isOpen ? "Collapse" : ""}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </>
