@@ -64,13 +64,15 @@ export function MainNav() {
           <>
             {/* --- Desktop View --- */}
             <div className="hidden min-[1140px]:flex w-full items-center">
-              <div className="flex items-center">
+              {/* Left Section: Logo */}
+              <div className="flex-1 flex items-center justify-start">
                 <Link href="/" className="flex-shrink-0 transition-opacity hover:opacity-80">
                   <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={140} height={35} />
                 </Link>
               </div>
 
-              <nav className="flex flex-1 justify-center items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 backdrop-blur-sm mx-8 max-w-fit px-1">
+              {/* Center Section: Navigation Links */}
+              <nav className="flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 backdrop-blur-sm px-1">
                 {navItems.map((item) => {
                   const isActive = pathname === item.href;
                   return (
@@ -95,7 +97,8 @@ export function MainNav() {
                 })}
               </nav>
 
-              <div className="flex items-center gap-3">
+              {/* Right Section: Auth Buttons */}
+              <div className="flex-1 flex items-center justify-end gap-3">
                 <Button asChild variant="ghost" className="rounded-full px-6 text-sm font-medium hover:bg-white/10 border border-transparent hover:border-white/10 transition-all backdrop-blur-sm">
                   <Link href="/startup">Startup Login</Link>
                 </Button>
