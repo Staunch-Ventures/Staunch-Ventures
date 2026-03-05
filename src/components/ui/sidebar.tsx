@@ -188,7 +188,7 @@ export const Sidebar = React.forwardRef<
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setOpenMobile(false)}
-                className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm md:hidden"
+                className="fixed inset-0 z-[55] bg-black/20 backdrop-blur-sm md:hidden"
               />
             )}
           </AnimatePresence>

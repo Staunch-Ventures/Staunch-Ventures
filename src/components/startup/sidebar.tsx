@@ -28,7 +28,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
   { href: "/startup/dashboard", label: "Dashboard", icon: PieChart },
@@ -91,21 +92,35 @@ export function StartupSidebar() {
         <SidebarMenu>
           {mounted ? (
             <>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    size="lg"
-                    tooltip={{ children: item.label }}
-                  >
-                    <Link href={item.href}>
-                      <item.icon className="size-5 shrink-0" />
-                      <span>{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {menuItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      size="lg"
+                      tooltip={{ children: item.label }}
+                      className={cn(
+                        "relative text-sidebar-foreground transition-colors hover:text-sidebar-primary group overflow-hidden",
+                        isActive ? "text-sidebar-primary" : "text-sidebar-foreground/70"
+                      )}
+                    >
+                      <Link href={item.href} className="relative z-10 flex items-center gap-2">
+                        {isActive && (
+                          <motion.div
+                            layoutId="active-startup-pill"
+                            className="absolute inset-0 -z-10 bg-primary/20 border border-primary/30 backdrop-blur-md shadow-glass rounded-md"
+                            transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
+                          />
+                        )}
+                        <item.icon className="size-5 shrink-0" />
+                        <span className="truncate">{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
               <SidebarMenuItem className="hidden md:block">
                 <SidebarMenuButton 
                   onClick={toggleSidebar} 
@@ -130,7 +145,7 @@ export function StartupSidebar() {
                         transition={{ duration: 0.3, ease: "anticipate" }}
                       />
                   </div>
-                  <span>Collapse</span>
+                  <span>{isOpen ? "Collapse" : ""}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </>
@@ -144,12 +159,12 @@ export function StartupSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              isActive={pathname === "/startup/settings"}
               tooltip={{ children: "Settings" }}
               size="lg"
+              className="text-sidebar-foreground/80 hover:text-sidebar-primary"
             >
-              <Link href="#">
-                <Settings className="shrink-0" />
+              <Link href="#" className="flex items-center gap-2">
+                <Settings className="size-5 shrink-0" />
                 <span>Settings</span>
               </Link>
             </SidebarMenuButton>
