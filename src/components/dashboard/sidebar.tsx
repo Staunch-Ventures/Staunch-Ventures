@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -108,7 +109,7 @@ export function DashboardSidebar() {
                         {isActive && (
                           <motion.div
                             layoutId="active-sidebar-pill"
-                            className="absolute inset-0 -z-10 bg-primary/20 border border-primary/30 backdrop-blur-md shadow-glass rounded-md"
+                            className="absolute inset-0 -z-10 bg-primary/20 border border-primary/30 backdrop-blur-md shadow-glass rounded-full"
                             transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
                           />
                         )}
