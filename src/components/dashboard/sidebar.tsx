@@ -58,7 +58,7 @@ export function DashboardSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarRail />
       <SidebarHeader>
-        <div className="flex h-[35px] items-center px-2 group-data-[collapsible=icon]:justify-start">
+        <div className="flex h-[45px] items-center px-2 group-data-[collapsible=icon]:justify-start">
           {mounted ? (
             <div className="relative flex h-full w-full items-center">
               <Image
