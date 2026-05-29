@@ -20,7 +20,7 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
+      <div className="flex min-h-screen w-full bg-[radial-gradient(130%_90%_at_50%_-10%,hsl(224_38%_12%)_0%,hsl(var(--navy))_55%,hsl(var(--navy-deep))_100%)]">
         <DashboardDisclaimer title="Welcome to the Investor Dashboard Demo" description={disclaimerDescription} />
         <DashboardSidebar />
         <div className="flex flex-1 flex-col">

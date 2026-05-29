@@ -42,6 +42,15 @@ const config: Config = {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
+        navy: {
+          DEFAULT: "hsl(var(--navy))",
+          deep: "hsl(var(--navy-deep))",
+          elevated: "hsl(var(--navy-elevated))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          foreground: "hsl(var(--gold-foreground))",
+        },
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
@@ -79,9 +88,9 @@ const config: Config = {
       backgroundImage: {
         // Single soft top-light — opt-in for premium "glass" surfaces only
         "glass-gradient":
-          "radial-gradient(ellipse 80% 70% at 50% 0%, hsl(0 0% 100% / 0.05), transparent 70%)",
+          "radial-gradient(ellipse 80% 70% at 50% 0%, hsl(210 60% 80% / 0.06), transparent 70%)",
         "glass-gradient-primary":
-          "radial-gradient(ellipse 80% 70% at 50% 0%, hsl(var(--primary) / 0.18), transparent 70%)",
+          "radial-gradient(ellipse 80% 70% at 50% 0%, hsl(var(--primary) / 0.16), transparent 70%)",
         "noise":
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
       },

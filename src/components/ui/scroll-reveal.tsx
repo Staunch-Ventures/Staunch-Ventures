@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useAnimation, Variants } from "framer-motion";
+import { motion, useAnimation, type Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -15,37 +15,33 @@ interface ScrollRevealProps {
   triggerOnce?: boolean;
 }
 
+/**
+ * ScrollReveal — entrance animation on scroll-into-view. Uses an iOS-style
+ * ease curve and a small blur-in for premium feel.
+ */
 export function ScrollReveal({
   children,
   className,
   delay = 0,
-  duration = 0.8,
-  yOffset = 24,
-  threshold = 0.1,
+  duration = 0.7,
+  yOffset = 28,
+  threshold = 0.15,
   triggerOnce = true,
 }: ScrollRevealProps) {
   const controls = useAnimation();
-  const [ref, inView] = useInView({
-    triggerOnce: triggerOnce,
-    threshold: threshold,
-  });
+  const [ref, inView] = useInView({ triggerOnce, threshold });
 
   useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
+    if (inView) controls.start("visible");
   }, [controls, inView]);
 
   const variants: Variants = {
-    hidden: { opacity: 0, y: yOffset },
+    hidden: { opacity: 0, y: yOffset, filter: "blur(8px)" },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        delay,
-        duration,
-        ease: "easeOut",
-      },
+      filter: "blur(0px)",
+      transition: { delay, duration, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -55,6 +51,70 @@ export function ScrollReveal({
       initial="hidden"
       animate={controls}
       variants={variants}
+      className={cn(className)}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/**
+ * Stagger — reveals children in sequence. Wrap items in <StaggerItem>.
+ */
+export function Stagger({
+  children,
+  className,
+  stagger = 0.08,
+  threshold = 0.15,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  stagger?: number;
+  threshold?: number;
+}) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ triggerOnce: true, threshold });
+
+  useEffect(() => {
+    if (inView) controls.start("visible");
+  }, [controls, inView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: stagger } },
+      }}
+      className={cn(className)}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function StaggerItem({
+  children,
+  className,
+  yOffset = 24,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  yOffset?: number;
+}) {
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: yOffset, filter: "blur(6px)" },
+        visible: {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+        },
+      }}
       className={cn(className)}
     >
       {children}

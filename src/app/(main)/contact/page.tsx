@@ -1,30 +1,33 @@
 import { Mail, MapPin, Linkedin, Globe } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ContactForm } from "./contact-form";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 export default function ContactPage() {
   return (
-    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4">
-      <section className="text-center mb-16 max-w-3xl mx-auto">
+    <div className="container max-w-6xl mx-auto py-28 md:py-36 px-4">
+      <ScrollReveal className="text-center mb-16 max-w-3xl mx-auto">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Contact</p>
-        <h1 className="text-balance text-5xl md:text-6xl font-bold tracking-display">
-          Get in touch
+        <h1 className="text-balance text-5xl md:text-7xl font-bold tracking-display leading-[0.98]">
+          <span className="text-gradient-brand">Get in</span>{" "}
+          <span className="text-gradient-ember">touch</span>
         </h1>
-        <p className="text-pretty text-xl text-muted-foreground mt-6">
+        <p className="text-pretty text-xl text-muted-foreground mt-7">
           Building something bold? We&apos;d love to hear from you. Reach out and let&apos;s build the future together.
         </p>
-      </section>
+      </ScrollReveal>
 
       <div className="grid lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-3">
-          <Card className="p-8">
+        <ScrollReveal className="lg:col-span-3 flex">
+          <Card className="p-8 w-full">
             <h2 className="text-2xl font-semibold tracking-tight mb-1">Send us a message</h2>
             <p className="text-sm text-muted-foreground mb-8">We&apos;ll respond within two business days.</p>
             <ContactForm />
           </Card>
-        </div>
+        </ScrollReveal>
 
-        <div className="lg:col-span-2 space-y-4">
+        <ScrollReveal delay={0.1} className="lg:col-span-2 space-y-4">
           <Card className="p-6">
             <div className="flex items-start gap-4">
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
@@ -77,7 +80,7 @@ export default function ContactPage() {
               </a>
             </div>
           </Card>
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   );

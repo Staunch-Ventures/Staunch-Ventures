@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -86,6 +87,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
+        <AuroraBackground />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-md focus:bg-primary focus:text-primary-foreground"

@@ -4,28 +4,28 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
-  "relative rounded-lg text-card-foreground transition-colors",
+  "relative rounded-2xl text-card-foreground transition-all duration-300",
   {
     variants: {
       variant: {
-        // Default — flat, hairline border, subtle elevation. The new baseline.
+        // Default — glass surface, gradient-lit rim, layered depth
         default:
-          "bg-card border border-border shadow-elevated",
-        // Subtle — slightly lighter surface for nested cards
+          "border-lit bg-card/70 backdrop-blur-xl shadow-elevated",
+        // Subtle — quieter nested surface
         subtle:
-          "bg-muted border border-border/60",
-        // Outline — pure border, no fill. For grouping without surface noise.
+          "bg-muted/60 border border-border/60 backdrop-blur-md",
+        // Outline — structure without fill
         outline:
           "bg-transparent border border-border",
-        // Glass — opt-in. Reserved for nav, modals, the one signature surface.
+        // Glass — heavier blur for floating overlays (nav, modals)
         glass:
-          "bg-card/60 border border-white/10 bg-glass-gradient backdrop-blur-xl shadow-glass",
-        // Interactive — used for cards that are links. Subtle lift on hover.
+          "border-lit bg-card/50 backdrop-blur-2xl shadow-glass",
+        // Interactive — lifts and brightens on hover; for link cards
         interactive:
-          "bg-card border border-border shadow-elevated hover:border-border-strong hover:bg-card/80 cursor-pointer",
-        // Brand — for the one card that needs the orange glow
+          "border-lit bg-card/70 backdrop-blur-xl shadow-elevated cursor-pointer hover:-translate-y-1 hover:shadow-float",
+        // Brand — terracotta-tinted depth for the one signature surface
         brand:
-          "bg-card border border-primary/30 bg-glass-gradient-primary shadow-elevated",
+          "border-lit bg-[linear-gradient(160deg,hsl(var(--primary)/0.14),transparent_55%),hsl(var(--card)/0.7)] backdrop-blur-xl shadow-elevated",
       },
     },
     defaultVariants: {
@@ -55,7 +55,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("relative z-[2] flex flex-col space-y-1.5 p-6", className)}
     {...props}
   />
 ))
@@ -92,7 +92,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn("relative z-[2] p-6 pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
@@ -102,7 +102,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("relative z-[2] flex items-center p-6 pt-0", className)}
     {...props}
   />
 ))

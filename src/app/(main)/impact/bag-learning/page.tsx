@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 const ourImpact = [
   "Improving university students' results by 5%",
@@ -48,6 +50,8 @@ export default function BagLearningPage() {
         </Button>
       </div>
 
+      <ScrollReveal>
+      <SpotlightCard>
       <Card className="p-8 md:p-12">
         <section className="mb-12 max-w-3xl">
           <div className="relative h-16 w-auto max-w-[200px] mb-6">
@@ -61,8 +65,8 @@ export default function BagLearningPage() {
             />
           </div>
           <p className="text-xs uppercase tracking-wider text-primary mb-3">{venture.sector}</p>
-          <h1 className="text-balance text-4xl md:text-5xl font-bold tracking-display mb-6">
-            {venture.companyName}
+          <h1 className="text-balance text-4xl md:text-6xl font-bold tracking-display mb-6 leading-[0.98]">
+            <span className="text-gradient-brand">{venture.companyName}</span>
           </h1>
           <p className="text-pretty text-lg text-muted-foreground">
             {venture.description}
@@ -127,6 +131,8 @@ export default function BagLearningPage() {
           </div>
         </div>
       </Card>
+      </SpotlightCard>
+      </ScrollReveal>
 
       {venture.website && (
         <section className="mt-8 flex justify-center">

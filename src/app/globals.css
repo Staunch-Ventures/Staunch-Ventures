@@ -4,53 +4,60 @@
 
 @layer base {
   :root {
-    /* Surfaces — desaturated near-black with a subtle cool bias */
-    --background: 220 18% 6%;
-    --foreground: 0 0% 98%;
+    /* ---- Brand foundation: deep navy + terracotta ---- */
+    --background: 226 50% 7%;
+    --foreground: 210 22% 97%;
 
-    --card: 220 12% 10%;
-    --card-foreground: 0 0% 98%;
+    --card: 224 36% 11%;
+    --card-foreground: 210 22% 97%;
 
-    --popover: 220 14% 9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 225 40% 10%;
+    --popover-foreground: 210 22% 97%;
 
-    --muted: 220 10% 14%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 223 28% 15%;
+    --muted-foreground: 214 16% 66%;
 
-    --border: 220 12% 18%;
-    --border-strong: 220 12% 28%;
-    --input: 220 12% 14%;
-    --ring: 16 85% 56%;
+    --border: 220 26% 19%;
+    --border-strong: 219 24% 30%;
+    --input: 223 28% 14%;
+    --ring: 16 90% 57%;
 
     /* Brand */
-    --primary: 16 85% 56%;
+    --primary: 16 90% 57%;
     --primary-foreground: 0 0% 100%;
 
-    /* Accent reserved for a cool secondary highlight (used sparingly) */
-    --accent: 220 12% 14%;
-    --accent-foreground: 0 0% 98%;
+    /* Navy scale */
+    --navy: 226 50% 7%;
+    --navy-deep: 228 54% 5%;
+    --navy-elevated: 224 36% 11%;
 
-    /* Semantic state colors — never the brand */
-    --success: 150 60% 48%;
+    /* Warm secondary — savanna gold */
+    --gold: 38 92% 60%;
+    --gold-foreground: 226 54% 7%;
+
+    --accent: 224 36% 13%;
+    --accent-foreground: 210 22% 97%;
+
+    /* Semantic */
+    --success: 152 60% 50%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 56%;
-    --warning-foreground: 220 18% 6%;
-    --info: 212 96% 64%;
+    --warning-foreground: 226 54% 7%;
+    --info: 205 92% 64%;
     --info-foreground: 0 0% 98%;
-    --destructive: 0 72% 58%;
+    --destructive: 0 74% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --radius: 0.875rem;
+    --radius: 1rem;
 
-    /* Sidebar — slightly deeper than body to define an edge */
-    --sidebar-background: 220 18% 5%;
-    --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 16 85% 56%;
+    --sidebar-background: 228 52% 5%;
+    --sidebar-foreground: 210 18% 92%;
+    --sidebar-primary: 16 90% 57%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 220 12% 12%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 220 12% 14%;
-    --sidebar-ring: 16 85% 56%;
+    --sidebar-accent: 224 34% 12%;
+    --sidebar-accent-foreground: 210 22% 97%;
+    --sidebar-border: 221 28% 14%;
+    --sidebar-ring: 16 90% 57%;
   }
 }
 
@@ -61,15 +68,15 @@
 
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    /* Inter stylistic sets + tabular numerals across the app */
     font-feature-settings: "cv11", "ss03", "ss01", "cv01";
+    position: relative;
   }
 
-  /* All numbers render as tabular by default — the fintech signal */
   .tabular,
   td,
   th,
@@ -89,40 +96,99 @@
 }
 
 @layer components {
-  /* Soft elevation — flat surface with hairline + ambient shadow */
+  /* ============================================================
+     DEPTH SYSTEM
+     ============================================================ */
+
+  /* Layered elevation — ambient + key + contact shadow, top-lit */
   .shadow-elevated {
     box-shadow:
-      0 0 0 1px hsl(var(--border) / 0.6) inset,
-      0 1px 2px rgba(0, 0, 0, 0.4),
-      0 8px 24px -12px rgba(0, 0, 0, 0.5);
+      0 1px 0 0 hsl(0 0% 100% / 0.04) inset,
+      0 1px 2px rgba(2, 6, 23, 0.4),
+      0 8px 16px -8px rgba(2, 6, 23, 0.5),
+      0 24px 48px -24px rgba(2, 6, 23, 0.7);
   }
 
-  /* Heavy glass — opt-in only (nav, modals) */
+  .shadow-float {
+    box-shadow:
+      0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
+      0 2px 8px -2px rgba(2, 6, 23, 0.5),
+      0 24px 48px -12px rgba(2, 6, 23, 0.55),
+      0 48px 96px -32px rgba(2, 6, 23, 0.7);
+  }
+
   .shadow-glass {
     box-shadow:
-      0 0 0 1px hsl(0 0% 100% / 0.06) inset,
-      0 8px 32px 0 rgba(0, 0, 0, 0.45);
+      0 1px 0 0 hsl(0 0% 100% / 0.07) inset,
+      0 8px 32px 0 rgba(2, 8, 28, 0.5);
   }
 
-  /* Tight primary glow — reserved for one hero CTA */
   .shadow-primary-glow {
     box-shadow:
-      0 10px 30px -10px hsl(var(--primary) / 0.55),
-      0 0 0 1px hsl(var(--primary) / 0.4) inset;
+      0 8px 24px -6px hsl(var(--primary) / 0.5),
+      0 1px 0 0 hsl(0 0% 100% / 0.15) inset;
   }
 
-  /* Subtle inner-light highlight on the top edge — for premium cards */
-  .ring-hairline {
-    box-shadow: 0 0 0 1px hsl(var(--border) / 0.7) inset;
+  /* Gradient-lit hairline border (Linear/Vercel style). Apply to a
+     position:relative, rounded element; the ::before paints the rim. */
+  .border-lit {
+    position: relative;
   }
-
-  /* Premium gradient text — restrained, brand-tinted */
-  .text-gradient-brand {
+  .border-lit::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
     background: linear-gradient(
-      180deg,
-      hsl(0 0% 100%) 0%,
-      hsl(0 0% 78%) 100%
+      160deg,
+      hsl(0 0% 100% / 0.16),
+      hsl(0 0% 100% / 0.04) 30%,
+      transparent 55%,
+      hsl(var(--primary) / 0.08) 100%
     );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Cursor spotlight — set --mx / --my (px) on the element via JS */
+  .spotlight {
+    position: relative;
+  }
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 0%),
+      hsl(var(--primary) / 0.12),
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Heading gradients */
+  .text-gradient-brand {
+    background: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 18% 72%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .text-gradient-ember {
+    background: linear-gradient(110deg, hsl(32 96% 74%) 0%, hsl(16 90% 57%) 50%, hsl(6 82% 53%) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -141,22 +207,82 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Faint grid background — used behind hero sections */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, hsl(var(--border) / 0.35) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--border) / 0.35) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  /* Grain — kills banding, adds richness. Overlay on dark surfaces. */
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
   }
 
-  /* Vignette — softens the bottom of long pages */
-  .bg-vignette {
-    background: radial-gradient(
-      ellipse at top,
-      hsl(var(--background)) 0%,
-      hsl(220 18% 3%) 100%
+  /* Topographic contour rings — organic African cartography */
+  .bg-topo {
+    background-image: repeating-radial-gradient(
+      ellipse 120% 95% at 72% 22%,
+      transparent 0 48px,
+      hsl(210 40% 70% / 0.045) 48px 49px
     );
+    mask-image: radial-gradient(ellipse 90% 90% at 72% 22%, black 8%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 72% 22%, black 8%, transparent 70%);
+  }
+
+  /* Mudcloth / kuba weave — subtle texture for accents */
+  .bg-mudcloth {
+    background-image:
+      repeating-linear-gradient(45deg, hsl(var(--primary) / 0.07) 0 1.5px, transparent 1.5px 11px),
+      repeating-linear-gradient(-45deg, hsl(var(--primary) / 0.06) 0 1.5px, transparent 1.5px 11px);
+    background-size: 16px 16px;
+  }
+
+  .img-fuse {
+    mix-blend-mode: screen;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
+
+/* ============================================================
+   MOTION
+   ============================================================ */
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(8%, 6%, 0) scale(1.15); }
+}
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); }
+  50% { transform: translate3d(-10%, -4%, 0) scale(1); }
+}
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6%, -8%, 0) scale(1.2); }
+}
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes float-soft-delayed {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes shimmer-x {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
