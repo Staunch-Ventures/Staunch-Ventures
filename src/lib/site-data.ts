@@ -97,11 +97,7 @@ export const initiatives: Initiative[] = [
     logo: "/gitr-logo.png",
     logoHint: "colorful logo",
   },
-  {
-    title: "Regenerative Agricultural Think Tank",
-    description: "",
-  },
-  {
+{
     title: "Founder House Cape Town",
     description: "Bringing together a group of international founders to immerse in the Cape Town ecosystem - meet other founders and build a global Network of Networks.",
   },

@@ -301,8 +301,9 @@ export default function HomePage() {
               <div className="pointer-events-none absolute inset-0 bg-topo opacity-60" aria-hidden />
               <div className="relative z-[2] flex flex-col items-center gap-6 px-6 py-16 text-center md:py-20">
                 <h2 className="text-balance text-4xl lg:text-6xl font-bold tracking-display max-w-3xl">
-                  <span className="text-gradient-brand">Ready to build</span>{" "}
-                  <span className="text-gradient-ember">the future of Africa?</span>
+                  <span className="text-gradient-brand">Ready to build the</span>
+                  <br />
+                  <span className="text-gradient-ember">future of Africa?</span>
                 </h2>
                 <p className="text-pretty text-lg text-muted-foreground max-w-xl">
                   Whether you&apos;re a founder with a bold idea or an investor backing the continent&apos;s next chapter — let&apos;s talk.
