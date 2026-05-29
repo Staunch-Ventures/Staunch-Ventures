@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export default function DealsPage() {
@@ -41,14 +40,17 @@ export default function DealsPage() {
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <h1 className="text-4xl font-bold tracking-tighter">Startup Screener</h1>
-        <p className="text-muted-foreground mt-2">Filter and search for investment opportunities.</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Screener</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Startup Screener</h1>
+        <p className="text-muted-foreground mt-2 text-sm">
+          Filter and search for investment opportunities.
+        </p>
       </header>
-      
+
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <Input
-            placeholder="Search by startup name..."
+            placeholder="Search by startup name…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-card"
@@ -58,8 +60,10 @@ export default function DealsPage() {
               <SelectValue placeholder="Filter by sector" />
             </SelectTrigger>
             <SelectContent>
-              {sectors.map(sector => (
-                <SelectItem key={sector} value={sector}>{sector === 'all' ? 'All Sectors' : sector}</SelectItem>
+              {sectors.map((sector) => (
+                <SelectItem key={sector} value={sector}>
+                  {sector === "all" ? "All sectors" : sector}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -68,18 +72,20 @@ export default function DealsPage() {
               <SelectValue placeholder="Filter by stage" />
             </SelectTrigger>
             <SelectContent>
-              {stages.map(stage => (
-                <SelectItem key={stage} value={stage}>{stage === 'all' ? 'All Stages' : stage}</SelectItem>
+              {stages.map((stage) => (
+                <SelectItem key={stage} value={stage}>
+                  {stage === "all" ? "All stages" : stage}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
-        <div className="border rounded-lg bg-card overflow-hidden">
+        <div className="rounded-lg bg-card border border-border overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[300px]">Startup</TableHead>
+                <TableHead className="w-[36%]">Startup</TableHead>
                 <TableHead>Sector</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead className="text-right">Funding Ask</TableHead>
@@ -87,42 +93,53 @@ export default function DealsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {deals.map((deal) => (
-                <TableRow key={deal.startupName}>
-                  <TableCell>
-                    <div className="flex items-center gap-4">
-                       <div className="w-10 h-10 rounded-md bg-background flex items-center justify-center p-1 border">
-                        <Image 
-                          src={`https://picsum.photos/seed/${deal.startupName}/100/100`}
-                          width={40}
-                          height={40}
-                          alt={`${deal.startupName} logo`}
-                          data-ai-hint="logo abstract"
-                          className="rounded-sm"
-                        />
+              {deals.map((deal) => {
+                const initials = deal.startupName
+                  .split(" ")
+                  .map((w) => w[0])
+                  .slice(0, 2)
+                  .join("")
+                  .toUpperCase();
+                const hash = Array.from(deal.startupName).reduce(
+                  (acc, ch) => acc + ch.charCodeAt(0),
+                  0
+                );
+                const hue = hash % 360;
+                return (
+                  <TableRow key={deal.startupName}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-xs font-semibold"
+                          style={{ background: `hsl(${hue}, 30%, 18%)` }}
+                        >
+                          {initials}
                         </div>
                         <span className="font-medium">{deal.startupName}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{deal.sector}</Badge>
-                  </TableCell>
-                  <TableCell>{deal.stage}</TableCell>
-                  <TableCell className="text-right font-mono">R{deal.fundingAsk.toLocaleString()}</TableCell>
-                   <TableCell className="text-right">
-                    <Button size="sm" variant="outline">
-                      View Deck
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{deal.sector}</Badge>
+                    </TableCell>
+                    <TableCell>{deal.stage}</TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      R{deal.fundingAsk.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button size="sm" variant="outline">
+                        View Deck
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
-           {deals.length === 0 && (
-              <div className="text-center p-8 text-muted-foreground">
-                No startups found matching your criteria.
-              </div>
-            )}
+          {deals.length === 0 && (
+            <div className="text-center p-12 text-sm text-muted-foreground">
+              No startups found matching your criteria.
+            </div>
+          )}
         </div>
       </div>
     </div>

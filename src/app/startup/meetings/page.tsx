@@ -65,8 +65,11 @@ export default function StartupMeetingsPage() {
     }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold tracking-tight mb-4">Meetings & Events</h1>
+    <div className="flex flex-col gap-8">
+      <header>
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Schedule</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Meetings & Events</h1>
+      </header>
       <Card>
         <CardContent className="grid md:grid-cols-[auto_1fr] gap-8 p-4 md:p-6">
             <div className="flex items-center justify-center">

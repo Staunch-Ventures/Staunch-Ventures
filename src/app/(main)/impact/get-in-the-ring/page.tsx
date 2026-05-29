@@ -3,24 +3,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 const keyOutcomes = [
-  {
-    value: "500+",
-    label: "startups engaged across 12 countries",
-  },
-  {
-    value: "$50M+",
-    label: "in funding facilitated for participants",
-  },
-  {
-    value: "200+",
-    label: "cross-border partnerships formed",
-  },
-  {
-    value: "95%",
-    label: "participant satisfaction rate",
-  },
+  { value: "500+", label: "startups engaged across 12 countries" },
+  { value: "$50M+", label: "in funding facilitated for participants" },
+  { value: "200+", label: "cross-border partnerships formed" },
+  { value: "95%", label: "participant satisfaction rate" },
 ];
 
 const countries = [
@@ -39,11 +28,11 @@ const countries = [
 ];
 
 export default function GetInTheRingPage() {
-  const initiative = initiatives.find(i => i.slug === 'get-in-the-ring');
+  const initiative = initiatives.find((i) => i.slug === "get-in-the-ring");
 
   if (!initiative) {
     return (
-      <div className="container max-w-5xl mx-auto py-12 md:py-20 px-4 text-center">
+      <div className="container max-w-5xl mx-auto py-24 px-4 text-center">
         <h1 className="text-4xl font-bold">Initiative not found</h1>
         <p className="text-muted-foreground mt-4">This initiative could not be found.</p>
         <Button asChild variant="outline" className="mt-8">
@@ -57,72 +46,81 @@ export default function GetInTheRingPage() {
   }
 
   return (
-    <div className="container max-w-5xl mx-auto py-12 md:py-20 px-4">
+    <div className="container max-w-6xl mx-auto py-12 md:py-20 px-4">
       <div className="mb-8">
-        <Button asChild variant="ghost" className="pl-0 text-muted-foreground hover:text-primary">
+        <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
           <Link href="/impact">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Impact
           </Link>
         </Button>
       </div>
-      <section className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+
+      <section className="max-w-3xl mb-12">
+        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Initiative</p>
+        <h1 className="text-balance text-4xl md:text-5xl font-bold tracking-display mb-6">
           {initiative.title}
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+        <p className="text-pretty text-lg text-muted-foreground">
           {initiative.description}
         </p>
       </section>
 
-      <section className="bg-card rounded-xl overflow-hidden shadow-2xl border border-border p-2">
-        <div className="aspect-video">
-          <iframe 
-            className="w-full h-full rounded-lg"
-            src="https://www.youtube.com/embed/NzS-yGdlIh8" 
-            title="Get in the Ring Global Conference 2017" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerPolicy="strict-origin-when-cross-origin" 
-            allowFullScreen>
-          </iframe>
+      <Card className="overflow-hidden p-2">
+        <div className="aspect-video rounded-lg overflow-hidden">
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/NzS-yGdlIh8"
+            title="Get in the Ring Global Conference 2017"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </div>
-      </section>
+      </Card>
 
-      <section className="mt-16">
-        <div className="p-8 rounded-xl border border-border bg-card/50 shadow-lg">
-          <h2 className="text-center text-3xl font-bold mb-10">Key Outcomes</h2>
+      <section className="mt-12">
+        <Card className="p-8 md:p-12">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Outcomes</p>
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-10">
+            What this program has delivered
+          </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             {keyOutcomes.map((outcome) => (
-              <div key={outcome.label} className="flex flex-col gap-2">
-                <p className="text-4xl lg:text-5xl font-bold text-foreground">{outcome.value}</p>
-                <p className="text-muted-foreground text-sm">{outcome.label}</p>
+              <div key={outcome.label}>
+                <p className="text-4xl lg:text-5xl font-semibold tabular-nums tracking-display text-foreground">
+                  {outcome.value}
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground text-pretty">{outcome.label}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-            <Button asChild size="lg" className="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 transition-opacity">
-              <Link href="/contact">Apply to Pitch</Link>
+          <div className="flex flex-col sm:flex-row gap-3 mb-12">
+            <Button asChild variant="brand" size="pill-lg">
+              <Link href="/contact">Apply to pitch</Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/contact">Become a Partner</Link>
+            <Button asChild variant="outline" size="pill-lg">
+              <Link href="/contact">Become a partner</Link>
             </Button>
           </div>
-          
-          <div className="text-center">
-            <h3 className="flex items-center justify-center text-xl font-bold mb-6">
-              <MapPin className="mr-2 h-5 w-5 text-accent" />
-              Countries Covered
-            </h3>
-            <div className="flex flex-wrap justify-center gap-3">
+
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <MapPin className="h-4 w-4 text-primary" strokeWidth={1.75} />
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">Countries covered</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
               {countries.map((country) => (
-                <Badge key={country} variant="secondary" className="px-3 py-1 text-sm">{country}</Badge>
+                <Badge key={country} variant="secondary" className="px-3 py-1 text-xs">
+                  {country}
+                </Badge>
               ))}
             </div>
           </div>
-        </div>
+        </Card>
       </section>
     </div>
   );

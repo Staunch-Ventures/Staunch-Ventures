@@ -20,15 +20,17 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-muted/40">
+      <div className="flex min-h-screen w-full bg-background">
         <DashboardDisclaimer title="Welcome to the Investor Dashboard Demo" description={disclaimerDescription} />
         <DashboardSidebar />
         <div className="flex flex-1 flex-col">
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background/50 backdrop-blur-xl sticky top-0 z-[70]">
+          <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 bg-background/70 backdrop-blur-xl sticky top-0 z-[70]">
             <SidebarTrigger className="-ml-1 md:hidden" />
-            <div className="font-semibold text-lg">Investor Dashboard</div>
+            <div className="text-sm font-medium text-muted-foreground">
+              Investor Dashboard
+            </div>
           </header>
-          <main className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
+          <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
             {children}
           </main>
         </div>

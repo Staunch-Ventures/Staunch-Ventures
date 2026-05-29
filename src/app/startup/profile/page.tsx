@@ -62,8 +62,11 @@ export default function StartupProfilePage() {
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <h1 className="text-4xl font-bold tracking-tighter">My Profile</h1>
-        <p className="text-muted-foreground mt-2">Manage your startup's information for investors.</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Profile</p>
+        <h1 className="text-3xl font-semibold tracking-tight">My profile</h1>
+        <p className="text-muted-foreground mt-2 text-sm">
+          Manage your startup&apos;s information for investors.
+        </p>
       </header>
        <Card>
         <CardHeader>
@@ -157,12 +160,12 @@ export default function StartupProfilePage() {
                     </FormItem>
                 )}
                 />
-                <Button 
-                type="submit" 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-opacity shadow-lg shadow-primary-glow"
-                disabled={form.formState.isSubmitting}
+                <Button
+                  type="submit"
+                  variant="brand"
+                  disabled={form.formState.isSubmitting}
                 >
-                {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
+                  {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
                 </Button>
             </form>
             </Form>

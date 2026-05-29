@@ -130,9 +130,11 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button 
-          type="submit" 
-          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-opacity shadow-lg shadow-primary-glow text-base font-semibold py-6"
+        <Button
+          type="submit"
+          variant="brand"
+          size="lg"
+          className="w-full"
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting ? "Sending..." : "Send Message"}

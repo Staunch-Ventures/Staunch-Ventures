@@ -65,8 +65,9 @@ export default function StartupPitchPage() {
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <h1 className="text-4xl font-bold tracking-tighter">Submit Your Pitch</h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Pitch</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Submit your pitch</h1>
+        <p className="text-muted-foreground mt-2 text-sm">
           Fill out the details below and record your video pitch.
         </p>
       </header>
@@ -163,9 +164,9 @@ export default function StartupPitchPage() {
 
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button 
+                    <Button
                         type="button"
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 transition-opacity shadow-lg shadow-primary-glow"
+                        variant="brand"
                     >
                       <Video className="mr-2 h-4 w-4" />
                       Start Video Pitch Recording

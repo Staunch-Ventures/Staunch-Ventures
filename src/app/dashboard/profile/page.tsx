@@ -7,7 +7,6 @@ import { format } from "date-fns";
 import { mockMeetingRequests, type MeetingRequest } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { Check, X, Trash2 } from "lucide-react";
-import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 
 // Event type definition
@@ -147,7 +146,13 @@ export default function CalendarPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-3xl font-bold tracking-tight mb-4">Calendar</h1>
+      <header>
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Schedule</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Calendar</h1>
+        <p className="text-muted-foreground mt-2 text-sm">
+          Events, founder houses, and meeting requests.
+        </p>
+      </header>
       <Card>
         <CardContent className="grid md:grid-cols-[auto_1fr] gap-8 p-4 md:p-6">
             <div className="flex items-center justify-center">
@@ -197,16 +202,19 @@ export default function CalendarPage() {
                 meetingRequests.map((request) => (
                     <div key={request.id} className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors">
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-md bg-background flex items-center justify-center p-1 border">
-                                <Image 
-                                    src={`https://picsum.photos/seed/${request.startupName.replace(/\s+/g, '-')}/100`}
-                                    width={40}
-                                    height={40}
-                                    alt={`${request.startupName} logo`}
-                                    data-ai-hint="logo abstract"
-                                    className="rounded-sm"
-                                />
-                            </div>
+                            {(() => {
+                                const initials = request.startupName.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                                const hash = Array.from(request.startupName).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+                                const hue = hash % 360;
+                                return (
+                                    <div
+                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-xs font-semibold text-foreground/90"
+                                        style={{ background: `hsl(${hue}, 30%, 18%)` }}
+                                    >
+                                        {initials}
+                                    </div>
+                                );
+                            })()}
                             <div>
                                 <p className="font-semibold">{request.startupName}</p>
                                 <p className="text-sm text-muted-foreground">

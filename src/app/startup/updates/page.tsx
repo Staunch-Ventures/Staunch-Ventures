@@ -25,8 +25,11 @@ export default function StartupUpdatesPage() {
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <h1 className="text-4xl font-bold tracking-tighter">Investor Updates</h1>
-        <p className="text-muted-foreground mt-2">Share your progress with investors and stakeholders.</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Updates</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Investor updates</h1>
+        <p className="text-muted-foreground mt-2 text-sm">
+          Share your progress with investors and stakeholders.
+        </p>
       </header>
        <Card>
         <CardHeader>
@@ -43,12 +46,12 @@ export default function StartupUpdatesPage() {
                 />
             </CardContent>
             <CardFooter>
-                 <Button 
-                    type="submit" 
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 transition-opacity shadow-lg shadow-primary-glow"
-                    disabled={isSubmitting}
+                <Button
+                  type="submit"
+                  variant="brand"
+                  disabled={isSubmitting}
                 >
-                    {isSubmitting ? "Sending..." : "Send Update"}
+                  {isSubmitting ? "Sending..." : "Send Update"}
                 </Button>
             </CardFooter>
         </form>

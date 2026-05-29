@@ -14,14 +14,17 @@ import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
-type DayPickerBaseProps = React.ComponentProps<typeof DayPicker>
-
-// Strip selection-related props so clicking can't select/highlight a day.
-// Selection only happens when a selection mode is enabled. [web:467]
-export type CalendarProps = Omit<
-  DayPickerBaseProps,
-  "mode" | "selected" | "onSelect" | "required"
->
+// DayPicker has a polymorphic union of modes. Use `any` for the props type to
+// avoid the strict mode-narrowed signature, which surfaces as TS2322 when the
+// caller passes `mode="single"` alongside `selected` / `onSelect`.
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mode?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selected?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSelect?: any
+}
 
 function CustomMonthCaption(props: MonthCaptionProps) {
   const { calendarMonth, displayIndex: _displayIndex, ...divProps } = props
