@@ -25,6 +25,37 @@ export function MainNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
+  const navRef = React.useRef<HTMLElement>(null);
+  const itemRefs = React.useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [indicator, setIndicator] = React.useState({ left: 0, width: 0 });
+
+  // Measure the active link's offset *within the nav* so the indicator slides
+  // inside the bar — never projected against document scroll position.
+  React.useLayoutEffect(() => {
+    const nav = navRef.current;
+    const active = itemRefs.current[pathname];
+    if (!nav || !active) {
+      setIndicator((prev) => ({ ...prev, width: 0 }));
+      return;
+    }
+    const navRect = nav.getBoundingClientRect();
+    const rect = active.getBoundingClientRect();
+    setIndicator({ left: rect.left - navRect.left, width: rect.width });
+  }, [pathname]);
+
+  React.useEffect(() => {
+    const onResize = () => {
+      const nav = navRef.current;
+      const active = itemRefs.current[pathname];
+      if (!nav || !active) return;
+      const navRect = nav.getBoundingClientRect();
+      const rect = active.getBoundingClientRect();
+      setIndicator({ left: rect.left - navRect.left, width: rect.width });
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [pathname]);
+
   React.useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -55,27 +86,35 @@ export function MainNav() {
             </Link>
           </div>
 
-          {/* Center nav — restrained glass pill */}
-          <nav className="flex items-center gap-0.5 bg-card/60 p-1 rounded-full border border-border backdrop-blur-md">
+          {/* Center nav — restrained glass pill with a measured sliding indicator.
+              The indicator is positioned relative to <nav> (not the document),
+              so it slides within the bar and never jumps on scroll/navigation. */}
+          <nav
+            ref={navRef}
+            className="relative flex items-center gap-0.5 bg-card/60 p-1 rounded-full border border-border backdrop-blur-md"
+          >
+            <motion.div
+              className="absolute top-1 bottom-1 rounded-full bg-muted border border-border-strong"
+              initial={false}
+              animate={{ left: indicator.left, width: indicator.width, opacity: indicator.width ? 1 : 0 }}
+              transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+              aria-hidden
+            />
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
+                  ref={(el) => {
+                    itemRefs.current[item.href] = el;
+                  }}
                   href={item.href}
                   className={cn(
-                    "relative px-4 py-1.5 text-sm font-medium transition-colors rounded-full outline-none",
+                    "relative z-10 px-4 py-1.5 text-sm font-medium transition-colors rounded-full outline-none",
                     isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-nav-item"
-                      className="absolute inset-0 bg-muted border border-border-strong rounded-full"
-                      transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                    />
-                  )}
-                  <span className="relative z-10">{item.label}</span>
+                  {item.label}
                 </Link>
               );
             })}

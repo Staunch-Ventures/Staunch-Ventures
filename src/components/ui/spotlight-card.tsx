@@ -26,7 +26,7 @@ export function SpotlightCard({
     <div
       ref={ref}
       onMouseMove={handleMove}
-      className={cn("spotlight", className)}
+      className={cn("spotlight rounded-2xl", className)}
       {...props}
     >
       {children}

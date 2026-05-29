@@ -2,35 +2,24 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, Network, Rocket } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Network, Rocket, Coins, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { growthPartners, initiatives, ventures } from "@/lib/site-data";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { HeroVisual } from "@/components/marketing/hero-visual";
+import { ImpactChart } from "@/components/marketing/impact-chart";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { TiltCard } from "@/components/ui/tilt-card";
 import { Marquee } from "@/components/ui/marquee";
-
-const impactData = [
-  { name: "2020", value: 200 },
-  { name: "2021", value: 1890 },
-  { name: "2022", value: 2680 },
-  { name: "2023", value: 4150 },
-  { name: "2024", value: 7000 },
-  { name: "2025", value: 9800 },
-];
+import { Magnetic } from "@/components/ui/magnetic";
 
 export default function HomePage() {
   const { ref: statsRef, inView: statsInView } = useInView({
     triggerOnce: true,
     threshold: 0.4,
-  });
-  const { ref: chartRef, inView: chartInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.3,
   });
 
   return (
@@ -59,12 +48,14 @@ export default function HomePage() {
                 A cross-border network for Africa&apos;s tech startups — capital, expertise, and the operators who&apos;ve scaled before.
               </p>
               <div className="flex flex-wrap items-center gap-3">
-                <Button asChild variant="brand" size="pill-lg">
-                  <Link href="/contact">
-                    Pitch Your Startup
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </Button>
+                <Magnetic>
+                  <Button asChild variant="brand" size="pill-lg">
+                    <Link href="/contact">
+                      Pitch Your Startup
+                      <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </Magnetic>
                 <Button asChild variant="outline" size="pill-lg">
                   <Link href="/impact">See our portfolio</Link>
                 </Button>
@@ -101,7 +92,7 @@ export default function HomePage() {
             <div className="mb-12 max-w-2xl">
               <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">What we do</p>
               <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
-                Capital, expertise, and a network — under one roof.
+                Backing founders. Building the ecosystem.
               </h2>
             </div>
           </ScrollReveal>
@@ -161,55 +152,9 @@ export default function HomePage() {
             </StaggerItem>
 
             <StaggerItem className="flex">
-            <Card ref={chartRef} className="flex flex-col w-full">
-              <CardHeader className="pb-2">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">Trajectory</p>
-                <CardTitle className="text-2xl tracking-tight">Founders reached</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 flex-grow flex h-full min-h-[260px]">
-                {chartInView && (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={impactData} margin={{ top: 12, right: 16, left: 16, bottom: 8 }}>
-                      <defs>
-                        <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.35} />
-                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <XAxis
-                        dataKey="name"
-                        stroke="hsl(var(--muted-foreground))"
-                        fontSize={11}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={4}
-                      />
-                      <Tooltip
-                        cursor={{ stroke: "hsl(var(--primary) / 0.4)", strokeWidth: 1 }}
-                        contentStyle={{
-                          background: "hsl(var(--popover))",
-                          border: "1px solid hsl(var(--border))",
-                          borderRadius: "8px",
-                          fontSize: "12px",
-                        }}
-                        labelStyle={{ color: "hsl(var(--muted-foreground))" }}
-                        formatter={(value: number) => [value.toLocaleString(), "Founders"]}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="value"
-                        stroke="hsl(var(--primary))"
-                        strokeWidth={2}
-                        fillOpacity={1}
-                        fill="url(#colorValue)"
-                        isAnimationActive={true}
-                        animationDuration={1500}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                )}
-              </CardContent>
-            </Card>
+              <Card className="flex flex-col w-full p-8">
+                <ImpactChart />
+              </Card>
             </StaggerItem>
 
             <StaggerItem className="flex lg:col-span-2">
@@ -240,56 +185,56 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Engine of Innovation */}
+      {/* The Staunch Edge — reactive tilt cards */}
       <section className="w-full py-20 lg:py-28">
         <div className="mx-auto max-w-9xl px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <ScrollReveal>
-              <div className="relative w-full aspect-square max-w-lg mx-auto">
-                <div
-                  className="pointer-events-none absolute inset-0 blur-3xl opacity-50"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 50% 48%, hsl(16 88% 56% / 0.28), transparent 60%)",
-                  }}
-                  aria-hidden
-                />
-                <div
-                  className="
-                    relative h-full w-full
-                    [mask-image:radial-gradient(ellipse_62%_68%_at_center,black_52%,transparent_92%)]
-                    [-webkit-mask-image:radial-gradient(ellipse_62%_68%_at_center,black_52%,transparent_92%)]
-                  "
-                >
-                  <Image
-                    src="/Engine of Innovation.jpg"
-                    alt="Engine of Innovation"
-                    fill
-                    sizes="(max-width: 1024px) 80vw, 40vw"
-                    className="object-contain img-fuse"
-                    data-ai-hint="abstract technology"
-                  />
-                </div>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal>
-              <div className="space-y-6">
-                <p className="text-xs uppercase tracking-[0.2em] text-primary">More than capital</p>
-                <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
-                  The engine of innovation
-                </h2>
-                <p className="text-muted-foreground text-lg text-pretty max-w-prose">
-                  Staunch Ventures provides strategic partnership, operational expertise, and access to a global network — enabling founders to scale with impact.
-                </p>
-                <Button asChild variant="outline" size="pill">
-                  <Link href="/about">
-                    Learn more
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </ScrollReveal>
-          </div>
+          <ScrollReveal className="mb-12 max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Why founders choose Staunch</p>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
+              Capital is just the beginning.
+            </h2>
+            <p className="text-muted-foreground text-lg text-pretty mt-4 max-w-prose">
+              Founders work with us because we bring three things money alone can&apos;t buy.
+            </p>
+          </ScrollReveal>
+
+          <Stagger className="grid md:grid-cols-3 gap-4">
+            {[
+              {
+                icon: Coins,
+                eyebrow: "Capital",
+                title: "Patient & founder-aligned.",
+                body: "Cheques sized to your milestones, structured to keep you in control of the journey you set out on.",
+              },
+              {
+                icon: Users2,
+                eyebrow: "Operators",
+                title: "We've scaled before.",
+                body: "Active partners — not passive money. Strategy, growth, hiring, infra — we step in where it matters.",
+              },
+              {
+                icon: Network,
+                eyebrow: "Network",
+                title: "Cross-border by design.",
+                body: "A web of investors, advisors, founders and partners spanning the continent and beyond.",
+              },
+            ].map((p) => (
+              <StaggerItem key={p.eyebrow} className="flex">
+                <TiltCard className="w-full flex" intensity={7}>
+                  <Card variant="interactive" className="w-full flex flex-col p-8 md:p-10">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 mb-6">
+                      <p.icon className="h-5 w-5 text-primary" strokeWidth={1.75} />
+                    </span>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-primary mb-2">{p.eyebrow}</p>
+                    <h3 className="text-2xl font-semibold tracking-tight text-foreground mb-4">
+                      {p.title}
+                    </h3>
+                    <p className="text-muted-foreground text-pretty flex-grow">{p.body}</p>
+                  </Card>
+                </TiltCard>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 
