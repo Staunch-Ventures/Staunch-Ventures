@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useAnimation, type Variants } from "framer-motion";
+import { motion, useAnimation, useReducedMotion, type Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -16,8 +16,10 @@ interface ScrollRevealProps {
 }
 
 /**
- * ScrollReveal — entrance animation on scroll-into-view. Uses an iOS-style
- * ease curve and a small blur-in for premium feel.
+ * ScrollReveal — entrance animation on scroll-into-view, using an iOS-style
+ * ease curve. Animates only opacity + transform (compositor-friendly) — no
+ * `filter: blur()`, which is expensive to animate and the main source of
+ * scroll jank on mobile GPUs. Honors `prefers-reduced-motion`.
  */
 export function ScrollReveal({
   children,
@@ -29,6 +31,7 @@ export function ScrollReveal({
   triggerOnce = true,
 }: ScrollRevealProps) {
   const controls = useAnimation();
+  const reduce = useReducedMotion();
   const [ref, inView] = useInView({ triggerOnce, threshold });
 
   useEffect(() => {
@@ -36,11 +39,10 @@ export function ScrollReveal({
   }, [controls, inView]);
 
   const variants: Variants = {
-    hidden: { opacity: 0, y: yOffset, filter: "blur(8px)" },
+    hidden: { opacity: 0, y: reduce ? 0 : yOffset },
     visible: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: { delay, duration, ease: [0.16, 1, 0.3, 1] },
     },
   };
@@ -104,14 +106,14 @@ export function StaggerItem({
   className?: string;
   yOffset?: number;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: yOffset, filter: "blur(6px)" },
+        hidden: { opacity: 0, y: reduce ? 0 : yOffset },
         visible: {
           opacity: 1,
           y: 0,
-          filter: "blur(0px)",
           transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
         },
       }}

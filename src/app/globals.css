@@ -75,6 +75,10 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv11", "ss03", "ss01", "cv01";
     position: relative;
+    /* Decorative glows / floating chips intentionally bleed past the layout.
+       `clip` swallows that overflow without creating a scroll container (so
+       sticky/fixed still work) — kills the phantom horizontal scroll on mobile. */
+    overflow-x: clip;
   }
 
   .tabular,
@@ -284,5 +288,33 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   MOBILE PERFORMANCE BUDGET
+   Phone GPUs choke on large animated blurs and stacked
+   backdrop-filters. Trim both on small screens so scrolling
+   stays at 60fps without changing the layout or visual language.
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Freeze the aurora — a static blurred wash is painted once; an animated
+     one repaints several huge blurred surfaces every frame. */
+  .aurora-blob {
+    animation: none !important;
+  }
+
+  /* Cap glass blur. backdrop-filter cost scales with radius × area; the design
+     uses up to 40px (`backdrop-blur-2xl`) and stacks many at once. 8px keeps
+     the frosted-glass read at a fraction of the paint cost. */
+  .backdrop-blur-sm,
+  .backdrop-blur,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(8px) !important;
   }
 }

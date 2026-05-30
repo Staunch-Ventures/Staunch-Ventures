@@ -2,6 +2,12 @@
  * Aurora — a fixed, layered gradient-mesh backdrop that drifts slowly to give
  * the whole site ambient depth and motion (Mercury/Stripe style). Pure CSS
  * animation so it renders on the server with zero JS.
+ *
+ * Mobile is tuned hard here: animating several 60–70vh surfaces each blurred by
+ * 120–140px is the heaviest paint on the page and tanks scroll FPS / battery on
+ * phone GPUs. So on small screens we drop to two blobs, halve the blur radius,
+ * and `.aurora-blob` kills the drift animation entirely (see globals.css). The
+ * static wash still reads as the same ambient backdrop.
  */
 export function AuroraBackground() {
   return (
@@ -14,7 +20,7 @@ export function AuroraBackground() {
 
       {/* Drifting color blobs */}
       <div
-        className="absolute -top-1/4 right-[-10%] h-[70vh] w-[70vh] rounded-full blur-[120px] opacity-50"
+        className="aurora-blob absolute -top-1/4 right-[-10%] h-[70vh] w-[70vh] rounded-full blur-[70px] opacity-50 sm:blur-[120px]"
         style={{
           background:
             "radial-gradient(circle, hsl(16 90% 55% / 0.45), transparent 60%)",
@@ -22,7 +28,7 @@ export function AuroraBackground() {
         }}
       />
       <div
-        className="absolute top-[10%] left-[-15%] h-[60vh] w-[60vh] rounded-full blur-[130px] opacity-40"
+        className="aurora-blob absolute top-[10%] left-[-15%] h-[60vh] w-[60vh] rounded-full blur-[80px] opacity-40 sm:blur-[130px]"
         style={{
           background:
             "radial-gradient(circle, hsl(38 92% 56% / 0.30), transparent 62%)",
@@ -30,7 +36,7 @@ export function AuroraBackground() {
         }}
       />
       <div
-        className="absolute bottom-[-20%] left-[20%] h-[65vh] w-[65vh] rounded-full blur-[140px] opacity-40"
+        className="aurora-blob absolute bottom-[-20%] left-[20%] hidden h-[65vh] w-[65vh] rounded-full blur-[140px] opacity-40 sm:block"
         style={{
           background:
             "radial-gradient(circle, hsl(250 70% 45% / 0.35), transparent 62%)",
@@ -38,7 +44,7 @@ export function AuroraBackground() {
         }}
       />
       <div
-        className="absolute top-[40%] right-[10%] h-[50vh] w-[50vh] rounded-full blur-[120px] opacity-30"
+        className="aurora-blob absolute top-[40%] right-[10%] hidden h-[50vh] w-[50vh] rounded-full blur-[120px] opacity-30 sm:block"
         style={{
           background:
             "radial-gradient(circle, hsl(210 90% 50% / 0.30), transparent 62%)",

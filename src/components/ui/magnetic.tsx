@@ -3,10 +3,14 @@
 import * as React from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { usePointerFine } from "@/hooks/use-pointer-fine";
 
 /**
  * Magnetic — wraps an interactive element with a subtle cursor-attraction
  * effect. Springy, restrained. Use sparingly (hero CTAs).
+ *
+ * On touch devices there is no cursor to attract toward, so we render the
+ * children plainly — no springs, no listeners.
  */
 export function Magnetic({
   children,
@@ -17,6 +21,8 @@ export function Magnetic({
   className?: string;
   strength?: number;
 }) {
+  const fine = usePointerFine();
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 220, damping: 18, mass: 0.4 });
@@ -33,6 +39,10 @@ export function Magnetic({
     x.set(0);
     y.set(0);
   };
+
+  if (!fine) {
+    return <div className={cn("inline-flex", className)}>{children}</div>;
+  }
 
   return (
     <motion.div

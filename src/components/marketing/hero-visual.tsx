@@ -9,6 +9,7 @@ import {
   Network as NetworkIcon,
   Check,
 } from "lucide-react";
+import { usePointerFine } from "@/hooks/use-pointer-fine";
 
 const services = [
   { icon: Wrench, label: "Tech architecture" },
@@ -20,6 +21,8 @@ const services = [
 const sectors = ["EdTech", "HealthTech", "AgriTech", "Clean Energy"];
 
 export function HeroVisual() {
+  const fine = usePointerFine();
+
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), {
@@ -46,8 +49,8 @@ export function HeroVisual() {
       initial={{ opacity: 0, y: 24, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      onMouseMove={fine ? onMove : undefined}
+      onMouseLeave={fine ? onLeave : undefined}
       className="relative w-full max-w-md mx-auto perspective-1000"
     >
       {/* Glow pool beneath the card */}
@@ -60,7 +63,7 @@ export function HeroVisual() {
       />
 
       <motion.div
-        style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
+        style={fine ? { rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" } : undefined}
         className="relative"
       >
         {/* Main surface — Cofounding-as-a-Service productized */}
