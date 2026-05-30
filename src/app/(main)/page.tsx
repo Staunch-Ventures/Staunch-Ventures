@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowRight, ArrowUpRight, Network, Rocket, Coins, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { growthPartners, initiatives, ventures } from "@/lib/site-data";
+import { growthPartners, initiatives, startupsCofounded, ventures } from "@/lib/site-data";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
@@ -64,8 +64,8 @@ export default function HomePage() {
               {/* Proof strip */}
               <dl className="mt-2 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
                 <div>
-                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Startups</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{ventures.length}</dd>
+                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Cofounded</dt>
+                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{startupsCofounded}</dd>
                 </div>
                 <div>
                   <dt className="text-xs uppercase tracking-wider text-muted-foreground">Initiatives</dt>

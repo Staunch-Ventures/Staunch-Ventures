@@ -26,6 +26,13 @@ export type Venture = {
   website?: string;
 };
 
+/**
+ * Startups the Staunch team has personally cofounded across their careers —
+ * all revenue-generating. A team track-record stat (distinct from the current
+ * `ventures` portfolio), used to prove operator credibility in the hero.
+ */
+export const startupsCofounded = 11;
+
 export const ventures: Venture[] = [
   {
     companyName: 'Bag Learning',
