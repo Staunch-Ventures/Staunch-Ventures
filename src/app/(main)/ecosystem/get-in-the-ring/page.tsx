@@ -1,5 +1,6 @@
 import { initiatives } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -38,9 +39,9 @@ export default function GetInTheRingPage() {
         <h1 className="text-4xl font-bold">Initiative not found</h1>
         <p className="text-muted-foreground mt-4">This initiative could not be found.</p>
         <Button asChild variant="outline" className="mt-8">
-          <Link href="/impact">
+          <Link href="/ecosystem">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Impact
+            Back to Ecosystem
           </Link>
         </Button>
       </div>
@@ -51,14 +52,26 @@ export default function GetInTheRingPage() {
     <div className="container max-w-6xl mx-auto py-12 md:py-20 px-4 space-y-12">
       <div>
         <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
-          <Link href="/impact">
+          <Link href="/ecosystem">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Impact
+            Back to Ecosystem
           </Link>
         </Button>
       </div>
 
       <ScrollReveal className="max-w-3xl">
+        {initiative.logo && (
+          <div className="relative h-14 w-auto max-w-[200px] mb-6">
+            <Image
+              src={initiative.logo}
+              alt={`${initiative.title} logo`}
+              fill
+              sizes="200px"
+              className="object-contain object-left"
+              data-ai-hint={initiative.logoHint}
+            />
+          </div>
+        )}
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Initiative</p>
         <h1 className="text-balance text-4xl md:text-6xl font-bold tracking-display mb-6 leading-[0.98]">
           <span className="text-gradient-brand">{initiative.title}</span>

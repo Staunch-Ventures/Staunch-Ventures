@@ -14,9 +14,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { href: "/ventures", label: "Ventures" },
   { href: "/team", label: "Team" },
-  { href: "/impact", label: "Impact" },
-  { href: "/partners", label: "Ecosystem" },
+  { href: "/ecosystem", label: "Ecosystem" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -72,8 +72,8 @@ export function MainNav() {
       className={cn(
         "sticky top-0 z-50 w-full transition-[background,border-color,backdrop-filter] duration-300",
         scrolled
-          ? "border-b border-border/60 bg-background/70 backdrop-blur-xl"
-          : "border-b border-transparent"
+          ? "divider-fade-b bg-background/70 backdrop-blur-xl"
+          : ""
       )}
     >
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -126,7 +126,7 @@ export function MainNav() {
               <Link href="/startup">Startup Login</Link>
             </Button>
             <Button asChild variant="brand" size="pill">
-              <Link href="/dashboard">Investor Login</Link>
+              <Link href="/investor">Investor Login</Link>
             </Button>
           </div>
         </div>
@@ -143,12 +143,12 @@ export function MainNav() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="bg-background/90 backdrop-blur-xl p-0 border-r border-border">
+            <SheetContent side="left" className="surface-lit bg-background/90 backdrop-blur-xl p-0 border-0 divider-fade-r">
               <SheetHeader className="sr-only">
                 <SheetTitle>Main Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between p-6 border-b border-border">
+                <div className="flex items-center justify-between p-6 divider-fade-b">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
                     <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={132} height={33} />
                   </Link>
@@ -175,7 +175,7 @@ export function MainNav() {
                     <Link href="/startup">Startup Login</Link>
                   </Button>
                   <Button asChild variant="brand" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href="/dashboard">Investor Login</Link>
+                    <Link href="/investor">Investor Login</Link>
                   </Button>
                 </div>
               </div>

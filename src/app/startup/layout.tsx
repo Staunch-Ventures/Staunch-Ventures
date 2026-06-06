@@ -21,7 +21,7 @@ export default function StartupLayout({
         <DashboardDisclaimer title="Welcome to the Startup Dashboard Demo" description={disclaimerDescription} />
         <StartupSidebar />
         <div className="flex flex-1 flex-col">
-          <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 bg-background/70 backdrop-blur-xl sticky top-0 z-[70]">
+          <header className="flex h-14 shrink-0 items-center gap-2 divider-fade-b px-4 bg-background/70 backdrop-blur-xl sticky top-0 z-[70]">
             <SidebarTrigger className="-ml-1 md:hidden" />
             <div className="text-sm font-medium text-muted-foreground">
               Startup Dashboard

@@ -57,7 +57,7 @@ export default function HomePage() {
                   </Button>
                 </Magnetic>
                 <Button asChild variant="outline" size="pill-lg">
-                  <Link href="/impact">See our portfolio</Link>
+                  <Link href="/ventures">See our portfolio</Link>
                 </Button>
               </div>
 
@@ -99,7 +99,7 @@ export default function HomePage() {
 
           <Stagger className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <StaggerItem className="flex lg:col-span-2">
-              <Link href="/impact#ventures" className="flex group w-full">
+              <Link href="/ventures" className="flex group w-full">
                 <SpotlightCard className="w-full flex">
                   <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
                     <div className="flex items-center gap-3 mb-6">
@@ -125,13 +125,12 @@ export default function HomePage() {
 
             <StaggerItem className="flex">
             <Card ref={statsRef} className="flex flex-col justify-center p-8 w-full">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground mb-6">Since 2020</p>
               <div className="space-y-6">
                 <div>
                   <p className="text-5xl font-semibold tracking-display tabular-nums text-foreground">
-                    {statsInView ? <CountUp end={ventures.length} duration={2.2} /> : "0"}
+                    {statsInView ? <CountUp end={startupsCofounded} duration={2.2} /> : "0"}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-1">Startups supported</p>
+                  <p className="text-sm text-muted-foreground mt-1">Startups supported across the team</p>
                 </div>
                 <div className="h-px bg-border" />
                 <div>
@@ -145,7 +144,7 @@ export default function HomePage() {
                   <p className="text-5xl font-semibold tracking-display tabular-nums text-foreground">
                     {statsInView ? <CountUp end={growthPartners.length} duration={2.2} /> : "0"}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-1">Growth partners</p>
+                  <p className="text-sm text-muted-foreground mt-1">Major growth partners</p>
                 </div>
               </div>
             </Card>
@@ -158,7 +157,7 @@ export default function HomePage() {
             </StaggerItem>
 
             <StaggerItem className="flex lg:col-span-2">
-              <Link href="/impact#initiatives" className="flex group w-full">
+              <Link href="/ecosystem#initiatives" className="flex group w-full">
                 <SpotlightCard className="w-full flex">
                   <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
                     <div className="flex items-center gap-3 mb-6">
@@ -252,7 +251,7 @@ export default function HomePage() {
                 </h2>
               </div>
               <Button asChild variant="ghost" size="pill" className="self-start sm:self-auto">
-                <Link href="/partners">
+                <Link href="/ecosystem">
                   View ecosystem
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
@@ -316,7 +315,7 @@ export default function HomePage() {
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="pill-lg">
-                    <Link href="/dashboard">Investor Login</Link>
+                    <Link href="/investor">Investor Login</Link>
                   </Button>
                 </div>
               </div>

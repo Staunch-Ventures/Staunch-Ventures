@@ -121,9 +121,14 @@ export default function StartupDashboardPage() {
           <CardContent className="pt-2">
             <ResponsiveContainer width="100%" height={320}>
               <BarChart data={userGrowthData} margin={{ top: 12, right: 8, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="userBarFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.95} />
+                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.25} />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="hsl(var(--border))"
+                  stroke="hsl(var(--border) / 0.45)"
                   vertical={false}
                 />
                 <XAxis
@@ -154,7 +159,7 @@ export default function StartupDashboardPage() {
                   labelStyle={{ color: "hsl(var(--muted-foreground))" }}
                   formatter={(value: number) => [value.toLocaleString(), "Users"]}
                 />
-                <Bar dataKey="users" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} maxBarSize={36} />
+                <Bar dataKey="users" fill="url(#userBarFill)" radius={[6, 6, 0, 0]} maxBarSize={36} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

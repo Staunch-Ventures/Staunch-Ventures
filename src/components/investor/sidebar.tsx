@@ -32,14 +32,14 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 const menuItems = [
-  { href: "/dashboard/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/portfolio", label: "Portfolio", icon: BriefcaseBusiness },
-  { href: "/dashboard/deals", label: "Screener", icon: Search },
-  { href: "/dashboard/community", label: "Documents", icon: FileText },
-  { href: "/dashboard/profile", label: "Calendar", icon: CalendarDays },
+  { href: "/investor/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/investor/portfolio", label: "Portfolio", icon: BriefcaseBusiness },
+  { href: "/investor/deals", label: "Screener", icon: Search },
+  { href: "/investor/community", label: "Documents", icon: FileText },
+  { href: "/investor/profile", label: "Calendar", icon: CalendarDays },
 ];
 
-export function DashboardSidebar() {
+export function InvestorSidebar() {
   const pathname = usePathname();
   const { toggleSidebar, state } = useSidebar();
   const isOpen = state === "expanded";
@@ -48,24 +48,33 @@ export function DashboardSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarRail />
       <SidebarHeader>
-        <div className="flex h-[45px] items-center px-2 group-data-[collapsible=icon]:justify-start">
-          <div className="relative flex h-full w-full items-center">
+        <div className="flex h-[45px] items-center justify-between gap-2 px-1">
+          <Link
+            href="/"
+            className="flex min-w-0 items-center transition-opacity hover:opacity-80 group-data-[collapsible=icon]:hidden"
+          >
             <Image
               src="/Transparent%20Logo.png"
               alt="Staunch Ventures"
               width={140}
               height={35}
               priority
-              className="shrink-0 transition-opacity duration-200 group-data-[state=collapsed]:opacity-0"
+              className="shrink-0"
             />
-            <Image
-              src="/Logo Symbol Transparent Low Quality.png"
-              alt="Staunch Ventures"
-              width={28}
-              height={28}
-              className="absolute left-1 shrink-0 opacity-0 transition-opacity duration-200 group-data-[state=collapsed]:opacity-100"
-            />
-          </div>
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+            className="hidden h-8 w-8 shrink-0 text-sidebar-foreground/60 hover:text-foreground md:inline-flex group-data-[collapsible=icon]:mx-auto"
+          >
+            {isOpen ? (
+              <PanelLeftClose className="size-[18px]" strokeWidth={1.75} />
+            ) : (
+              <PanelLeftOpen className="size-[18px]" strokeWidth={1.75} />
+            )}
+          </Button>
         </div>
       </SidebarHeader>
 
@@ -105,21 +114,6 @@ export function DashboardSidebar() {
               </SidebarMenuItem>
             );
           })}
-          <SidebarMenuItem className="hidden md:block mt-2">
-            <SidebarMenuButton
-              onClick={toggleSidebar}
-              size="lg"
-              tooltip={{ children: isOpen ? "Collapse" : "Expand" }}
-              className="text-sidebar-foreground/60 hover:text-foreground rounded-lg"
-            >
-              {isOpen ? (
-                <PanelLeftClose className="size-[18px] shrink-0" strokeWidth={1.75} />
-              ) : (
-                <PanelLeftOpen className="size-[18px] shrink-0" strokeWidth={1.75} />
-              )}
-              <span className="text-sm">Collapse</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
 
@@ -140,7 +134,7 @@ export function DashboardSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         <div className="w-full h-px bg-sidebar-border my-2" />
-        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:p-1 group-data-[collapsible=icon]:justify-start">
+        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:p-1 group-data-[collapsible=icon]:justify-center">
           <Avatar className="h-8 w-8 shrink-0 border border-sidebar-border">
             <AvatarFallback className="bg-sidebar-accent text-xs font-medium">LP</AvatarFallback>
           </Avatar>

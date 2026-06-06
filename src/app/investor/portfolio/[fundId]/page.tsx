@@ -64,7 +64,7 @@ export default function FundDetailPage({ params }: { params: Promise<{ fundId: s
     <div className="flex flex-col gap-8">
       <header>
         <Button asChild variant="ghost" size="sm" className="mb-4 -ml-3">
-          <Link href="/dashboard/portfolio">
+          <Link href="/investor/portfolio">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to all funds
           </Link>
@@ -105,7 +105,7 @@ export default function FundDetailPage({ params }: { params: Promise<{ fundId: s
                   <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+              <CartesianGrid stroke="hsl(var(--border) / 0.45)" vertical={false} />
               <XAxis
                 dataKey="date"
                 stroke="hsl(var(--muted-foreground))"

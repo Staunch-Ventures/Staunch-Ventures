@@ -49,15 +49,18 @@ export default function TeamPage() {
           <StaggerItem key={member.name} className="flex">
             <SpotlightCard className="w-full flex group">
               <Card variant="interactive" className="p-0 overflow-hidden flex flex-col w-full">
-                <div className="relative aspect-[4/5] w-full bg-muted">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-card via-card/60 to-transparent" />
+                {/* Wrapper: image + overlay siblings so gradient paints above any scale bleed */}
+                <div className="relative">
+                  <div className="relative aspect-[4/5] w-full bg-muted overflow-hidden">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-card via-card/60 to-transparent pointer-events-none" />
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <h3 className="text-2xl font-semibold tracking-tight text-foreground">{member.name}</h3>
                     <p className="text-sm font-medium text-primary mt-1">{member.role}</p>

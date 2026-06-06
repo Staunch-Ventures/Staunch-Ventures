@@ -1,8 +1,6 @@
 import { Mail, MapPin, Linkedin, Globe } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { ContactForm } from "./contact-form";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
-import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 export default function ContactPage() {
   return (
@@ -18,16 +16,8 @@ export default function ContactPage() {
         </p>
       </ScrollReveal>
 
-      <div className="grid lg:grid-cols-5 gap-6">
-        <ScrollReveal className="lg:col-span-3 flex">
-          <Card className="p-8 w-full">
-            <h2 className="text-2xl font-semibold tracking-tight mb-1">Send us a message</h2>
-            <p className="text-sm text-muted-foreground mb-8">We&apos;ll respond within two business days.</p>
-            <ContactForm />
-          </Card>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.1} className="lg:col-span-2 space-y-4">
+      <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        <ScrollReveal>
           <Card className="p-6">
             <div className="flex items-start gap-4">
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
@@ -44,7 +34,9 @@ export default function ContactPage() {
               </div>
             </div>
           </Card>
+        </ScrollReveal>
 
+        <ScrollReveal delay={0.05}>
           <Card className="p-6">
             <div className="flex items-start gap-4">
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
@@ -56,7 +48,9 @@ export default function ContactPage() {
               </div>
             </div>
           </Card>
+        </ScrollReveal>
 
+        <ScrollReveal delay={0.1}>
           <Card className="p-6">
             <p className="text-xs uppercase tracking-wider text-muted-foreground mb-4">Follow us</p>
             <div className="space-y-3">

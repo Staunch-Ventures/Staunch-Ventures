@@ -30,9 +30,9 @@ export default function BagLearningPage() {
         <h1 className="text-4xl font-bold">Venture not found</h1>
         <p className="text-muted-foreground mt-4">This venture could not be found.</p>
         <Button asChild variant="outline" className="mt-8">
-          <Link href="/impact">
+          <Link href="/ventures">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Impact
+            Back to Ventures
           </Link>
         </Button>
       </div>
@@ -43,9 +43,9 @@ export default function BagLearningPage() {
     <div className="container max-w-6xl mx-auto py-12 md:py-20 px-4">
       <div className="mb-8">
         <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
-          <Link href="/impact">
+          <Link href="/ventures">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Impact
+            Back to Ventures
           </Link>
         </Button>
       </div>

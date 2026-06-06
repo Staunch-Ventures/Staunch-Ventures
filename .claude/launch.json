@@ -5,7 +5,8 @@
       "name": "staunch-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 9003
+      "port": 9003,
+      "autoPort": false
     }
   ]
 }

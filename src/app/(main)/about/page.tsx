@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Quote, Sprout, BookOpen, Mountain, Briefcase } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
@@ -63,18 +64,17 @@ export default function AboutPage() {
                   </li>
                 </ul>
               </div>
-              <div className="relative h-80 md:h-96 w-full rounded-2xl overflow-hidden bg-navy border border-border">
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse 80% 60% at 30% 20%, hsl(16 88% 56% / 0.32), transparent), radial-gradient(ellipse 70% 60% at 85% 90%, hsl(38 90% 58% / 0.18), transparent), hsl(var(--navy))",
-                  }}
+              <div className="relative h-80 md:h-96 w-full rounded-2xl overflow-hidden border border-border">
+                <Image
+                  src="/Philosophy.jpg"
+                  alt="Our philosophy"
+                  fill
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-topo opacity-70" />
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-6">
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Built for Africa</p>
-                  <p className="mt-1 text-lg font-semibold text-foreground">Operators who&apos;ve scaled before.</p>
+                  <p className="text-xs uppercase tracking-wider text-white/70">Built for Africa</p>
+                  <p className="mt-1 text-lg font-semibold text-white">Operators who&apos;ve scaled before.</p>
                 </div>
               </div>
             </div>

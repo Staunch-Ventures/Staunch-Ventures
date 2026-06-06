@@ -29,15 +29,15 @@ export function SiteFooter() {
           <div className="col-span-1 md:col-span-3 md:col-start-7 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Company</h4>
             <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
+            <Link href="/ventures" className="text-foreground/80 hover:text-foreground transition-colors">Ventures</Link>
             <Link href="/team" className="text-foreground/80 hover:text-foreground transition-colors">Team</Link>
-            <Link href="/impact" className="text-foreground/80 hover:text-foreground transition-colors">Impact</Link>
-            <Link href="/partners" className="text-foreground/80 hover:text-foreground transition-colors">Ecosystem</Link>
+            <Link href="/ecosystem" className="text-foreground/80 hover:text-foreground transition-colors">Ecosystem</Link>
             <Link href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
           </div>
           <div className="col-span-1 md:col-span-3 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Platform</h4>
             <Link
-              href="/dashboard"
+              href="/investor"
               className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground transition-colors"
             >
               Investor Login <ArrowUpRight className="h-3.5 w-3.5" />

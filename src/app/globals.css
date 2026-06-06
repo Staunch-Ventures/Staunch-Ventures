@@ -160,6 +160,57 @@
     z-index: 1;
   }
 
+  /* Fading hairline dividers — soft, edge-to-transparent rules that replace
+     the flat full-strength 1px borders on chrome (header, sheet, dashboard).
+     The line is brightest in the middle and dissolves at both ends, so it
+     reads as light catching an edge rather than a hard drawn line. */
+  .divider-fade-b {
+    position: relative;
+  }
+  .divider-fade-b::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--border-strong) / 0.55) 18%,
+      hsl(var(--border-strong) / 0.55) 82%,
+      transparent
+    );
+    pointer-events: none;
+  }
+  .divider-fade-r {
+    position: relative;
+  }
+  .divider-fade-r::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    right: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      hsl(var(--border-strong) / 0.5) 12%,
+      hsl(var(--border-strong) / 0.5) 88%,
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  /* Top-lit surface — a soft overhead key light + faint terracotta floor glow.
+     Gives flat navy panels (sidebar, sheets) dimensional depth so they read as
+     lit objects rather than a solid fill. */
+  .surface-lit {
+    position: relative;
+    background-image:
+      radial-gradient(120% 60% at 50% -10%, hsl(210 40% 70% / 0.06), transparent 60%),
+      radial-gradient(100% 80% at 50% 120%, hsl(var(--primary) / 0.05), transparent 70%);
+  }
+
   /* Cursor spotlight — set --mx / --my (px) on the element via JS */
   .spotlight {
     position: relative;

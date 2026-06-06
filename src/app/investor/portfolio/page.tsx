@@ -59,8 +59,7 @@ export default function PortfolioPage() {
                 </linearGradient>
               </defs>
               <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="hsl(var(--border))"
+                stroke="hsl(var(--border) / 0.45)"
                 vertical={false}
               />
               <XAxis
@@ -116,7 +115,7 @@ export default function PortfolioPage() {
           const investorEquityValue = totalNav * fund.investorEquity;
 
           return (
-            <Link key={fund.id} href={`/dashboard/portfolio/${fund.id}`} className="flex group">
+            <Link key={fund.id} href={`/investor/portfolio/${fund.id}`} className="flex group">
               <Card variant="interactive" className="w-full flex flex-col p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div>
