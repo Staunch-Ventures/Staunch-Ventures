@@ -23,8 +23,7 @@ import {
   LogOut,
   Send,
   Mic,
-  PanelLeftClose,
-  PanelLeftOpen,
+  ChevronLeft,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -43,17 +42,21 @@ const menuItems = [
 
 export function StartupSidebar() {
   const pathname = usePathname();
-  const { toggleSidebar, state } = useSidebar();
+  const { toggleSidebar, state, isMobile } = useSidebar();
   const isOpen = state === "expanded";
 
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarRail />
-      <SidebarHeader>
-        <div className="flex h-[45px] items-center justify-between gap-2 px-1">
+
+      <SidebarHeader className="pt-4">
+        {isMobile ? (
+          <div className="h-16" aria-hidden="true" />
+        ) : (
           <Link
             href="/"
-            className="flex min-w-0 items-center transition-opacity hover:opacity-80 group-data-[collapsible=icon]:hidden"
+            aria-label="Staunch Ventures home"
+            className="relative flex h-[35px] items-center justify-center px-1 transition-opacity hover:opacity-80"
           >
             <Image
               src="/Transparent%20Logo.png"
@@ -61,23 +64,18 @@ export function StartupSidebar() {
               width={140}
               height={35}
               priority
-              className="shrink-0"
+              className="shrink-0 transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0"
+            />
+            <Image
+              src="/Logo Symbol Transparent Low Quality.png"
+              alt="Staunch Ventures"
+              width={28}
+              height={28}
+              priority
+              className="absolute left-1/2 -translate-x-1/2 shrink-0 opacity-0 transition-opacity duration-200 group-data-[collapsible=icon]:opacity-100"
             />
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleSidebar}
-            aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-            className="hidden h-8 w-8 shrink-0 text-sidebar-foreground/60 hover:text-foreground md:inline-flex group-data-[collapsible=icon]:mx-auto"
-          >
-            {isOpen ? (
-              <PanelLeftClose className="size-[18px]" strokeWidth={1.75} />
-            ) : (
-              <PanelLeftOpen className="size-[18px]" strokeWidth={1.75} />
-            )}
-          </Button>
-        </div>
+        )}
       </SidebarHeader>
 
       <SidebarContent className="p-2">
@@ -92,7 +90,8 @@ export function StartupSidebar() {
                   size="lg"
                   tooltip={{ children: item.label }}
                   className={cn(
-                    "relative overflow-hidden rounded-lg transition-colors",
+                    "relative overflow-hidden rounded-lg transition-[color,background-color,padding] duration-200",
+                    "group-data-[collapsible=icon]:!justify-start group-data-[collapsible=icon]:!px-[17px]",
                     isActive
                       ? "text-foreground"
                       : "text-sidebar-foreground/65 hover:text-foreground"
@@ -121,12 +120,29 @@ export function StartupSidebar() {
 
       <SidebarFooter className="p-2">
         <SidebarMenu>
+          {!isMobile && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={toggleSidebar}
+                tooltip={{ children: "Expand sidebar" }}
+                size="lg"
+                aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+                className="text-sidebar-foreground/65 hover:text-foreground rounded-lg transition-[color,background-color,padding] duration-200 group-data-[collapsible=icon]:!justify-start group-data-[collapsible=icon]:!px-[17px]"
+              >
+                <ChevronLeft
+                  className="size-[18px] shrink-0 transition-transform duration-300 group-data-[collapsible=icon]:rotate-180"
+                  strokeWidth={1.75}
+                />
+                <span className="text-sm">Collapse</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
               tooltip={{ children: "Settings" }}
               size="lg"
-              className="text-sidebar-foreground/65 hover:text-foreground rounded-lg"
+              className="text-sidebar-foreground/65 hover:text-foreground rounded-lg transition-[color,background-color,padding] duration-200 group-data-[collapsible=icon]:!justify-start group-data-[collapsible=icon]:!px-[17px]"
             >
               <Link href="#" className="flex items-center gap-3">
                 <Settings className="size-[18px] shrink-0" strokeWidth={1.75} />
@@ -136,13 +152,12 @@ export function StartupSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         <div className="w-full h-px bg-sidebar-border my-2" />
-        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:p-1 group-data-[collapsible=icon]:justify-center">
+        <div className="flex items-center gap-3 p-2 transition-[padding] duration-200 group-data-[collapsible=icon]:px-3">
           <Avatar className="h-8 w-8 shrink-0 border border-sidebar-border">
             <AvatarFallback className="bg-sidebar-accent text-xs font-medium">FN</AvatarFallback>
           </Avatar>
-          <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
+          <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden text-left">
             <p className="text-sm font-medium truncate">Founder Name</p>
-            <p className="text-xs text-muted-foreground truncate">founder@startup.co</p>
           </div>
           <Button variant="ghost" size="icon" className="shrink-0 h-8 w-8 group-data-[collapsible=icon]:hidden" asChild>
             <Link href="/" aria-label="Log out">

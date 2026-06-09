@@ -40,13 +40,13 @@ export function SiteFooter() {
               href="/investor"
               className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground transition-colors"
             >
-              Investor Login <ArrowUpRight className="h-3.5 w-3.5" />
+              Investor Demo <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/startup"
               className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground transition-colors"
             >
-              Startup Login <ArrowUpRight className="h-3.5 w-3.5" />
+              Startup Demo <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>

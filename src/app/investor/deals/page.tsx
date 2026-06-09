@@ -40,10 +40,10 @@ export default function DealsPage() {
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Screener</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Startup Screener</h1>
+        <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">Discovery</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Deal Discovery</h1>
         <p className="text-muted-foreground mt-2 text-sm">
-          Filter and search for investment opportunities.
+          Browse, filter and search live investment opportunities in the network.
         </p>
       </header>
 

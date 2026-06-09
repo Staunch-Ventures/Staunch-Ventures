@@ -1,6 +1,7 @@
 import { StartupSidebar } from "@/components/startup/sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardDisclaimer } from "@/components/ui/dashboard-disclaimer";
+import { DemoBanner } from "@/components/ui/demo-banner";
 
 export default function StartupLayout({
   children,
@@ -16,20 +17,23 @@ export default function StartupLayout({
   );
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-[radial-gradient(130%_90%_at_50%_-10%,hsl(224_38%_12%)_0%,hsl(var(--navy))_55%,hsl(var(--navy-deep))_100%)]">
-        <DashboardDisclaimer title="Welcome to the Startup Dashboard Demo" description={disclaimerDescription} />
-        <StartupSidebar />
-        <div className="flex flex-1 flex-col">
-          <header className="flex h-14 shrink-0 items-center gap-2 divider-fade-b px-4 bg-background/70 backdrop-blur-xl sticky top-0 z-[70]">
-            <SidebarTrigger className="-ml-1 md:hidden" />
-            <div className="text-sm font-medium text-muted-foreground">
-              Startup Dashboard
-            </div>
-          </header>
-          <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
-            {children}
-          </main>
+    <SidebarProvider style={{ "--sidebar-width": "15rem" } as never}>
+      <div className="flex flex-col min-h-screen w-full bg-[radial-gradient(130%_90%_at_50%_-10%,hsl(224_38%_12%)_0%,hsl(var(--navy))_55%,hsl(var(--navy-deep))_100%)]">
+        <DemoBanner />
+        <div className="flex flex-1 min-h-0">
+          <DashboardDisclaimer title="Welcome to the Startup Dashboard Demo" description={disclaimerDescription} />
+          <StartupSidebar />
+          <div className="flex flex-1 flex-col min-h-0">
+            <header className="flex h-14 shrink-0 items-center gap-2 divider-fade-b px-4 bg-background/70 backdrop-blur-xl sticky top-0 z-[70]">
+              <SidebarTrigger className="-ml-1 md:hidden" />
+              <div className="text-sm font-medium text-muted-foreground">
+                Startup Dashboard
+              </div>
+            </header>
+            <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
+              {children}
+            </main>
+          </div>
         </div>
       </div>
     </SidebarProvider>

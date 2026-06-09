@@ -196,7 +196,7 @@ export const Sidebar = React.forwardRef<
             <SheetContent
               data-sidebar="sidebar"
               data-mobile="true"
-              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_0%,black_80%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,black_0%,black_80%,transparent_100%)]"
+              className="w-[--sidebar-width] bg-sidebar/50 backdrop-blur-xl p-0 text-sidebar-foreground border-none outline-none focus:outline-none focus-visible:outline-none z-[65] shadow-2xl [mask-image:linear-gradient(to_right,black_0%,black_80%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,black_0%,black_80%,transparent_100%)]"
               style={
                 {
                   "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -204,7 +204,20 @@ export const Sidebar = React.forwardRef<
               }
               side={side}
               onPointerDownOutside={(e) => {
-                if ((e.target as HTMLElement).closest('[data-sidebar="trigger"]')) {
+                const target = (
+                  (e as CustomEvent<{ originalEvent: PointerEvent }>).detail
+                    ?.originalEvent?.target ?? e.target
+                ) as HTMLElement;
+                if (target?.closest?.('[data-sidebar="trigger"]')) {
+                  e.preventDefault();
+                }
+              }}
+              onInteractOutside={(e) => {
+                const target = (
+                  (e as CustomEvent<{ originalEvent: Event }>).detail
+                    ?.originalEvent?.target ?? e.target
+                ) as HTMLElement;
+                if (target?.closest?.('[data-sidebar="trigger"]')) {
                   e.preventDefault();
                 }
               }}
@@ -268,7 +281,7 @@ export const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, ...props }, ref) => {
-  const { toggleSidebar, open, openMobile, isMobile } = useSidebar()
+  const { toggleSidebar, open, openMobile, setOpenMobile, isMobile } = useSidebar()
   const isOpen = isMobile ? openMobile : open
 
   return (
@@ -282,7 +295,14 @@ export const SidebarTrigger = React.forwardRef<
       onClick={(event) => {
         event.preventDefault()
         event.stopPropagation()
-        toggleSidebar()
+        // On mobile, explicitly close rather than toggle to avoid a race
+        // where Radix also fires onDismiss and the functional !prev updater
+        // flips back to open.
+        if (isMobile && openMobile) {
+          setOpenMobile(false)
+        } else {
+          toggleSidebar()
+        }
       }}
       {...props}
     >

@@ -315,7 +315,7 @@ export default function HomePage() {
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="pill-lg">
-                    <Link href="/investor">Investor Login</Link>
+                    <Link href="/investor">Investor Demo</Link>
                   </Button>
                 </div>
               </div>
