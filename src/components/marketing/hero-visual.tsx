@@ -18,7 +18,7 @@ const services = [
   { icon: NetworkIcon, label: "Network access" },
 ];
 
-const sectors = ["EdTech", "HealthTech", "AgriTech", "Clean Energy"];
+const sectors = ["Fintech", "MedTech", "EdTech", "AgriTech", "Clean Energy"];
 
 export function HeroVisual() {
   const fine = usePointerFine();
@@ -68,19 +68,19 @@ export function HeroVisual() {
       >
         {/* Main surface — Cofounding-as-a-Service productized */}
         <div className="border-lit relative rounded-2xl bg-card/80 backdrop-blur-2xl shadow-float p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
+          <div>
+            <div className="flex items-center gap-2.5">
               <p className="text-[10px] uppercase tracking-[0.2em] text-primary/90">
                 Cofounding as a Service
               </p>
-              <p className="mt-2 text-2xl font-semibold tracking-tight">
-                Beyond capital.
-              </p>
+              <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-success/15 border border-success/25 px-2 py-1 text-[10px] font-medium text-success">
+                <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+                Active
+              </span>
             </div>
-            <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-success/15 border border-success/25 px-2 py-1 text-[10px] font-medium text-success">
-              <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-              Active
-            </span>
+            <p className="mt-2 text-2xl font-semibold tracking-tight">
+              Beyond capital.
+            </p>
           </div>
 
           <ul className="mt-5 space-y-2.5">
@@ -107,7 +107,7 @@ export function HeroVisual() {
                 <span
                   key={s}
                   className={
-                    i < 2
+                    i < 4
                       ? "rounded-full bg-primary/10 border border-primary/20 px-2.5 py-1 text-[11px] font-medium text-primary"
                       : "rounded-full bg-muted border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
                   }
@@ -137,24 +137,6 @@ export function HeroVisual() {
             <p className="text-[10px] text-primary font-medium tracking-wider">
               EDTECH
             </p>
-          </div>
-        </motion.div>
-
-        {/* Floating chip — bottom left: network signal */}
-        <motion.div
-          style={{ transform: "translateZ(40px)" }}
-          className="absolute -left-6 bottom-8 border-lit rounded-xl bg-card/85 backdrop-blur-xl shadow-float px-3 py-2 flex items-center gap-2.5"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        >
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 border border-primary/25">
-            <NetworkIcon className="h-3.5 w-3.5 text-primary" strokeWidth={1.75} />
-          </span>
-          <div className="leading-tight">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              Reach
-            </p>
-            <p className="text-xs font-semibold">Cross-border network</p>
           </div>
         </motion.div>
       </motion.div>

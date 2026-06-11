@@ -51,13 +51,13 @@ export default function HomePage() {
                 <Magnetic>
                   <Button asChild variant="brand" size="pill-lg">
                     <Link href="/contact">
-                      Pitch Your Startup
+                      Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                 </Magnetic>
                 <Button asChild variant="outline" size="pill-lg">
-                  <Link href="/ventures">See our portfolio</Link>
+                  <Link href="/contact">Pitch Your Startup</Link>
                 </Button>
               </div>
 
@@ -305,17 +305,17 @@ export default function HomePage() {
                   <span className="text-gradient-ember">future of Africa?</span>
                 </h2>
                 <p className="text-pretty text-lg text-muted-foreground max-w-xl">
-                  Whether you&apos;re a founder with a bold idea or an investor backing the continent&apos;s next chapter — let&apos;s talk.
+                  Whether you&apos;re backing Africa&apos;s next chapter or building it — let&apos;s talk.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <Button asChild variant="brand" size="pill-lg">
                     <Link href="/contact">
-                      Pitch Your Startup
+                      Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="pill-lg">
-                    <Link href="/investor">Investor Demo</Link>
+                    <Link href="/contact">Pitch Your Startup</Link>
                   </Button>
                 </div>
               </div>

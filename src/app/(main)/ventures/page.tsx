@@ -142,17 +142,22 @@ export default function VenturesPage() {
       {/* CTA */}
       <ScrollReveal className="text-center">
         <h2 className="text-3xl md:text-4xl font-semibold tracking-display mb-4">
-          Building something bold?
+          Back Africa&apos;s boldest founders
         </h2>
         <p className="text-muted-foreground text-lg text-pretty max-w-xl mx-auto mb-8">
-          We partner early and build hands-on. If you&apos;re solving a real problem for Africa, we&apos;d like to hear from you.
+          We partner early and build hands-on. Join us in backing the startups shaping Africa&apos;s next chapter.
         </p>
-        <Button asChild variant="brand" size="pill-lg">
-          <Link href="/contact">
-            Pitch your startup
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </Link>
-        </Button>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button asChild variant="brand" size="pill-lg">
+            <Link href="/contact">
+              Invest
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="pill-lg">
+            <Link href="/contact">Pitch Your Startup</Link>
+          </Button>
+        </div>
       </ScrollReveal>
     </div>
   );

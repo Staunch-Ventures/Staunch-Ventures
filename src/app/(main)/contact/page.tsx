@@ -1,4 +1,4 @@
-import { Mail, MapPin, Linkedin, Globe } from "lucide-react";
+import { Mail, MapPin, Linkedin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
@@ -62,15 +62,6 @@ export default function ContactPage() {
               >
                 <Linkedin className="h-4 w-4" />
                 LinkedIn / staunchventures
-              </a>
-              <a
-                href="https://staunchventures.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Globe className="h-4 w-4" />
-                staunchventures.com
               </a>
             </div>
           </Card>

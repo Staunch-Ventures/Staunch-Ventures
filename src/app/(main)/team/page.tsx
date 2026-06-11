@@ -28,6 +28,14 @@ const teamMembers = [
     quote:
       "Innovation in Africa is a marathon, not a sprint — the finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it's about for me.",
   },
+  {
+    name: "Timo van de Koevering",
+    role: "Venture Associate",
+    image: "/Timo.jpeg",
+    fallback: "TK",
+    quote:
+      "While good ideas and talent is everywhere, the capacity for execution is what drives change. I am committed to build systemic innovation designed to tackle the world's most critical problems.",
+  },
 ];
 
 export default function TeamPage() {
