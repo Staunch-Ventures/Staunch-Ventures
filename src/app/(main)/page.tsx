@@ -44,8 +44,8 @@ export default function HomePage() {
                 <br />
                 <span className="text-gradient-ember">Boldest Founders</span>
               </h1>
-              <p className="max-w-[560px] text-pretty text-muted-foreground text-lg md:text-xl">
-                A cross-border network for Africa&apos;s tech startups. Capital, expertise, and the operators who&apos;ve scaled before.
+              <p className="max-w-[560px] text-muted-foreground text-lg md:text-xl">
+                A cross-border network for Africa&apos;s tech startups.<br />Capital, expertise, and the operators who&apos;ve scaled before.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic>
@@ -247,7 +247,7 @@ export default function HomePage() {
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Partners</p>
                 <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
-                  Trusted by leaders across the continent
+                  Trusted by leaders across the globe
                 </h2>
               </div>
               <Button asChild variant="ghost" size="pill" className="self-start sm:self-auto">
