@@ -27,7 +27,7 @@ export default function VenturesPage() {
           <span className="text-gradient-ember">build</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-2xl mx-auto mt-7">
-          As an institutional cofounder, we don&apos;t just write cheques — we build alongside founders, investing time, expertise, and capital from day one.
+          As an institutional cofounder, we don&apos;t just write cheques. We build alongside founders, investing time, expertise, and capital from day one.
         </p>
       </ScrollReveal>
 
@@ -101,7 +101,7 @@ export default function VenturesPage() {
         <ScrollReveal className="mb-10 max-w-2xl">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-display mb-4">How we build</h2>
           <p className="text-muted-foreground text-lg text-pretty">
-            We back early-stage founders solving local challenges with global applications — leading with the sectors where Africa&apos;s next decade of growth is being written.
+            We back early-stage founders solving local challenges with global applications, leading with the sectors where Africa&apos;s next decade of growth is being written.
           </p>
         </ScrollReveal>
         <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -131,7 +131,7 @@ export default function VenturesPage() {
                   Startups cofounded across the team
                 </h2>
                 <p className="text-muted-foreground text-pretty">
-                  Our portfolio is young, but our team isn&apos;t. Between us we&apos;ve started and scaled revenue-generating companies before — the operator experience we bring inside every venture we build.
+                  Our portfolio is young, but our team isn&apos;t. Between us we&apos;ve started and scaled revenue-generating companies before. The operator experience we bring inside every venture we build.
                 </p>
               </div>
             </div>

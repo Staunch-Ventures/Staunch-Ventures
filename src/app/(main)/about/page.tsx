@@ -33,7 +33,7 @@ export default function AboutPage() {
           <span className="text-gradient-ember">Network of Networks</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-3xl mx-auto mt-7">
-          We are more than just a venture capital firm — a venture studio of venture builders, dedicated to forging a prosperous, innovative, and interconnected Africa.
+          We are more than just a venture capital firm. A venture studio of venture builders, dedicated to forging a prosperous, innovative, and interconnected Africa.
         </p>
       </ScrollReveal>
 
@@ -47,7 +47,7 @@ export default function AboutPage() {
                   Founder-first collaboration
                 </h2>
                 <p className="text-muted-foreground text-lg text-pretty">
-                  We believe in trust, transparency, and a shared passion for solving Africa&apos;s most pressing challenges. We don&apos;t just invest capital — we invest time, expertise, and our global network to ensure our portfolio companies succeed.
+                  We believe in trust, transparency, and a shared passion for solving Africa&apos;s most pressing challenges. We don&apos;t just invest capital. We invest time, expertise, and our global network to ensure our portfolio companies succeed.
                 </p>
                 <ul className="space-y-3 text-base">
                   <li className="flex items-start gap-3">
@@ -131,7 +131,7 @@ export default function AboutPage() {
                 Cofounding as a Service
               </h2>
               <p className="text-muted-foreground text-pretty">
-                Staunch acts as an institutional cofounder — an execution partner helping founders build and scale faster. Tech-stack architecture, MVP planning, go-to-market, business development, core strategy frameworks, and more.
+                Staunch acts as an institutional cofounder: an execution partner helping founders build and scale faster. Tech-stack architecture, MVP planning, go-to-market, business development, core strategy frameworks, and more.
               </p>
             </Card>
           </SpotlightCard>

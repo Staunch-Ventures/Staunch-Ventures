@@ -21,7 +21,7 @@ const siteUrl = "https://staunchventures.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Staunch Ventures — Backing Africa's Boldest Founders",
+    default: "Staunch Ventures: Backing Africa's Boldest Founders",
     template: "%s · Staunch Ventures",
   },
   description:
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     type: "website",
     url: siteUrl,
     siteName: "Staunch Ventures",
-    title: "Staunch Ventures — Backing Africa's Boldest Founders",
+    title: "Staunch Ventures: Backing Africa's Boldest Founders",
     description:
       "A cross-border network for Africa's tech startups. Capital, expertise, and operators who've scaled before.",
     images: [
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Staunch Ventures — Backing Africa's Boldest Founders",
+    title: "Staunch Ventures: Backing Africa's Boldest Founders",
     description:
       "A cross-border network for Africa's tech startups.",
     images: ["/Logo Square.png"],

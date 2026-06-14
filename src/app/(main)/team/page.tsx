@@ -26,7 +26,7 @@ const teamMembers = [
     image: "/Will headshot.png",
     fallback: "WR",
     quote:
-      "Innovation in Africa is a marathon, not a sprint — the finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it's about for me.",
+      "Innovation in Africa is a marathon, not a sprint. The finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it's about for me.",
   },
   {
     name: "Timo van de Koevering",
@@ -48,7 +48,7 @@ export default function TeamPage() {
           <span className="text-gradient-ember">team</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-2xl mx-auto mt-7">
-          The driving force behind Staunch Ventures — dedicated to your success.
+          The driving force behind Staunch Ventures, dedicated to your success.
         </p>
       </ScrollReveal>
 

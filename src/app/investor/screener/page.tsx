@@ -72,13 +72,13 @@ const METRICS = [
 const STRENGTHS = [
   "Founding team has two prior venture-backed exits in adjacent deep-tech markets.",
   "212% YoY revenue growth from a standing start, with three signed enterprise design partners.",
-  "Defensible IP position — two patents pending plus a compounding proprietary data set.",
+  "Defensible IP position: two patents pending plus a compounding proprietary data set.",
   "Gross margins of 78% indicate genuine software economics rather than services.",
 ];
 
 const RISKS = [
   "Customer concentration: top account represents ~46% of current ARR.",
-  "Pre product-market-fit — retention cohorts are too young to read confidently.",
+  "Pre product-market-fit: retention cohorts are too young to read confidently.",
   "Valuation cap (R140M) is rich relative to current ARR multiple for the stage.",
   "Go-to-market motion is founder-led; no repeatable sales engine yet.",
 ];
@@ -180,7 +180,7 @@ export default function ScreenerPage() {
         </div>
         <p className="text-muted-foreground text-sm max-w-2xl">
           Upload a pitch deck and our custom diligence model returns a structured
-          investment memo in seconds — scoring the team, market, traction and risk
+          investment memo in seconds, scoring the team, market, traction and risk
           profile against thousands of deals in our network.
         </p>
       </header>
@@ -240,7 +240,7 @@ export default function ScreenerPage() {
                       Upload a deck
                     </Button>
                     <p className="text-xs text-muted-foreground">
-                      Demo loads a sample deck — no file actually leaves your device.
+                      Demo loads a sample deck. No file actually leaves your device.
                     </p>
                   </>
                 ) : (

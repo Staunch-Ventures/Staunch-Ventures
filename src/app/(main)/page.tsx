@@ -45,7 +45,7 @@ export default function HomePage() {
                 <span className="text-gradient-ember">Boldest Founders</span>
               </h1>
               <p className="max-w-[560px] text-pretty text-muted-foreground text-lg md:text-xl">
-                A cross-border network for Africa&apos;s tech startups — capital, expertise, and the operators who&apos;ve scaled before.
+                A cross-border network for Africa&apos;s tech startups. Capital, expertise, and the operators who&apos;ve scaled before.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic>
@@ -112,7 +112,7 @@ export default function HomePage() {
                       Supporting startups
                     </h3>
                     <p className="text-muted-foreground text-base flex-grow text-pretty">
-                      Investing time, expertise, and capital in early-stage startups — with a focus on EdTech and HealthTech, and emerging plays in Clean Energy and AgriTech.
+                      Investing time, expertise, and capital in early-stage startups, with a focus on EdTech and HealthTech, and emerging plays in Clean Energy and AgriTech.
                     </p>
                     <div className="mt-8 font-medium text-foreground flex items-center text-sm transition-colors group-hover:text-primary">
                       Explore ventures
@@ -170,7 +170,7 @@ export default function HomePage() {
                       Building networks
                     </h3>
                     <p className="text-muted-foreground text-base flex-grow text-pretty">
-                      Going beyond funding — pitch competitions, collaborative think tanks, mentor circles. The connective tissue founders actually need.
+                      Going beyond funding: pitch competitions, collaborative think tanks, mentor circles. The connective tissue founders actually need.
                     </p>
                     <div className="mt-8 font-medium text-foreground flex items-center text-sm transition-colors group-hover:text-primary">
                       See initiatives
@@ -209,7 +209,7 @@ export default function HomePage() {
                 icon: Users2,
                 eyebrow: "Operators",
                 title: "We've scaled before.",
-                body: "Active partners — not passive money. Strategy, growth, hiring, infra — we step in where it matters.",
+                body: "Active partners, not passive money. Strategy, growth, hiring, infra. We step in where it matters.",
               },
               {
                 icon: Network,
@@ -305,7 +305,7 @@ export default function HomePage() {
                   <span className="text-gradient-ember">future of Africa?</span>
                 </h2>
                 <p className="text-pretty text-lg text-muted-foreground max-w-xl">
-                  Whether you&apos;re backing Africa&apos;s next chapter or building it — let&apos;s talk.
+                  Whether you&apos;re backing Africa&apos;s next chapter or building it. Let&apos;s talk.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <Button asChild variant="brand" size="pill-lg">

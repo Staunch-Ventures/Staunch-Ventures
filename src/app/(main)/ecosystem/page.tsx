@@ -17,7 +17,7 @@ export default function EcosystemPage() {
           <span className="text-gradient-ember">Ecosystem</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-2xl mx-auto mt-7">
-          Beyond capital — the programs we run and the partners we build with, giving founders a continent-spanning network of support.
+          Beyond capital. The programs we run and the partners we build with, giving founders a continent-spanning network of support.
         </p>
       </ScrollReveal>
 
