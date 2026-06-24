@@ -16,6 +16,15 @@ export type GrowthPartner = {
     website: string;
 };
 
+export type Video = {
+  /** The YouTube video ID — the part after `watch?v=` or `youtu.be/`. */
+  youtubeId: string;
+  title: string;
+  description: string;
+  /** Optional grouping label shown as a badge (e.g. "Founder Story", "Event"). */
+  category?: string;
+};
+
 export type Venture = {
   companyName: string;
   sector: string;
@@ -107,5 +116,18 @@ export const initiatives: Initiative[] = [
 {
     title: "Founder House Cape Town",
     description: "Bringing together a group of international founders to immerse in the Cape Town ecosystem - meet other founders and build a global Network of Networks.",
+  },
+];
+
+/**
+ * Videos featured on the /media page. To add one, grab the YouTube video ID
+ * (the part after `watch?v=` or `youtu.be/`) and append an entry — no layout
+ * changes needed. The page renders them in order, so newest on top.
+ */
+export const videos: Video[] = [
+  {
+    youtubeId: "zoG-X2a3Rtc",
+    title: "Real Talk About Raising Money in Africa",
+    description: "An honest conversation about what it really takes to raise capital as a founder on the continent.",
   },
 ];

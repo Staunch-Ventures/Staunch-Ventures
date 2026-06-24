@@ -32,6 +32,7 @@ export function SiteFooter() {
             <Link href="/ventures" className="text-foreground/80 hover:text-foreground transition-colors">Ventures</Link>
             <Link href="/team" className="text-foreground/80 hover:text-foreground transition-colors">Team</Link>
             <Link href="/ecosystem" className="text-foreground/80 hover:text-foreground transition-colors">Ecosystem</Link>
+            <Link href="/media" className="text-foreground/80 hover:text-foreground transition-colors">Media</Link>
             <Link href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
           </div>
           <div className="col-span-1 md:col-span-3 flex flex-col gap-3 text-sm">

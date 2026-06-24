@@ -17,6 +17,7 @@ const navItems = [
   { href: "/ventures", label: "Ventures" },
   { href: "/team", label: "Team" },
   { href: "/ecosystem", label: "Ecosystem" },
+  { href: "/media", label: "Media" },
   { href: "/contact", label: "Contact" },
 ];
 
