@@ -135,5 +135,6 @@ export const videos: Video[] = [
     youtubeId: "zoG-X2a3Rtc",
     title: "Real Talk About Raising Money in Africa",
     description: "An honest conversation about what it really takes to raise capital as a founder on the continent.",
+    category: "Podcast",
   },
 ];

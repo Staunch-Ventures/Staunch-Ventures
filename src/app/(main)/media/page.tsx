@@ -29,10 +29,12 @@ export default function MediaPage() {
         <Stagger
           className={cn(
             "grid gap-6",
-            // A lone video is centered and capped; multiples flow into a grid.
-            videos.length === 1
-              ? "max-w-2xl mx-auto"
-              : "sm:grid-cols-2 lg:grid-cols-3"
+            // Columns track the video count so they always fill the row evenly:
+            // 1 → centered & capped, 2 → halves, 3+ → thirds (wrapping past 3).
+            {
+              1: "max-w-2xl mx-auto",
+              2: "sm:grid-cols-2",
+            }[videos.length] ?? "sm:grid-cols-2 lg:grid-cols-3"
           )}
         >
           {videos.map((video, i) => (
