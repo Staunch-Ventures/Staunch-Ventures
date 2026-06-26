@@ -126,6 +126,12 @@ export const initiatives: Initiative[] = [
  */
 export const videos: Video[] = [
   {
+    youtubeId: "cXA8hpsCVrE",
+    title: "Always Keep on Walking & Iterating with Venture Builder Oliver Christodoulou | Unknown Stories Ep.2",
+    description: "Venture builder Oliver Christodoulou on iterating relentlessly and building through uncertainty.",
+    category: "Podcast",
+  },
+  {
     youtubeId: "zoG-X2a3Rtc",
     title: "Real Talk About Raising Money in Africa",
     description: "An honest conversation about what it really takes to raise capital as a founder on the continent.",
