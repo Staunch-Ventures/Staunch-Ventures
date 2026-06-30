@@ -72,9 +72,9 @@ export default function GetInTheRingPage() {
             />
           </div>
         )}
-        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Initiative</p>
-        <h1 className="text-balance text-4xl md:text-6xl font-bold tracking-display mb-6 leading-[0.98]">
-          <span className="text-gradient-brand">{initiative.title}</span>
+        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">{initiative.tag ?? "Initiative"}</p>
+        <h1 className="text-balance text-4xl md:text-6xl font-serif font-normal tracking-heading mb-6 leading-[1.0] text-foreground">
+          {initiative.title}
         </h1>
         <p className="text-pretty text-lg text-muted-foreground">
           {initiative.description}
@@ -99,14 +99,14 @@ export default function GetInTheRingPage() {
 
       <section>
         <ScrollReveal className="mb-8">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-display">Key outcomes</h2>
+          <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading">Key outcomes</h2>
         </ScrollReveal>
         <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {keyOutcomes.map((o) => (
             <StaggerItem key={o.label} className="flex">
               <SpotlightCard className="w-full flex">
                 <Card className="p-6 w-full">
-                  <p className="text-4xl font-bold tracking-display tabular-nums text-gradient-ember">
+                  <p className="text-4xl font-serif font-normal tracking-heading tabular-nums text-primary">
                     {o.value}
                   </p>
                   <p className="mt-2 text-sm text-muted-foreground text-pretty">{o.label}</p>

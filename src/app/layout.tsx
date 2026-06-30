@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -13,6 +13,16 @@ const inter = Inter({
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
+});
+
+// Editorial display serif — used only for large headings. Single weight (400),
+// tall and high-contrast; pairs against Inter body copy. Render headings at
+// font-normal (the face has no bold cut — font-semibold would fake it).
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -83,7 +93,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${mono.variable}`}
+      className={`dark ${inter.variable} ${mono.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">

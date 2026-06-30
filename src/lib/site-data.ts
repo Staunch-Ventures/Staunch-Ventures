@@ -2,7 +2,16 @@
 export type Initiative = {
   title: string;
   description: string;
+  /** Short category label shown as a badge above the title. */
+  tag?: string;
+  /** Links to a dedicated detail page at /ecosystem/<slug>. */
   slug?: string;
+  /** Fallback CTA link when there's no detail page (e.g. /contact). */
+  href?: string;
+  /** Label for the card's call-to-action. */
+  ctaLabel?: string;
+  /** Concrete facts shown as small chips (e.g. "15 founders", "Cape Town"). */
+  meta?: string[];
   logo?: string;
   logoHint?: string;
 };
@@ -109,13 +118,20 @@ export const initiatives: Initiative[] = [
   {
     title: "Get In The Ring",
     slug: "get-in-the-ring",
-    description: "Our flagship annual pitch competition connecting the most promising startups with global investors.",
+    tag: "Pitch Competition",
+    description: "Our flagship pitch competition, run with the global Get In The Ring platform. We put Africa's most promising founders on stage in front of international investors and partners.",
+    ctaLabel: "View initiative",
+    meta: ["Pan-African", "Global investors", "Annual"],
     logo: "/gitr-logo.png",
     logoHint: "colorful logo",
   },
-{
+  {
     title: "Founder House Cape Town",
-    description: "Bringing together a group of international founders to immerse in the Cape Town ecosystem - meet other founders and build a global Network of Networks.",
+    tag: "Founder Immersion",
+    description: "Fifteen international founders, one city, one month. Each cohort embeds inside Cape Town's startup ecosystem — connecting with local founders, operators and investors to build a genuine network of networks across borders.",
+    href: "/contact",
+    ctaLabel: "Express interest",
+    meta: ["15 founders", "Cape Town", "Cross-border"],
   },
 ];
 

@@ -39,7 +39,7 @@ export default function HomePage() {
                 </span>
                 Now investing across Africa
               </div>
-              <h1 className="text-balance text-5xl font-bold tracking-display sm:text-6xl lg:text-[5rem] lg:leading-[0.95]">
+              <h1 className="text-balance text-5xl font-serif font-normal tracking-heading sm:text-6xl lg:text-[5.25rem] lg:leading-[1.0]">
                 <span className="text-gradient-brand">Backing Africa&apos;s</span>
                 <br />
                 <span className="text-gradient-ember">Boldest Founders</span>
@@ -91,7 +91,7 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="mb-12 max-w-2xl">
               <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">What we do</p>
-              <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
+              <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
                 Backing founders. Building the ecosystem.
               </h2>
             </div>
@@ -189,7 +189,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-9xl px-4 lg:px-8">
           <ScrollReveal className="mb-12 max-w-2xl">
             <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Why founders choose Staunch</p>
-            <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
+            <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
               Capital is just the beginning.
             </h2>
             <p className="text-muted-foreground text-lg text-pretty mt-4 max-w-prose">
@@ -246,7 +246,7 @@ export default function HomePage() {
             <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Partners</p>
-                <h2 className="text-4xl lg:text-5xl font-bold tracking-display text-balance">
+                <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
                   Trusted by leaders across the globe
                 </h2>
               </div>
@@ -299,7 +299,7 @@ export default function HomePage() {
               />
               <div className="pointer-events-none absolute inset-0 bg-topo opacity-60" aria-hidden />
               <div className="relative z-[2] flex flex-col items-center gap-6 px-6 py-16 text-center md:py-20">
-                <h2 className="text-balance text-4xl lg:text-6xl font-bold tracking-display max-w-3xl">
+                <h2 className="text-balance text-4xl lg:text-6xl font-serif font-normal tracking-heading max-w-3xl">
                   <span className="text-gradient-brand">Ready to build the</span>
                   <br />
                   <span className="text-gradient-ember">future of Africa?</span>

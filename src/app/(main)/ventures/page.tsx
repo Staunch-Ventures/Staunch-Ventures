@@ -19,12 +19,12 @@ export default function VenturesPage() {
   const featured = ventures[0];
 
   return (
-    <div className="container max-w-6xl mx-auto py-28 md:py-36 px-4 space-y-28">
+    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4 space-y-20 md:space-y-24">
       <ScrollReveal className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Ventures</p>
-        <h1 className="text-balance text-5xl md:text-7xl font-bold tracking-display leading-[0.98]">
-          <span className="text-gradient-brand">Companies we</span>{" "}
-          <span className="text-gradient-ember">build</span>
+        <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
+          <span className="text-foreground">Companies we</span>{" "}
+          <span className="text-primary">build</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-2xl mx-auto mt-7">
           As an institutional cofounder, we don&apos;t just write cheques. We build alongside founders, investing time, expertise, and capital from day one.
@@ -34,7 +34,7 @@ export default function VenturesPage() {
       {/* Featured venture — full-width case study */}
       <section>
         <ScrollReveal className="flex items-end justify-between mb-10">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-display">Featured venture</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">Featured venture</h2>
           <p className="hidden sm:block text-sm text-muted-foreground">Where we&apos;re building now.</p>
         </ScrollReveal>
         <ScrollReveal>
@@ -55,7 +55,7 @@ export default function VenturesPage() {
                   <Badge variant="secondary" className="w-fit bg-primary/10 text-primary border-primary/20 mb-5">
                     {featured.sector}
                   </Badge>
-                  <h3 className="text-3xl md:text-4xl font-semibold tracking-display mb-4">
+                  <h3 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">
                     {featured.companyName}
                   </h3>
                   <p className="text-muted-foreground text-lg text-pretty flex-grow">
@@ -99,7 +99,7 @@ export default function VenturesPage() {
       {/* How we build */}
       <section>
         <ScrollReveal className="mb-10 max-w-2xl">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-display mb-4">How we build</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">How we build</h2>
           <p className="text-muted-foreground text-lg text-pretty">
             We back early-stage founders solving local challenges with global applications, leading with the sectors where Africa&apos;s next decade of growth is being written.
           </p>
@@ -123,11 +123,11 @@ export default function VenturesPage() {
         <SpotlightCard>
           <Card variant="brand" className="p-8 md:p-12">
             <div className="grid md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-center">
-              <p className="text-7xl md:text-8xl font-bold tracking-display tabular-nums text-gradient-ember leading-none">
+              <p className="text-7xl md:text-8xl font-serif font-normal tracking-heading tabular-nums text-primary leading-none">
                 {startupsCofounded}
               </p>
               <div>
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-3">
+                <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading mb-3">
                   Startups cofounded across the team
                 </h2>
                 <p className="text-muted-foreground text-pretty">
@@ -141,7 +141,7 @@ export default function VenturesPage() {
 
       {/* CTA */}
       <ScrollReveal className="text-center">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-display mb-4">
+        <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">
           Back Africa&apos;s boldest founders
         </h2>
         <p className="text-muted-foreground text-lg text-pretty max-w-xl mx-auto mb-8">

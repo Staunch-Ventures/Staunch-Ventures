@@ -65,8 +65,8 @@ export default function BagLearningPage() {
             />
           </div>
           <p className="text-xs uppercase tracking-wider text-primary mb-3">{venture.sector}</p>
-          <h1 className="text-balance text-4xl md:text-6xl font-bold tracking-display mb-6 leading-[0.98]">
-            <span className="text-gradient-brand">{venture.companyName}</span>
+          <h1 className="text-balance text-4xl md:text-6xl font-serif font-normal tracking-heading mb-6 leading-[1.0] text-foreground">
+            {venture.companyName}
           </h1>
           <p className="text-pretty text-lg text-muted-foreground">
             {venture.description}

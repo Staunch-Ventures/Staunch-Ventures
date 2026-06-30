@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { growthPartners, initiatives } from "@/lib/site-data";
@@ -9,52 +9,68 @@ import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 export default function EcosystemPage() {
   return (
-    <div className="container max-w-6xl mx-auto py-28 md:py-36 px-4 space-y-28">
+    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4 space-y-20 md:space-y-24">
       <ScrollReveal className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Ecosystem</p>
-        <h1 className="text-balance text-5xl md:text-7xl font-bold tracking-display leading-[0.98]">
-          <span className="text-gradient-brand">Our</span>{" "}
-          <span className="text-gradient-ember">Ecosystem</span>
+        <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
+          <span className="text-foreground">Our</span>{" "}
+          <span className="text-primary">ecosystem</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-2xl mx-auto mt-7">
-          Beyond capital. The programs we run and the partners we build with, giving founders a continent-spanning network of support.
+          Beyond capital — the programs we run and the partners we build with, giving founders a network that spans the continent.
         </p>
       </ScrollReveal>
 
       <section id="initiatives" className="scroll-mt-24">
         <ScrollReveal className="flex items-end justify-between mb-10">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-display">Initiatives</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">Initiatives</h2>
           <p className="hidden sm:block text-sm text-muted-foreground">
             Programs we run and partnerships we lead.
           </p>
         </ScrollReveal>
-        <Stagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Stagger className="grid md:grid-cols-2 gap-4">
           {initiatives.map((initiative) => {
-            const isLinked = !!initiative.slug;
-            const Wrapper: React.ElementType = isLinked ? Link : "div";
-            const wrapperProps = isLinked ? { href: `/ecosystem/${initiative.slug}` } : {};
+            const href = initiative.slug
+              ? `/ecosystem/${initiative.slug}`
+              : initiative.href ?? "#";
             return (
               <StaggerItem key={initiative.title} className="flex">
-                <Wrapper {...wrapperProps} className="flex group w-full">
+                <Link href={href} className="flex group w-full">
                   <SpotlightCard className="w-full flex">
-                    <Card variant={isLinked ? "interactive" : "default"} className="w-full flex flex-col p-6">
-                      <CardHeader className="p-0">
-                        <CardTitle className="text-2xl">{initiative.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex-grow p-0 mt-4">
-                        <p className="text-muted-foreground text-pretty">{initiative.description}</p>
-                      </CardContent>
-                      {isLinked && (
-                        <CardFooter className="p-0 mt-6">
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-4 py-2 text-sm font-medium text-primary transition-colors group-hover:bg-primary/20">
-                            View initiative
-                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                          </span>
-                        </CardFooter>
+                    <Card variant="interactive" className="w-full flex flex-col p-8 md:p-10">
+                      <div className="flex items-start justify-between gap-4 mb-6">
+                        {initiative.tag && (
+                          <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                            {initiative.tag}
+                          </Badge>
+                        )}
+                        <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-serif font-normal tracking-heading text-foreground mb-3">
+                        {initiative.title}
+                      </h3>
+                      <p className="text-muted-foreground text-pretty flex-grow">{initiative.description}</p>
+                      {initiative.meta && (
+                        <div className="mt-6 flex flex-wrap gap-2">
+                          {initiative.meta.map((m) => (
+                            <span
+                              key={m}
+                              className="rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground"
+                            >
+                              {m}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {initiative.ctaLabel && (
+                        <div className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors group-hover:text-primary">
+                          {initiative.ctaLabel}
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                        </div>
                       )}
                     </Card>
                   </SpotlightCard>
-                </Wrapper>
+                </Link>
               </StaggerItem>
             );
           })}
@@ -63,7 +79,7 @@ export default function EcosystemPage() {
 
       <section id="partners" className="scroll-mt-24">
         <ScrollReveal className="flex items-end justify-between mb-10">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-display">Growth Partners</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">Growth Partners</h2>
           <p className="hidden sm:block text-sm text-muted-foreground tabular-nums">
             {growthPartners.length} partners
           </p>

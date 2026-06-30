@@ -10,10 +10,15 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "ui-serif", "Georgia", "Cambria", "Times New Roman", "serif"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       letterSpacing: {
+        // Tight tracking for the bold sans display numerals
         "display": "-0.035em",
+        // Gentler tracking for the Fraunces serif headings — serifs want
+        // far less negative tracking than a grotesque at the same size
+        "heading": "-0.018em",
       },
       colors: {
         background: "hsl(var(--background))",

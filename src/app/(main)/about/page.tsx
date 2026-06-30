@@ -24,16 +24,16 @@ const coreValues = [
 
 export default function AboutPage() {
   return (
-    <div className="container max-w-5xl mx-auto py-28 md:py-36 px-4 space-y-28">
+    <div className="container max-w-5xl mx-auto py-24 md:py-32 px-4 space-y-20 md:space-y-24">
       <ScrollReveal className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">About</p>
-        <h1 className="text-balance text-5xl md:text-7xl font-bold tracking-display leading-[0.98]">
-          <span className="text-gradient-brand">Creating Africa&apos;s</span>
+        <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
+          <span className="text-foreground">Creating Africa&apos;s</span>
           <br />
-          <span className="text-gradient-ember">Network of Networks</span>
+          <span className="text-primary">Network of Networks</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-3xl mx-auto mt-7">
-          We are more than just a venture capital firm. A venture studio of venture builders, dedicated to forging a prosperous, innovative, and interconnected Africa.
+          More than a venture firm — a studio of venture builders working to forge a prosperous, innovative and interconnected Africa.
         </p>
       </ScrollReveal>
 
@@ -43,7 +43,7 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div className="space-y-6">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">Our Philosophy</p>
-                <h2 className="text-3xl md:text-4xl font-semibold tracking-display">
+                <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">
                   Founder-first collaboration
                 </h2>
                 <p className="text-muted-foreground text-lg text-pretty">
@@ -85,7 +85,7 @@ export default function AboutPage() {
       <section>
         <ScrollReveal className="text-center mb-12">
           <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Our Values</p>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-display text-balance">
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance">
             Tools, knowledge, and confidence.
           </h2>
           <p className="text-pretty text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
@@ -114,7 +114,7 @@ export default function AboutPage() {
           <SpotlightCard className="w-full flex">
             <Card variant="brand" className="p-8 md:p-12 flex flex-col justify-center w-full">
               <Quote className="w-8 h-8 text-primary mb-6" strokeWidth={1.5} />
-              <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading mb-4">
                 Our Mission
               </h2>
               <p className="text-muted-foreground text-pretty">
@@ -127,7 +127,7 @@ export default function AboutPage() {
           <SpotlightCard className="w-full flex">
             <Card className="p-8 md:p-12 flex flex-col justify-center w-full">
               <Briefcase className="w-8 h-8 text-primary mb-6" strokeWidth={1.5} />
-              <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading mb-4">
                 Cofounding as a Service
               </h2>
               <p className="text-muted-foreground text-pretty">
