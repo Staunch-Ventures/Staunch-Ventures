@@ -136,10 +136,8 @@ export default function VenturesPage() {
                 </p>
               </div>
               <FieldImage
-                alt="The Staunch team embedded inside a portfolio company"
-                eyebrow="Operator DNA"
-                caption="Inside the companies we build"
-                hint="Team embedded with a venture — mid working session"
+                src="/cofound-workshop.jpg"
+                alt="The Staunch team in a cofounding workshop session"
                 className="min-h-[280px] rounded-none border-0 border-t md:border-t-0 md:border-l border-border"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />

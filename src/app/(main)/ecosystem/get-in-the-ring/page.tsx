@@ -122,9 +122,7 @@ export default function GetInTheRingPage() {
       <Stagger className="grid sm:grid-cols-2 gap-4">
         <StaggerItem>
           <FieldImage
-            alt="A founder pitching on the Get In The Ring stage"
-            eyebrow="The stage"
-            caption="Founders mid-pitch"
+            alt="The Get In The Ring stage"
             hint="Stage shot — founder pitching, ring branding visible"
             className="aspect-[3/2] w-full"
             sizes="(max-width: 640px) 100vw, 50vw"
@@ -132,10 +130,8 @@ export default function GetInTheRingPage() {
         </StaggerItem>
         <StaggerItem>
           <FieldImage
-            alt="Investors and operators in the crowd at Get In The Ring"
-            eyebrow="The room"
-            caption="Investors, operators, founders"
-            hint="Crowd shot — the room reacting, energy visible"
+            src="/gitr-crowd.jpg"
+            alt="The room at a Get In The Ring event"
             className="aspect-[3/2] w-full"
             sizes="(max-width: 640px) 100vw, 50vw"
           />

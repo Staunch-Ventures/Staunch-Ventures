@@ -72,10 +72,8 @@ export default function ContactPage() {
       {/* The people you'll actually be talking to */}
       <ScrollReveal delay={0.15} className="max-w-3xl mx-auto mt-6">
         <FieldImage
-          alt="The Staunch Ventures team"
-          eyebrow="The team"
-          caption="Hilton, South Africa"
-          hint="Relaxed team shot — the people behind the inbox"
+          src="/ollie-laughing.jpg"
+          alt="Oliver Christodoulou, founder of Staunch Ventures"
           className="aspect-[16/9] sm:aspect-[21/9] w-full"
           sizes="(max-width: 768px) 100vw, 768px"
         />

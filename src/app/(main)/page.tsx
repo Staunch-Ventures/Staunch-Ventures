@@ -115,10 +115,8 @@ export default function HomePage() {
 
             <StaggerItem className="flex">
               <FieldImage
-                alt="The Staunch team working hands-on inside a portfolio company"
-                eyebrow="In the field"
-                caption="Inside our ventures, every week"
-                hint="Candid working session inside a venture — heads down, screens and whiteboards visible"
+                src="/bag-on-campus.jpg"
+                alt="The Staunch team on campus with Bag Learning"
                 className="w-full min-h-[320px]"
                 sizes="(max-width: 1024px) 100vw, 33vw"
               />
@@ -126,10 +124,8 @@ export default function HomePage() {
 
             <StaggerItem className="flex">
               <FieldImage
-                alt="A Staunch ecosystem event in full swing"
-                eyebrow="Ecosystem"
-                caption="Pitch night — Get In The Ring"
-                hint="Wide event shot — stage, crowd, or founders mid-pitch"
+                src="/y-combinator.jpg"
+                alt="The Staunch team at Y Combinator"
                 className="w-full min-h-[320px]"
                 sizes="(max-width: 1024px) 100vw, 33vw"
               />

@@ -55,7 +55,7 @@ export default function TeamPage() {
         </p>
       </ScrollReveal>
 
-      <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {teamMembers.map((member) => (
           <StaggerItem key={member.name} className="flex">
             <SpotlightCard className="w-full flex group">
@@ -108,7 +108,7 @@ export default function TeamPage() {
             <Marquee speed={70} className="py-2">
               {fieldPhotos.map((photo) => (
                 <FieldImage
-                  key={photo.caption ?? photo.alt}
+                  key={photo.src ?? photo.alt}
                   {...photo}
                   className="mx-3 aspect-[3/2] w-[300px] shrink-0 md:w-[360px]"
                   sizes="360px"
