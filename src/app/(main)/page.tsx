@@ -26,9 +26,6 @@ export default function HomePage() {
     <div className="flex flex-col w-full">
       {/* Hero */}
       <section className="relative w-full pt-28 md:pt-36 lg:pt-44 pb-20 lg:pb-28">
-        {/* Organic African topography — cartographic contour rings */}
-        <div className="pointer-events-none absolute inset-0 bg-topo opacity-80" aria-hidden />
-
         <div className="mx-auto max-w-9xl px-4 lg:px-8 relative">
           <div className="grid gap-16 lg:grid-cols-12 lg:gap-12 items-center">
             <ScrollReveal className="lg:col-span-6 flex flex-col justify-center space-y-7">
