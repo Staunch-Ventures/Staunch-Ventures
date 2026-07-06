@@ -87,9 +87,14 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <Stagger className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <StaggerItem className="flex lg:col-span-2">
-              <Link href="/ventures" className="flex group w-full">
+          {/* Two rows, each a wide text card paired with a portrait photo.
+              The card takes 1fr; the photo column is `auto` so it's sized to
+              the photo's natural width — leaving only gap-4 between them
+              instead of the dead space a fixed 1/3 column would reserve. */}
+          <Stagger className="flex flex-col gap-4">
+            {/* Row 1: card + photo */}
+            <StaggerItem className="grid gap-4 lg:grid-cols-[1fr_auto]">
+              <Link href="/ventures" className="flex group w-full min-h-[320px]">
                 <SpotlightCard className="w-full flex">
                   <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
                     <div className="flex items-center gap-3 mb-6">
@@ -111,30 +116,25 @@ export default function HomePage() {
                   </Card>
                 </SpotlightCard>
               </Link>
-            </StaggerItem>
-
-            <StaggerItem className="flex min-h-[320px]">
               <FieldImage
                 src="/bag-on-campus.jpg"
                 alt="The Staunch team on campus with Bag Learning"
                 width={1800}
                 height={2400}
-                className="h-full"
+                className="h-72 lg:h-[420px] justify-self-center lg:justify-self-stretch lg:self-center"
               />
             </StaggerItem>
 
-            <StaggerItem className="flex min-h-[320px]">
+            {/* Row 2: photo + card */}
+            <StaggerItem className="grid gap-4 lg:grid-cols-[auto_1fr]">
               <FieldImage
                 src="/y-combinator.jpg"
                 alt="The Staunch team at Y Combinator"
                 width={1536}
                 height={2048}
-                className="h-full"
+                className="order-last h-72 lg:order-first lg:h-[420px] justify-self-center lg:justify-self-stretch lg:self-center"
               />
-            </StaggerItem>
-
-            <StaggerItem className="flex lg:col-span-2">
-              <Link href="/ecosystem#initiatives" className="flex group w-full">
+              <Link href="/ecosystem#initiatives" className="flex group w-full min-h-[320px]">
                 <SpotlightCard className="w-full flex">
                   <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
                     <div className="flex items-center gap-3 mb-6">
