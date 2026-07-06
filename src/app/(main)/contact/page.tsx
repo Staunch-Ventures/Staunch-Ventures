@@ -17,67 +17,69 @@ export default function ContactPage() {
         </p>
       </ScrollReveal>
 
-      <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-        <ScrollReveal>
-          <Card className="p-6">
-            <div className="flex items-start gap-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
-                <Mail className="h-4 w-4 text-primary" />
-              </span>
-              <div className="min-w-0">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">Email</p>
+      <div className="grid sm:grid-cols-[auto_1fr] gap-6 max-w-2xl mx-auto">
+        {/* The person you'll actually be talking to */}
+        <ScrollReveal className="flex justify-center sm:justify-start">
+          <FieldImage
+            src="/ollie-laughing.jpg"
+            alt="Oliver Christodoulou, founder of Staunch Ventures"
+            sizes="(max-width: 640px) 240px, 280px"
+            className="aspect-[2/3] h-72 w-auto sm:h-full sm:min-h-[280px]"
+          />
+        </ScrollReveal>
+
+        <div className="flex flex-col gap-6">
+          <ScrollReveal delay={0.05}>
+            <Card className="p-6">
+              <div className="flex items-start gap-4">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
+                  <Mail className="h-4 w-4 text-primary" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Email</p>
+                  <a
+                    href="mailto:oliver@staunchventures.com"
+                    className="block mt-1 font-medium text-foreground hover:text-primary transition-colors break-all"
+                  >
+                    oliver@staunchventures.com
+                  </a>
+                </div>
+              </div>
+            </Card>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <Card className="p-6">
+              <div className="flex items-start gap-4">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
+                  <MapPin className="h-4 w-4 text-primary" />
+                </span>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Office</p>
+                  <p className="mt-1 font-medium text-foreground">Hilton, South Africa</p>
+                </div>
+              </div>
+            </Card>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.15}>
+            <Card className="p-6">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground mb-4">Follow us</p>
+              <div className="space-y-3">
                 <a
-                  href="mailto:oliver@staunchventures.com"
-                  className="block mt-1 font-medium text-foreground hover:text-primary transition-colors break-all"
+                  href="https://www.linkedin.com/company/staunchventures"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  oliver@staunchventures.com
+                  <Linkedin className="h-4 w-4" />
+                  LinkedIn / staunchventures
                 </a>
               </div>
-            </div>
-          </Card>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.05}>
-          <Card className="p-6">
-            <div className="flex items-start gap-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 shrink-0">
-                <MapPin className="h-4 w-4 text-primary" />
-              </span>
-              <div>
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">Office</p>
-                <p className="mt-1 font-medium text-foreground">Hilton, South Africa</p>
-              </div>
-            </div>
-          </Card>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.1}>
-          <Card className="p-6">
-            <p className="text-xs uppercase tracking-wider text-muted-foreground mb-4">Follow us</p>
-            <div className="space-y-3">
-              <a
-                href="https://www.linkedin.com/company/staunchventures"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Linkedin className="h-4 w-4" />
-                LinkedIn / staunchventures
-              </a>
-            </div>
-          </Card>
-        </ScrollReveal>
+            </Card>
+          </ScrollReveal>
+        </div>
       </div>
-
-      {/* The people you'll actually be talking to */}
-      <ScrollReveal delay={0.15} className="mt-6 flex justify-center">
-        <FieldImage
-          src="/ollie-laughing.jpg"
-          alt="Oliver Christodoulou, founder of Staunch Ventures"
-          className="aspect-[2/3] w-full max-w-xs sm:max-w-sm"
-          sizes="(max-width: 640px) 100vw, 384px"
-        />
-      </ScrollReveal>
     </div>
   );
 }
