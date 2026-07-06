@@ -43,3 +43,6 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+
+# licensed design source files (not for public serving/distribution)
+/design-source/

@@ -52,6 +52,9 @@ export function AuroraBackground() {
         }}
       />
 
+      {/* Woven linework — brand pattern in muted terracotta, for depth */}
+      <div className="absolute inset-0 bg-linework opacity-[0.1]" />
+
       {/* Grain overlay for richness / anti-banding */}
       <div className="absolute inset-0 bg-grain opacity-[0.04] mix-blend-overlay" />
 

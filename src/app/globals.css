@@ -286,6 +286,14 @@
     background-size: 16px 16px;
   }
 
+  /* Woven linework — brand pattern (public/patterns/staunch-pattern.png),
+     recolored to muted terracotta. Gives flat panels ambient depth without
+     resorting to photographic imagery. */
+  .bg-linework {
+    background-image: url("/patterns/staunch-pattern.png");
+    background-size: 300px 600px;
+  }
+
   .img-fuse {
     mix-blend-mode: screen;
   }
