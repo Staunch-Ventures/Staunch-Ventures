@@ -104,13 +104,13 @@ export default function AboutPage() {
         </Stagger>
       </section>
 
-      {/* Wide editorial band — the values, embodied */}
-      <ScrollReveal>
+      {/* Editorial portrait — the values, embodied */}
+      <ScrollReveal className="flex justify-center">
         <FieldImage
           src="/bag-trust-summit.jpg"
           alt="The Staunch team at the Bag Trust Summit"
-          className="aspect-[16/9] sm:aspect-[21/9] w-full"
-          sizes="(max-width: 1024px) 100vw, 1024px"
+          className="aspect-[2/3] w-full max-w-xs sm:max-w-sm"
+          sizes="(max-width: 640px) 100vw, 384px"
         />
       </ScrollReveal>
 

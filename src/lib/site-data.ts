@@ -14,6 +14,9 @@ export type FieldPhoto = {
   caption?: string;
   /** Placeholder-only note describing the intended shot. */
   hint?: string;
+  /** Natural pixel dimensions — lets filmstrips size by true aspect ratio instead of cropping. */
+  width?: number;
+  height?: number;
 };
 
 export type Initiative = {
@@ -173,46 +176,68 @@ export const fieldPhotos: FieldPhoto[] = [
   {
     src: "/african-early-stage-summit.jpg",
     alt: "The team at the African Early Stage Investor Summit",
+    width: 1170,
+    height: 1082,
   },
   {
     src: "/cofound-workshop.jpg",
     alt: "A Staunch cofounding workshop session",
+    width: 1536,
+    height: 2048,
   },
   {
     src: "/impact-founder-gathering.jpg",
     alt: "The team at an Impact Founder meetup",
+    width: 1170,
+    height: 1730,
   },
   {
     src: "/open-letter-event.jpg",
     alt: "The team at The Open Letter event",
+    width: 2400,
+    height: 1800,
   },
   {
     src: "/podcast-fitness-entrepreneurship.jpg",
     alt: "Recording a podcast on fitness and entrepreneurship",
+    width: 1800,
+    height: 2400,
   },
   {
     src: "/podcast-disrupting-vc.jpg",
     alt: "Recording a podcast on disrupting venture capital",
+    width: 1800,
+    height: 2400,
   },
   {
     src: "/team-field-moment.jpg",
     alt: "The team working together",
+    width: 1600,
+    height: 2400,
   },
   {
     src: "/sf-conference.jpg",
     alt: "At a startup conference in San Francisco",
+    width: 1800,
+    height: 2400,
   },
   {
     src: "/summer-school-mentor.jpg",
     alt: "Mentoring at a startup summer school",
+    width: 1200,
+    height: 1600,
   },
   {
     src: "/unknown-uni-celebration.jpg",
     alt: "Celebrating with Unknown University",
+    width: 1500,
+    height: 1000,
   },
   {
     src: "/youth-entrepreneurship-society.jpg",
     alt: "With the Youth Entrepreneurship Society",
+    width: 739,
+    height: 1555,
   },
 ];
 

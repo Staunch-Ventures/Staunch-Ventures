@@ -110,8 +110,7 @@ export default function TeamPage() {
                 <FieldImage
                   key={photo.src ?? photo.alt}
                   {...photo}
-                  className="mx-3 aspect-[3/2] w-[300px] shrink-0 md:w-[360px]"
-                  sizes="360px"
+                  className="mx-3 h-64 shrink-0 md:h-80"
                 />
               ))}
             </Marquee>

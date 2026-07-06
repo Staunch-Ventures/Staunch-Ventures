@@ -124,7 +124,7 @@ export default function GetInTheRingPage() {
           <FieldImage
             alt="The Get In The Ring stage"
             hint="Stage shot — founder pitching, ring branding visible"
-            className="aspect-[3/2] w-full"
+            className="aspect-[3/4] w-full"
             sizes="(max-width: 640px) 100vw, 50vw"
           />
         </StaggerItem>
@@ -132,7 +132,7 @@ export default function GetInTheRingPage() {
           <FieldImage
             src="/gitr-crowd.jpg"
             alt="The room at a Get In The Ring event"
-            className="aspect-[3/2] w-full"
+            className="aspect-[3/4] w-full"
             sizes="(max-width: 640px) 100vw, 50vw"
           />
         </StaggerItem>

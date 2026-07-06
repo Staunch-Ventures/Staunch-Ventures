@@ -70,12 +70,12 @@ export default function ContactPage() {
       </div>
 
       {/* The people you'll actually be talking to */}
-      <ScrollReveal delay={0.15} className="max-w-3xl mx-auto mt-6">
+      <ScrollReveal delay={0.15} className="mt-6 flex justify-center">
         <FieldImage
           src="/ollie-laughing.jpg"
           alt="Oliver Christodoulou, founder of Staunch Ventures"
-          className="aspect-[16/9] sm:aspect-[21/9] w-full"
-          sizes="(max-width: 768px) 100vw, 768px"
+          className="aspect-[2/3] w-full max-w-xs sm:max-w-sm"
+          sizes="(max-width: 640px) 100vw, 384px"
         />
       </ScrollReveal>
     </div>

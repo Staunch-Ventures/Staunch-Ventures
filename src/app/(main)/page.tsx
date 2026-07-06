@@ -113,20 +113,20 @@ export default function HomePage() {
               </Link>
             </StaggerItem>
 
-            <StaggerItem className="flex">
+            <StaggerItem className="flex min-h-[320px]">
               <FieldImage
                 src="/bag-on-campus.jpg"
                 alt="The Staunch team on campus with Bag Learning"
-                className="w-full min-h-[320px]"
+                className="w-full h-full"
                 sizes="(max-width: 1024px) 100vw, 33vw"
               />
             </StaggerItem>
 
-            <StaggerItem className="flex">
+            <StaggerItem className="flex min-h-[320px]">
               <FieldImage
                 src="/y-combinator.jpg"
                 alt="The Staunch team at Y Combinator"
-                className="w-full min-h-[320px]"
+                className="w-full h-full"
                 sizes="(max-width: 1024px) 100vw, 33vw"
               />
             </StaggerItem>

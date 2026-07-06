@@ -42,7 +42,7 @@ export default function EcosystemPage() {
                       {initiative.photo && (
                         <FieldImage
                           {...initiative.photo}
-                          className="aspect-[16/8] w-full rounded-none border-0 border-b border-border"
+                          className="aspect-[3/2] w-full rounded-none border-0 border-b border-border"
                           sizes="(max-width: 768px) 100vw, 50vw"
                         />
                       )}
