@@ -87,32 +87,36 @@ export default function AboutPage() {
             Three principles that guide how we partner with every founder.
           </p>
         </ScrollReveal>
-        <Stagger className="grid md:grid-cols-3 gap-4">
-          {coreValues.map((value) => (
-            <StaggerItem key={value.title} className="flex">
-              <SpotlightCard className="w-full flex">
-                <Card className="p-8 w-full">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 mb-6">
-                    <value.icon className="h-5 w-5 text-primary" strokeWidth={1.75} />
-                  </span>
-                  <h3 className="text-xl font-semibold tracking-tight text-foreground mb-2">{value.title}</h3>
-                  <p className="text-muted-foreground text-pretty">{value.description}</p>
-                </Card>
-              </SpotlightCard>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      </section>
+        <div className="grid lg:grid-cols-[auto_1fr] gap-4 items-stretch">
+          {/* The values, embodied */}
+          <ScrollReveal className="flex justify-center lg:justify-start">
+            <FieldImage
+              src="/bag-trust-summit.jpg"
+              alt="The Staunch team at the Bag Trust Summit"
+              width={1600}
+              height={2400}
+              className="h-80 w-auto lg:h-full lg:max-h-[560px]"
+              sizes="(max-width: 1024px) 100vw, 380px"
+            />
+          </ScrollReveal>
 
-      {/* Editorial portrait — the values, embodied */}
-      <ScrollReveal className="flex justify-center">
-        <FieldImage
-          src="/bag-trust-summit.jpg"
-          alt="The Staunch team at the Bag Trust Summit"
-          className="aspect-[2/3] w-full max-w-xs sm:max-w-sm"
-          sizes="(max-width: 640px) 100vw, 384px"
-        />
-      </ScrollReveal>
+          <Stagger className="flex flex-col gap-4">
+            {coreValues.map((value) => (
+              <StaggerItem key={value.title} className="flex">
+                <SpotlightCard className="w-full flex">
+                  <Card className="p-8 w-full">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 mb-6">
+                      <value.icon className="h-5 w-5 text-primary" strokeWidth={1.75} />
+                    </span>
+                    <h3 className="text-xl font-semibold tracking-tight text-foreground mb-2">{value.title}</h3>
+                    <p className="text-muted-foreground text-pretty">{value.description}</p>
+                  </Card>
+                </SpotlightCard>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
 
       <Stagger className="grid lg:grid-cols-2 gap-4">
         <StaggerItem className="flex">
