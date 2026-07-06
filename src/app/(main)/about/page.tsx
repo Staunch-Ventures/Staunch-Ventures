@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Quote, Sprout, BookOpen, Mountain, Briefcase } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { FieldImage } from "@/components/marketing/field-image";
 
 const coreValues = [
   {
@@ -64,19 +64,14 @@ export default function AboutPage() {
                   </li>
                 </ul>
               </div>
-              <div className="relative h-80 md:h-96 w-full rounded-2xl overflow-hidden border border-border">
-                <Image
-                  src="/Philosophy.jpg"
-                  alt="Our philosophy"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <p className="text-xs uppercase tracking-wider text-white/70">Built for Africa</p>
-                  <p className="mt-1 text-lg font-semibold text-white">Operators who&apos;ve scaled before.</p>
-                </div>
-              </div>
+              <FieldImage
+                src="/Philosophy.jpg"
+                alt="The Staunch team at work"
+                eyebrow="Built for Africa"
+                caption="Operators who've scaled before."
+                className="h-80 md:h-96 w-full"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
           </Card>
         </SpotlightCard>

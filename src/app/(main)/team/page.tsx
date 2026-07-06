@@ -2,6 +2,9 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { FieldImage } from "@/components/marketing/field-image";
+import { Marquee } from "@/components/ui/marquee";
+import { fieldPhotos } from "@/lib/site-data";
 
 const teamMembers = [
   {
@@ -86,6 +89,35 @@ export default function TeamPage() {
           </StaggerItem>
         ))}
       </Stagger>
+
+      {/* In the field — candid filmstrip proving the hands-on claim */}
+      {fieldPhotos.length > 0 && (
+        <section>
+          <ScrollReveal className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">In the field</p>
+              <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading text-balance">
+                Where the work happens
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-xs sm:text-right">
+              On the ground at events, inside ventures, alongside founders.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <Marquee speed={70} className="py-2">
+              {fieldPhotos.map((photo) => (
+                <FieldImage
+                  key={photo.caption ?? photo.alt}
+                  {...photo}
+                  className="mx-3 aspect-[3/2] w-[300px] shrink-0 md:w-[360px]"
+                  sizes="360px"
+                />
+              ))}
+            </Marquee>
+          </ScrollReveal>
+        </section>
+      )}
     </div>
   );
 }

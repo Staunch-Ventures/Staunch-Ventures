@@ -1,4 +1,21 @@
 
+/**
+ * A photograph of the team on the ground, rendered via <FieldImage>. Leave
+ * `src` unset until the real photo is ready — the slot renders a styled
+ * placeholder (with `hint` describing the shot that belongs there) so layout
+ * and captions can be judged before the photography lands.
+ */
+export type FieldPhoto = {
+  src?: string;
+  alt: string;
+  /** Small uppercase label, e.g. "Founder House". */
+  eyebrow?: string;
+  /** Documentary caption: place + event + date, e.g. "Cape Town — March 2026". */
+  caption?: string;
+  /** Placeholder-only note describing the intended shot. */
+  hint?: string;
+};
+
 export type Initiative = {
   title: string;
   description: string;
@@ -12,6 +29,8 @@ export type Initiative = {
   ctaLabel?: string;
   /** Concrete facts shown as small chips (e.g. "15 founders", "Cape Town"). */
   meta?: string[];
+  /** On-the-ground photo shown at the top of the initiative card. */
+  photo?: FieldPhoto;
   logo?: string;
   logoHint?: string;
 };
@@ -122,6 +141,12 @@ export const initiatives: Initiative[] = [
     description: "Our flagship pitch competition, run with the global Get In The Ring platform. We put Africa's most promising founders on stage in front of international investors and partners.",
     ctaLabel: "View initiative",
     meta: ["Pan-African", "Global investors", "Annual"],
+    photo: {
+      alt: "Founders pitching on stage at Get In The Ring",
+      eyebrow: "On stage",
+      caption: "Get In The Ring — Cape Town",
+      hint: "Wide shot of the pitch stage or the room mid-event",
+    },
     logo: "/gitr-logo.png",
     logoHint: "colorful logo",
   },
@@ -132,6 +157,52 @@ export const initiatives: Initiative[] = [
     href: "/contact",
     ctaLabel: "Express interest",
     meta: ["15 founders", "Cape Town", "Cross-border"],
+    photo: {
+      alt: "Founder House cohort working together in Cape Town",
+      eyebrow: "The house",
+      caption: "Cohort in session — Cape Town",
+      hint: "Candid of the cohort working or exploring the city",
+    },
+  },
+];
+
+/**
+ * "In the field" filmstrip on the /team page — candid shots of the team on
+ * the ground at events, inside ventures, and with partners. Captions follow
+ * the documentary format: place + event (+ date once known). Keep this
+ * curated — rotate photos in and out rather than appending forever; five or
+ * six strong shots beat twenty average ones.
+ */
+export const fieldPhotos: FieldPhoto[] = [
+  {
+    alt: "The Staunch team at the Get In The Ring finals",
+    eyebrow: "Pitch night",
+    caption: "Get In The Ring — Cape Town",
+    hint: "Team on the floor at GITR finals",
+  },
+  {
+    alt: "Working session inside Bag Learning",
+    eyebrow: "On-site",
+    caption: "With Bag Learning — Stellenbosch",
+    hint: "Hands-on working session inside a venture",
+  },
+  {
+    alt: "Founder House cohort session in Cape Town",
+    eyebrow: "Founder House",
+    caption: "Cohort session — Cape Town",
+    hint: "Candid from inside the house",
+  },
+  {
+    alt: "The team with partners at the Youth Energy Summit",
+    eyebrow: "Ecosystem",
+    caption: "Youth Energy Summit",
+    hint: "With partners at YES",
+  },
+  {
+    alt: "Mentor circle round table in progress",
+    eyebrow: "Mentor circle",
+    caption: "Founder round table",
+    hint: "Mid-conversation, whiteboard or table visible",
   },
 ];
 

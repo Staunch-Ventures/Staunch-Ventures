@@ -6,22 +6,15 @@ import { ArrowRight, ArrowUpRight, Network, Rocket, Coins, Users2 } from "lucide
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { growthPartners, initiatives, startupsCofounded, ventures } from "@/lib/site-data";
-import { useInView } from "react-intersection-observer";
-import CountUp from "react-countup";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { HeroVisual } from "@/components/marketing/hero-visual";
-import { ImpactChart } from "@/components/marketing/impact-chart";
+import { FieldImage } from "@/components/marketing/field-image";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Marquee } from "@/components/ui/marquee";
 import { Magnetic } from "@/components/ui/magnetic";
 
 export default function HomePage() {
-  const { ref: statsRef, inView: statsInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.4,
-  });
-
   return (
     <div className="flex flex-col w-full">
       {/* Hero */}
@@ -121,36 +114,25 @@ export default function HomePage() {
             </StaggerItem>
 
             <StaggerItem className="flex">
-            <Card ref={statsRef} className="flex flex-col justify-center p-8 w-full">
-              <div className="space-y-6">
-                <div>
-                  <p className="text-5xl font-semibold tracking-display tabular-nums text-foreground">
-                    {statsInView ? <CountUp end={startupsCofounded} duration={2.2} /> : "0"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">Startups supported across the team</p>
-                </div>
-                <div className="h-px bg-border" />
-                <div>
-                  <p className="text-5xl font-semibold tracking-display tabular-nums text-foreground">
-                    {statsInView ? <CountUp end={initiatives.length} duration={2.2} /> : "0"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">Initiatives run</p>
-                </div>
-                <div className="h-px bg-border" />
-                <div>
-                  <p className="text-5xl font-semibold tracking-display tabular-nums text-foreground">
-                    {statsInView ? <CountUp end={growthPartners.length} duration={2.2} /> : "0"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">Major growth partners</p>
-                </div>
-              </div>
-            </Card>
+              <FieldImage
+                alt="The Staunch team working hands-on inside a portfolio company"
+                eyebrow="In the field"
+                caption="Inside our ventures, every week"
+                hint="Candid working session inside a venture — heads down, screens and whiteboards visible"
+                className="w-full min-h-[320px]"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+              />
             </StaggerItem>
 
             <StaggerItem className="flex">
-              <Card className="flex flex-col w-full p-8">
-                <ImpactChart />
-              </Card>
+              <FieldImage
+                alt="A Staunch ecosystem event in full swing"
+                eyebrow="Ecosystem"
+                caption="Pitch night — Get In The Ring"
+                hint="Wide event shot — stage, crowd, or founders mid-pitch"
+                className="w-full min-h-[320px]"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+              />
             </StaggerItem>
 
             <StaggerItem className="flex lg:col-span-2">

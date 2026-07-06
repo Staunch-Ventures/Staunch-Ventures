@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { FieldImage } from "@/components/marketing/field-image";
 
 export default function EcosystemPage() {
   return (
@@ -37,37 +38,46 @@ export default function EcosystemPage() {
               <StaggerItem key={initiative.title} className="flex">
                 <Link href={href} className="flex group w-full">
                   <SpotlightCard className="w-full flex">
-                    <Card variant="interactive" className="w-full flex flex-col p-8 md:p-10">
-                      <div className="flex items-start justify-between gap-4 mb-6">
-                        {initiative.tag && (
-                          <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                            {initiative.tag}
-                          </Badge>
+                    <Card variant="interactive" className="w-full flex flex-col overflow-hidden p-0">
+                      {initiative.photo && (
+                        <FieldImage
+                          {...initiative.photo}
+                          className="aspect-[16/8] w-full rounded-none border-0 border-b border-border"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                      )}
+                      <div className="flex flex-grow flex-col p-8 md:p-10">
+                        <div className="flex items-start justify-between gap-4 mb-6">
+                          {initiative.tag && (
+                            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                              {initiative.tag}
+                            </Badge>
+                          )}
+                          <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </div>
+                        <h3 className="text-2xl md:text-3xl font-serif font-normal tracking-heading text-foreground mb-3">
+                          {initiative.title}
+                        </h3>
+                        <p className="text-muted-foreground text-pretty flex-grow">{initiative.description}</p>
+                        {initiative.meta && (
+                          <div className="mt-6 flex flex-wrap gap-2">
+                            {initiative.meta.map((m) => (
+                              <span
+                                key={m}
+                                className="rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground"
+                              >
+                                {m}
+                              </span>
+                            ))}
+                          </div>
                         )}
-                        <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        {initiative.ctaLabel && (
+                          <div className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors group-hover:text-primary">
+                            {initiative.ctaLabel}
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                          </div>
+                        )}
                       </div>
-                      <h3 className="text-2xl md:text-3xl font-serif font-normal tracking-heading text-foreground mb-3">
-                        {initiative.title}
-                      </h3>
-                      <p className="text-muted-foreground text-pretty flex-grow">{initiative.description}</p>
-                      {initiative.meta && (
-                        <div className="mt-6 flex flex-wrap gap-2">
-                          {initiative.meta.map((m) => (
-                            <span
-                              key={m}
-                              className="rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground"
-                            >
-                              {m}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      {initiative.ctaLabel && (
-                        <div className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-                          {initiative.ctaLabel}
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                        </div>
-                      )}
                     </Card>
                   </SpotlightCard>
                 </Link>

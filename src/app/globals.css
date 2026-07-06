@@ -298,6 +298,13 @@
     mix-blend-mode: screen;
   }
 
+  /* Unified photo grade — applied to every FieldImage so photos shot on
+     different phones at different events read as one photographer's work.
+     Pairs with a navy multiply wash in the component. */
+  .img-grade {
+    filter: saturate(0.84) contrast(1.05) brightness(0.97);
+  }
+
   .perspective-1000 {
     perspective: 1000px;
   }
