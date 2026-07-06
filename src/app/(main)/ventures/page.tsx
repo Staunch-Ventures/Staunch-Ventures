@@ -123,7 +123,7 @@ export default function VenturesPage() {
       <ScrollReveal>
         <SpotlightCard>
           <Card variant="brand" className="overflow-hidden p-0">
-            <div className="grid md:grid-cols-2">
+            <div className="grid md:grid-cols-[1fr_auto]">
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 <p className="text-7xl md:text-8xl font-serif font-normal tracking-heading tabular-nums text-primary leading-none mb-6">
                   {startupsCofounded}
@@ -138,8 +138,9 @@ export default function VenturesPage() {
               <FieldImage
                 src="/cofound-workshop.jpg"
                 alt="The Staunch team in a cofounding workshop session"
-                className="min-h-[280px] h-full rounded-none border-0 border-t md:border-t-0 md:border-l border-border"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                width={1536}
+                height={2048}
+                className="h-72 md:h-full rounded-none border-0 border-t md:border-t-0 md:border-l border-border"
               />
             </div>
           </Card>

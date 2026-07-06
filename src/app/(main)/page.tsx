@@ -117,8 +117,9 @@ export default function HomePage() {
               <FieldImage
                 src="/bag-on-campus.jpg"
                 alt="The Staunch team on campus with Bag Learning"
-                className="w-full h-full"
-                sizes="(max-width: 1024px) 100vw, 33vw"
+                width={1800}
+                height={2400}
+                className="h-full"
               />
             </StaggerItem>
 
@@ -126,8 +127,9 @@ export default function HomePage() {
               <FieldImage
                 src="/y-combinator.jpg"
                 alt="The Staunch team at Y Combinator"
-                className="w-full h-full"
-                sizes="(max-width: 1024px) 100vw, 33vw"
+                width={1536}
+                height={2048}
+                className="h-full"
               />
             </StaggerItem>
 

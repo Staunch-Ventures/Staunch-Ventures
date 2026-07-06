@@ -16,9 +16,10 @@ export type FieldImageProps = {
   className?: string;
   /**
    * Natural pixel dimensions of the source photo. When set, the image renders
-   * at a fixed height with its native aspect ratio (auto width) instead of
-   * filling a fixed box — used for filmstrips of mixed-orientation photos so
-   * nothing gets cropped. Omit for fixed-box placements (cards, bands).
+   * at its native aspect ratio (auto width) instead of filling a fixed box —
+   * used wherever the photo IS the card, so a narrower photo yields a
+   * narrower card rather than empty letterbox space. className must supply
+   * the height (e.g. "h-full" in a stretched grid/flex cell, or "h-72").
    */
   width?: number;
   height?: number;
@@ -49,7 +50,7 @@ export function FieldImage({
     <figure
       className={cn(
         "group/photo relative overflow-hidden rounded-2xl border border-border bg-muted/40",
-        intrinsic && "inline-block h-full w-auto",
+        intrinsic && "inline-block w-auto",
         className
       )}
     >
