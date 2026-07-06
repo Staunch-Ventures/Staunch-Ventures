@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { FieldImage } from "@/components/marketing/field-image";
 
 const keyOutcomes = [
   { value: "500+", label: "startups engaged across 12 countries" },
@@ -116,6 +117,30 @@ export default function GetInTheRingPage() {
           ))}
         </Stagger>
       </section>
+
+      {/* On the ground — stage and room */}
+      <Stagger className="grid sm:grid-cols-2 gap-4">
+        <StaggerItem>
+          <FieldImage
+            alt="A founder pitching on the Get In The Ring stage"
+            eyebrow="The stage"
+            caption="Founders mid-pitch"
+            hint="Stage shot — founder pitching, ring branding visible"
+            className="aspect-[3/2] w-full"
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+        </StaggerItem>
+        <StaggerItem>
+          <FieldImage
+            alt="Investors and operators in the crowd at Get In The Ring"
+            eyebrow="The room"
+            caption="Investors, operators, founders"
+            hint="Crowd shot — the room reacting, energy visible"
+            className="aspect-[3/2] w-full"
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+        </StaggerItem>
+      </Stagger>
 
       <ScrollReveal>
         <Card className="p-8 md:p-10">

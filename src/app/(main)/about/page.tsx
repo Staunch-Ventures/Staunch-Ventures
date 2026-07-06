@@ -104,6 +104,18 @@ export default function AboutPage() {
         </Stagger>
       </section>
 
+      {/* Wide editorial band — the values, embodied */}
+      <ScrollReveal>
+        <FieldImage
+          alt="The Staunch team with founders on the ground"
+          eyebrow="On the ground"
+          caption="With founders — Cape Town"
+          hint="Wide candid: the team with founders, venue or city visible"
+          className="aspect-[16/9] sm:aspect-[21/9] w-full"
+          sizes="(max-width: 1024px) 100vw, 1024px"
+        />
+      </ScrollReveal>
+
       <Stagger className="grid lg:grid-cols-2 gap-4">
         <StaggerItem className="flex">
           <SpotlightCard className="w-full flex">

@@ -33,7 +33,7 @@ const teamMembers = [
   },
   {
     name: "Timo van de Koevering",
-    role: "Venture Associate",
+    role: "Executive Partner",
     image: "/Timo.jpeg",
     fallback: "TK",
     quote:

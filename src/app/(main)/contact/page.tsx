@@ -1,6 +1,7 @@
 import { Mail, MapPin, Linkedin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { FieldImage } from "@/components/marketing/field-image";
 
 export default function ContactPage() {
   return (
@@ -67,6 +68,18 @@ export default function ContactPage() {
           </Card>
         </ScrollReveal>
       </div>
+
+      {/* The people you'll actually be talking to */}
+      <ScrollReveal delay={0.15} className="max-w-3xl mx-auto mt-6">
+        <FieldImage
+          alt="The Staunch Ventures team"
+          eyebrow="The team"
+          caption="Hilton, South Africa"
+          hint="Relaxed team shot — the people behind the inbox"
+          className="aspect-[16/9] sm:aspect-[21/9] w-full"
+          sizes="(max-width: 768px) 100vw, 768px"
+        />
+      </ScrollReveal>
     </div>
   );
 }

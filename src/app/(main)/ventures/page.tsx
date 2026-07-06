@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { FieldImage } from "@/components/marketing/field-image";
 import { ventures, startupsCofounded } from "@/lib/site-data";
 
 const focusAreas = [
@@ -121,12 +122,12 @@ export default function VenturesPage() {
       {/* Team track record */}
       <ScrollReveal>
         <SpotlightCard>
-          <Card variant="brand" className="p-8 md:p-12">
-            <div className="grid md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-center">
-              <p className="text-7xl md:text-8xl font-serif font-normal tracking-heading tabular-nums text-primary leading-none">
-                {startupsCofounded}
-              </p>
-              <div>
+          <Card variant="brand" className="overflow-hidden p-0">
+            <div className="grid md:grid-cols-2">
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <p className="text-7xl md:text-8xl font-serif font-normal tracking-heading tabular-nums text-primary leading-none mb-6">
+                  {startupsCofounded}
+                </p>
                 <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading mb-3">
                   Startups cofounded across the team
                 </h2>
@@ -134,6 +135,14 @@ export default function VenturesPage() {
                   Our portfolio is young, but our team isn&apos;t. Between us we&apos;ve started and scaled revenue-generating companies before. The operator experience we bring inside every venture we build.
                 </p>
               </div>
+              <FieldImage
+                alt="The Staunch team embedded inside a portfolio company"
+                eyebrow="Operator DNA"
+                caption="Inside the companies we build"
+                hint="Team embedded with a venture — mid working session"
+                className="min-h-[280px] rounded-none border-0 border-t md:border-t-0 md:border-l border-border"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
           </Card>
         </SpotlightCard>
