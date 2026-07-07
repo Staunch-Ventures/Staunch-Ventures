@@ -4,7 +4,10 @@ import { Linkedin, ArrowUpRight } from "lucide-react";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-background mt-20">
+    // Deliberately no backdrop-blur: the only thing behind the footer is the
+    // fixed linework backdrop, and blurring is precisely what would erase it.
+    // Translucency alone lets the pattern read through, faintly but crisply.
+    <footer className="border-t border-border bg-background/60 mt-20">
       <div className="mx-auto max-w-9xl py-16 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10">
           <div className="col-span-2 md:col-span-5 flex flex-col gap-5">
