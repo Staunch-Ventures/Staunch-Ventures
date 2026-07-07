@@ -73,7 +73,7 @@ export function MainNav() {
       className={cn(
         "sticky top-0 z-50 w-full transition-[background,border-color,backdrop-filter] duration-300",
         scrolled
-          ? "divider-fade-b bg-background/60 backdrop-blur-lg"
+          ? "divider-fade-b bg-background/60 backdrop-blur-sm"
           : ""
       )}
     >
