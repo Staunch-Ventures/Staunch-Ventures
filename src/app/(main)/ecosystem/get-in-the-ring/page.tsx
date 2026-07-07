@@ -50,7 +50,7 @@ export default function GetInTheRingPage() {
   }
 
   return (
-    <div className="container max-w-6xl mx-auto py-12 md:py-20 px-4 space-y-12">
+    <div className="mx-auto max-w-9xl py-12 md:py-20 px-4 lg:px-8 space-y-12">
       <div>
         <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
           <Link href="/ecosystem">

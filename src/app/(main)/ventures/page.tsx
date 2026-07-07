@@ -20,7 +20,7 @@ export default function VenturesPage() {
   const featured = ventures[0];
 
   return (
-    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4 space-y-20 md:space-y-24">
+    <div className="mx-auto max-w-9xl py-24 md:py-32 px-4 lg:px-8 space-y-20 md:space-y-24">
       <ScrollReveal className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Ventures</p>
         <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
@@ -123,7 +123,7 @@ export default function VenturesPage() {
       <ScrollReveal>
         <SpotlightCard>
           <Card variant="brand" className="overflow-hidden p-0">
-            <div className="grid md:grid-cols-[1fr_auto]">
+            <div className="grid md:grid-cols-2">
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 <p className="text-7xl md:text-8xl font-serif font-normal tracking-heading tabular-nums text-primary leading-none mb-6">
                   {startupsCofounded}
@@ -135,13 +135,15 @@ export default function VenturesPage() {
                   Our portfolio is young, but our team isn&apos;t. Between us we&apos;ve started and scaled revenue-generating companies before. The operator experience we bring inside every venture we build.
                 </p>
               </div>
-              <FieldImage
-                src="/cofound-workshop.jpg"
-                alt="The Staunch team in a cofounding workshop session"
-                width={1536}
-                height={2048}
-                className="h-72 md:h-full rounded-none border-0 border-t md:border-t-0 md:border-l border-border"
-              />
+              <div className="flex items-center justify-center p-8 pt-0 md:p-10 md:pl-0">
+                <FieldImage
+                  src="/cofound-workshop.jpg"
+                  alt="The Staunch team in a cofounding workshop session"
+                  width={1536}
+                  height={2048}
+                  className="h-80 md:h-[480px]"
+                />
+              </div>
             </div>
           </Card>
         </SpotlightCard>

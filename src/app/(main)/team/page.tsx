@@ -43,7 +43,7 @@ const teamMembers = [
 
 export default function TeamPage() {
   return (
-    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4 space-y-20">
+    <div className="mx-auto max-w-9xl py-24 md:py-32 px-4 lg:px-8 space-y-20">
       <ScrollReveal className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Team</p>
         <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">

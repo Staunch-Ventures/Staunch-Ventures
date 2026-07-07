@@ -10,7 +10,7 @@ import { FieldImage } from "@/components/marketing/field-image";
 
 export default function EcosystemPage() {
   return (
-    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4 space-y-20 md:space-y-24">
+    <div className="mx-auto max-w-9xl py-24 md:py-32 px-4 lg:px-8 space-y-20 md:space-y-24">
       <ScrollReveal className="text-center">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Ecosystem</p>
         <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">

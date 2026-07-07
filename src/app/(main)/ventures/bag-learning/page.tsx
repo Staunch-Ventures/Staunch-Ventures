@@ -40,7 +40,7 @@ export default function BagLearningPage() {
   }
 
   return (
-    <div className="container max-w-6xl mx-auto py-12 md:py-20 px-4">
+    <div className="mx-auto max-w-9xl py-12 md:py-20 px-4 lg:px-8">
       <div className="mb-8">
         <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
           <Link href="/ventures">

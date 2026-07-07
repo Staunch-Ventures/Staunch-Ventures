@@ -22,13 +22,6 @@ export default function HomePage() {
         <div className="mx-auto max-w-9xl px-4 lg:px-8 relative">
           <div className="grid gap-16 lg:grid-cols-12 lg:gap-12 items-center">
             <ScrollReveal className="lg:col-span-6 flex flex-col justify-center space-y-7">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/60 backdrop-blur-md px-3 py-1 text-xs font-medium text-muted-foreground">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-                </span>
-                Now investing across Africa
-              </div>
               <h1 className="text-balance text-5xl font-serif font-normal tracking-heading sm:text-6xl lg:text-[5.25rem] lg:leading-[1.0]">
                 <span className="text-gradient-brand">Backing Africa&apos;s</span>
                 <br />

@@ -8,6 +8,7 @@ import {
   Compass,
   Network as NetworkIcon,
   Check,
+  MapPin,
 } from "lucide-react";
 import { usePointerFine } from "@/hooks/use-pointer-fine";
 
@@ -69,15 +70,9 @@ export function HeroVisual() {
         {/* Main surface — Cofounding-as-a-Service productized */}
         <div className="border-lit relative rounded-2xl bg-card/80 backdrop-blur-2xl shadow-float p-6">
           <div>
-            <div className="flex items-center gap-2.5">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-primary/90">
-                Cofounding as a Service
-              </p>
-              <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-success/15 border border-success/25 px-2 py-1 text-[10px] font-medium text-success">
-                <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-                Active
-              </span>
-            </div>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-primary/90">
+              Cofounding as a Service
+            </p>
             <p className="mt-2 text-2xl font-semibold tracking-tight">
               Beyond capital.
             </p>
@@ -103,14 +98,10 @@ export function HeroVisual() {
               Sectors
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {sectors.map((s, i) => (
+              {sectors.map((s) => (
                 <span
                   key={s}
-                  className={
-                    i < 4
-                      ? "rounded-full bg-primary/10 border border-primary/20 px-2.5 py-1 text-[11px] font-medium text-primary"
-                      : "rounded-full bg-muted border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
-                  }
+                  className="rounded-full bg-primary/10 border border-primary/20 px-2.5 py-1 text-[11px] font-medium text-primary"
                 >
                   {s}
                 </span>
@@ -126,17 +117,14 @@ export function HeroVisual() {
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-[hsl(264_30%_18%)] text-xs font-semibold">
-            BL
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10">
+            <MapPin className="h-4 w-4 text-primary" strokeWidth={1.75} />
           </div>
           <div className="leading-tight">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              Now backing
+              Now investing
             </p>
-            <p className="text-sm font-semibold">Bag Learning</p>
-            <p className="text-[10px] text-primary font-medium tracking-wider">
-              EDTECH
-            </p>
+            <p className="text-sm font-semibold">Across Africa</p>
           </div>
         </motion.div>
       </motion.div>

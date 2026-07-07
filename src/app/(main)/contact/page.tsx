@@ -5,7 +5,7 @@ import { FieldImage } from "@/components/marketing/field-image";
 
 export default function ContactPage() {
   return (
-    <div className="container max-w-6xl mx-auto py-24 md:py-32 px-4">
+    <div className="mx-auto max-w-9xl py-24 md:py-32 px-4 lg:px-8">
       <ScrollReveal className="text-center mb-16 max-w-3xl mx-auto">
         <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Contact</p>
         <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
