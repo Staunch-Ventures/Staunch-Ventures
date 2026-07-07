@@ -118,22 +118,27 @@ export default function GetInTheRingPage() {
         </Stagger>
       </section>
 
-      {/* On the ground — stage and room */}
-      <Stagger className="grid sm:grid-cols-2 gap-4">
-        <StaggerItem>
+      {/* On the ground — stage and room. Equal heights, native aspect ratios:
+          the landscape stage shot sits beside the portrait crowd shot. */}
+      <Stagger className="flex flex-col items-center sm:flex-row sm:justify-center gap-4">
+        <StaggerItem className="flex justify-center">
           <FieldImage
+            src="/gitr-stage.jpg"
             alt="The Get In The Ring stage"
-            hint="Stage shot — founder pitching, ring branding visible"
-            className="aspect-[3/4] w-full"
-            sizes="(max-width: 640px) 100vw, 50vw"
+            width={1920}
+            height={1280}
+            className="h-64 sm:h-80 lg:h-[440px]"
+            sizes="(max-width: 640px) 100vw, 60vw"
           />
         </StaggerItem>
-        <StaggerItem>
+        <StaggerItem className="flex justify-center">
           <FieldImage
             src="/gitr-crowd.jpg"
             alt="The room at a Get In The Ring event"
-            className="aspect-[3/4] w-full"
-            sizes="(max-width: 640px) 100vw, 50vw"
+            width={1800}
+            height={2400}
+            className="h-80 sm:h-80 lg:h-[440px]"
+            sizes="(max-width: 640px) 100vw, 30vw"
           />
         </StaggerItem>
       </Stagger>
