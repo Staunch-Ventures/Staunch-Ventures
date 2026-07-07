@@ -2,8 +2,7 @@ import { initiatives } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, MapPin } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
@@ -14,21 +13,6 @@ const keyOutcomes = [
   { value: "$50M+", label: "in funding facilitated for participants" },
   { value: "200+", label: "cross-border partnerships formed" },
   { value: "95%", label: "participant satisfaction rate" },
-];
-
-const countries = [
-  "South Africa",
-  "Kenya",
-  "Nigeria",
-  "Ghana",
-  "Tanzania",
-  "Uganda",
-  "Rwanda",
-  "Botswana",
-  "Zambia",
-  "Zimbabwe",
-  "Namibia",
-  "Malawi",
 ];
 
 export default function GetInTheRingPage() {
@@ -142,22 +126,6 @@ export default function GetInTheRingPage() {
           />
         </StaggerItem>
       </Stagger>
-
-      <ScrollReveal>
-        <Card className="p-8 md:p-10">
-          <div className="flex items-center gap-2 mb-5">
-            <MapPin className="h-4 w-4 text-primary" strokeWidth={1.75} />
-            <h2 className="text-xs uppercase tracking-wider text-muted-foreground">Countries reached</h2>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {countries.map((c) => (
-              <Badge key={c} variant="secondary" className="bg-muted/60">
-                {c}
-              </Badge>
-            ))}
-          </div>
-        </Card>
-      </ScrollReveal>
 
       <section className="flex justify-center pt-2">
         <Button asChild variant="brand" size="pill-lg">
