@@ -123,6 +123,9 @@ export function MainNav() {
 
           {/* CTA */}
           <div className="flex-1 flex items-center justify-end gap-2">
+            <Button asChild variant="ghost" size="pill">
+              <Link href="/contact">Pitch</Link>
+            </Button>
             <Button asChild variant="brand" size="pill">
               <Link href="/contact">Invest</Link>
             </Button>
