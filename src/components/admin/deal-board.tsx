@@ -18,8 +18,14 @@ import { updateStartupStatus, updateInvestorStatus } from "@/app/admin/actions";
  * Deal-flow board. Pipeline-CRM conventions: status columns are the default
  * lens, drag a card right to advance it, group-by pivots re-slice the same
  * records, and a time-in-stage age chip flags stale deals (amber ≥7d, red
- * ≥14d). Rejected startups leave the board entirely — they live in a list
- * behind the Rejected rail, which doubles as the drop target for rejecting.
+ * ≥14d). Rejected startups leave the board entirely — dropped on the reject
+ * rail or set from the detail page — and live in a restorable list view.
+ *
+ * Drag & drop is pointer-based, not HTML5 drag: the native drag ghost is a
+ * translucent browser snapshot that's nearly invisible over a dark board,
+ * which reads as "the card won't move". Here a real element follows the
+ * cursor and columns are hit-tested, Trello-style. Touch devices use the
+ * detail-page status pills instead (a pointer drag would fight scrolling).
  */
 
 export type StartupCard = {
@@ -52,6 +58,9 @@ export type InvestorCard = {
 
 type Kind = "startups" | "investors";
 type GroupBy = "status" | "sector" | "stage" | "type";
+
+const REJECT_KEY = "__reject__";
+const DRAG_THRESHOLD_PX = 6;
 
 const GROUPERS: Record<Kind, { key: GroupBy; label: string }[]> = {
   startups: [
@@ -103,6 +112,18 @@ function nexusLabel(c: StartupCard): string | null {
   return parts.length ? parts.join(" · ") : null;
 }
 
+type DragSession = {
+  id: string;
+  label: string;
+  sub: string;
+  startX: number;
+  startY: number;
+  offsetX: number;
+  offsetY: number;
+  width: number;
+  started: boolean;
+};
+
 export function DealBoard({
   kind,
   startups,
@@ -119,7 +140,13 @@ export function DealBoard({
   // confirms in the background and we revert on failure.
   const [overrides, setOverrides] = React.useState<Record<string, string>>({});
   const [dragId, setDragId] = React.useState<string | null>(null);
+  const [ghost, setGhost] = React.useState<{ label: string; sub: string; width: number } | null>(null);
   const [hoverCol, setHoverCol] = React.useState<string | null>(null);
+
+  const colRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+  const ghostRef = React.useRef<HTMLDivElement | null>(null);
+  const session = React.useRef<DragSession | null>(null);
+  const suppressClick = React.useRef(false);
 
   React.useEffect(() => {
     setGroupBy("status");
@@ -157,6 +184,106 @@ export function DealBoard({
     : [];
   const active = allRows.filter((r) => statusOf(r) !== STARTUP_REJECTED.value && matches(r));
 
+  const moveTo = (id: string, next: string) => {
+    const row = allRows.find((r) => r.id === id);
+    if (!row || statusOf(row) === next) return;
+    const previous = statusOf(row);
+    setOverrides((o) => ({ ...o, [id]: next }));
+    const action = kind === "startups" ? updateStartupStatus : updateInvestorStatus;
+    action(id, next).catch(() => setOverrides((o) => ({ ...o, [id]: previous })));
+  };
+  const moveToRef = React.useRef(moveTo);
+  moveToRef.current = moveTo;
+
+  // ---- Pointer drag machinery ----
+  const hitTest = (x: number, y: number): string | null => {
+    for (const [key, el] of Object.entries(colRefs.current)) {
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return key;
+    }
+    return null;
+  };
+  const hitTestRef = React.useRef(hitTest);
+  hitTestRef.current = hitTest;
+
+  const handlers = React.useRef({
+    move: (e: PointerEvent) => {
+      const s = session.current;
+      if (!s) return;
+      if (!s.started) {
+        if (Math.hypot(e.clientX - s.startX, e.clientY - s.startY) < DRAG_THRESHOLD_PX) return;
+        s.started = true;
+        setDragId(s.id);
+        setGhost({ label: s.label, sub: s.sub, width: s.width });
+        document.body.style.userSelect = "none";
+        document.body.style.cursor = "grabbing";
+      }
+      const g = ghostRef.current;
+      if (g) {
+        g.style.transform = `translate(${e.clientX - s.offsetX}px, ${e.clientY - s.offsetY}px) rotate(1.5deg)`;
+      }
+      setHoverCol(hitTestRef.current(e.clientX, e.clientY));
+    },
+    up: (e: PointerEvent) => {
+      const s = session.current;
+      if (s?.started) {
+        suppressClick.current = true;
+        setTimeout(() => (suppressClick.current = false), 0);
+        const col = hitTestRef.current(e.clientX, e.clientY);
+        if (col === REJECT_KEY) moveToRef.current(s.id, STARTUP_REJECTED.value);
+        else if (col) moveToRef.current(s.id, col);
+      }
+      endSession();
+    },
+    key: (e: KeyboardEvent) => {
+      if (e.key === "Escape") endSession();
+    },
+  });
+
+  function endSession() {
+    window.removeEventListener("pointermove", handlers.current.move);
+    window.removeEventListener("pointerup", handlers.current.up);
+    window.removeEventListener("keydown", handlers.current.key);
+    document.body.style.userSelect = "";
+    document.body.style.cursor = "";
+    session.current = null;
+    setDragId(null);
+    setGhost(null);
+    setHoverCol(null);
+  }
+
+  // Listeners are cleaned up on unmount in case a drag is interrupted.
+  React.useEffect(() => endSession, []);
+
+  const startDrag = (e: React.PointerEvent, id: string, label: string, sub: string) => {
+    if (groupBy !== "status" || e.pointerType !== "mouse" || e.button !== 0) return;
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    session.current = {
+      id,
+      label,
+      sub,
+      startX: e.clientX,
+      startY: e.clientY,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      width: rect.width,
+      started: false,
+    };
+    window.addEventListener("pointermove", handlers.current.move);
+    window.addEventListener("pointerup", handlers.current.up);
+    window.addEventListener("keydown", handlers.current.key);
+  };
+
+  const cardInteraction = (id: string, label: string, sub: string) => ({
+    onPointerDown: (e: React.PointerEvent) => startDrag(e, id, label, sub),
+    onClick: (e: React.MouseEvent) => {
+      if (suppressClick.current) e.preventDefault();
+    },
+    draggable: false,
+  });
+
+  // ---- Grouping ----
   type Column = { key: string; label: string; dot?: string };
   const groupKey = (row: StartupCard | InvestorCard): string => {
     if (groupBy === "status") return statusOf(row);
@@ -177,56 +304,6 @@ export function DealBoard({
   }
 
   const byColumn = (key: string) => active.filter((r) => groupKey(r) === key);
-
-  const moveTo = (id: string, next: string) => {
-    const row = allRows.find((r) => r.id === id);
-    if (!row || statusOf(row) === next) return;
-    const previous = statusOf(row);
-    setOverrides((o) => ({ ...o, [id]: next }));
-    const action = kind === "startups" ? updateStartupStatus : updateInvestorStatus;
-    action(id, next).catch(() => setOverrides((o) => ({ ...o, [id]: previous })));
-  };
-
-  const onDropColumn = (e: React.DragEvent, col: string) => {
-    e.preventDefault();
-    setHoverCol(null);
-    const id = dragId ?? e.dataTransfer.getData("text/plain");
-    setDragId(null);
-    if (id && groupBy === "status") moveTo(id, col);
-  };
-
-  const dragHandlers = (id: string) =>
-    groupBy === "status"
-      ? {
-          draggable: true,
-          onDragStart: (e: React.DragEvent) => {
-            e.dataTransfer.setData("text/plain", id);
-            e.dataTransfer.effectAllowed = "move";
-            setDragId(id);
-          },
-          onDragEnd: () => {
-            setDragId(null);
-            setHoverCol(null);
-          },
-        }
-      : { draggable: false };
-
-  const dropHandlers = (col: string) =>
-    groupBy === "status"
-      ? {
-          onDragOver: (e: React.DragEvent) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-            if (hoverCol !== col) setHoverCol(col);
-          },
-          onDragLeave: (e: React.DragEvent) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-              setHoverCol((h) => (h === col ? null : h));
-            }
-          },
-          onDrop: (e: React.DragEvent) => onDropColumn(e, col),
-        }
-      : {};
 
   // ---- Rejected list view (startups only) ----
   if (showRejected && kind === "startups") {
@@ -300,6 +377,20 @@ export function DealBoard({
   // ---- Board view ----
   return (
     <div className="space-y-4">
+      {/* Drag ghost — follows the cursor while a card is in flight */}
+      {ghost && (
+        <div
+          ref={ghostRef}
+          className="pointer-events-none fixed left-0 top-0 z-[100] will-change-transform"
+          style={{ width: ghost.width, transform: "translate(-9999px, -9999px)" }}
+        >
+          <div className="rounded-lg border border-primary/50 bg-card px-3 py-2.5 shadow-float">
+            <p className="truncate text-[13px] font-semibold text-foreground">{ghost.label}</p>
+            <p className="mt-0.5 truncate text-xs text-muted-foreground">{ghost.sub}</p>
+          </div>
+        </div>
+      )}
+
       {/* Toolbar: search · group-by · rejected */}
       <div className="flex flex-wrap items-center gap-3">
         <SearchBox kind={kind} value={query} onChange={setQuery} />
@@ -340,15 +431,16 @@ export function DealBoard({
       <div className="flex gap-3 overflow-x-auto pb-4">
         {columns.map((col) => {
           const cards = byColumn(col.key);
+          const isTarget = hoverCol === col.key && dragId;
           return (
             <div
               key={col.key}
-              {...dropHandlers(col.key)}
+              ref={(el) => {
+                colRefs.current[col.key] = el;
+              }}
               className={cn(
                 "flex w-[280px] shrink-0 flex-col rounded-xl border transition-colors",
-                hoverCol === col.key && dragId
-                  ? "border-primary/60 bg-primary/[0.06]"
-                  : "border-border/70 bg-card/30"
+                isTarget ? "border-primary/60 bg-primary/[0.06]" : "border-border/70 bg-card/30"
               )}
             >
               <div className="flex items-center gap-2 px-3.5 pt-3 pb-2">
@@ -366,7 +458,7 @@ export function DealBoard({
                   <div
                     className={cn(
                       "mx-0.5 rounded-lg border border-dashed px-2 py-8 text-center text-xs transition-colors",
-                      hoverCol === col.key && dragId
+                      isTarget
                         ? "border-primary/50 text-primary"
                         : "border-border/60 text-muted-foreground/40"
                     )}
@@ -382,7 +474,12 @@ export function DealBoard({
                       currentStatus={statusOf(row)}
                       showStatusDot={groupBy !== "status"}
                       dragging={dragId === row.id}
-                      handlers={dragHandlers(row.id)}
+                      grabbable={groupBy === "status"}
+                      interaction={cardInteraction(
+                        row.id,
+                        (row as StartupCard).companyName,
+                        `${(row as StartupCard).founderName} · ${(row as StartupCard).hqCountry}`
+                      )}
                     />
                   ) : (
                     <InvestorCardView
@@ -391,7 +488,12 @@ export function DealBoard({
                       currentStatus={statusOf(row)}
                       showStatusDot={groupBy !== "status"}
                       dragging={dragId === row.id}
-                      handlers={dragHandlers(row.id)}
+                      grabbable={groupBy === "status"}
+                      interaction={cardInteraction(
+                        row.id,
+                        (row as InvestorCard).name,
+                        (row as InvestorCard).firm || (row as InvestorCard).investorType
+                      )}
                     />
                   )
                 )}
@@ -403,22 +505,8 @@ export function DealBoard({
         {/* Reject rail — drop target + door to the rejected list */}
         {kind === "startups" && groupBy === "status" && (
           <div
-            onDragOver={(e) => {
-              e.preventDefault();
-              e.dataTransfer.dropEffect = "move";
-              if (hoverCol !== "rejected") setHoverCol("rejected");
-            }}
-            onDragLeave={(e) => {
-              if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                setHoverCol((h) => (h === "rejected" ? null : h));
-              }
-            }}
-            onDrop={(e) => {
-              e.preventDefault();
-              setHoverCol(null);
-              const id = dragId ?? e.dataTransfer.getData("text/plain");
-              setDragId(null);
-              if (id) moveTo(id, STARTUP_REJECTED.value);
+            ref={(el) => {
+              colRefs.current[REJECT_KEY] = el;
             }}
             onClick={() => setShowRejected(true)}
             role="button"
@@ -427,7 +515,7 @@ export function DealBoard({
             title="Drop a card here to reject it, or click to open the rejected list"
             className={cn(
               "flex w-11 shrink-0 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border transition-colors",
-              hoverCol === "rejected" && dragId
+              hoverCol === REJECT_KEY && dragId
                 ? "border-destructive/60 bg-destructive/10 text-destructive-foreground"
                 : "border-dashed border-border/70 bg-card/20 text-muted-foreground/50 hover:text-muted-foreground hover:border-border-strong"
             )}
@@ -461,15 +549,20 @@ type CardChrome = {
   currentStatus: string;
   showStatusDot: boolean;
   dragging: boolean;
-  handlers: React.HTMLAttributes<HTMLAnchorElement> & { draggable: boolean };
+  grabbable: boolean;
+  interaction: {
+    onPointerDown: (e: React.PointerEvent) => void;
+    onClick: (e: React.MouseEvent) => void;
+    draggable: boolean;
+  };
 };
 
-function cardClass(dragging: boolean, draggable: boolean) {
+function cardClass(dragging: boolean, grabbable: boolean) {
   return cn(
-    "group block rounded-lg border border-border/80 bg-card/90 px-3 py-2.5 shadow-sm transition-all",
+    "group block select-none rounded-lg border border-border/80 bg-card/90 px-3 py-2.5 shadow-sm transition-colors",
     "hover:border-border-strong hover:bg-card",
-    draggable && "cursor-grab active:cursor-grabbing",
-    dragging && "opacity-40"
+    grabbable && "cursor-grab",
+    dragging && "opacity-30 border-dashed"
   );
 }
 
@@ -478,11 +571,12 @@ function StartupCardView({
   currentStatus,
   showStatusDot,
   dragging,
-  handlers,
+  grabbable,
+  interaction,
 }: { card: StartupCard } & CardChrome) {
   const nexus = nexusLabel(card);
   return (
-    <Link href={`/admin/s/${card.id}`} {...handlers} className={cardClass(dragging, handlers.draggable)}>
+    <Link href={`/admin/s/${card.id}`} {...interaction} className={cardClass(dragging, grabbable)}>
       <div className="flex items-center gap-2">
         {showStatusDot && <StatusDot status={currentStatus} kind="startups" />}
         <p className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -528,10 +622,11 @@ function InvestorCardView({
   currentStatus,
   showStatusDot,
   dragging,
-  handlers,
+  grabbable,
+  interaction,
 }: { card: InvestorCard } & CardChrome) {
   return (
-    <Link href={`/admin/i/${card.id}`} {...handlers} className={cardClass(dragging, handlers.draggable)}>
+    <Link href={`/admin/i/${card.id}`} {...interaction} className={cardClass(dragging, grabbable)}>
       <div className="flex items-center gap-2">
         {showStatusDot && <StatusDot status={currentStatus} kind="investors" />}
         <p className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground group-hover:text-primary transition-colors">
