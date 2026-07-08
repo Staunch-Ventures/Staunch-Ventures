@@ -10,7 +10,7 @@ const teamMembers = [
   {
     name: "Oliver Christodoulou",
     role: "Founder & Managing Partner",
-    image: "/Oliver headshot.png",
+    image: "/oliver-headshot.jpg",
     fallback: "OC",
     quote:
       "African startups are uniquely positioned to solve local challenges with global applications. My vision is to create an ecosystem where innovation thrives and impact scales.",
@@ -18,7 +18,7 @@ const teamMembers = [
   {
     name: "Adam Lamprecht",
     role: "Venture Associate",
-    image: "/Adam headshot.png",
+    image: "/adam-headshot.jpg",
     fallback: "AL",
     quote:
       "You cannot simply throw money at founders and expect thriving businesses. I want to provide African startups with the resource they actually need: hands-on operational support, working inside companies to help founders achieve their vision.",
@@ -26,7 +26,7 @@ const teamMembers = [
   {
     name: "William Raw",
     role: "Venture Associate",
-    image: "/Will headshot.png",
+    image: "/will-headshot.jpg",
     fallback: "WR",
     quote:
       "Innovation in Africa is a marathon, not a sprint. The finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it's about for me.",

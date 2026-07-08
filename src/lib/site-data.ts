@@ -142,6 +142,14 @@ export const growthPartners: GrowthPartner[] = [
         logoHint: "abstract logo",
         website: "https://dinao.nl/"
     },
+    {
+        name: "Summit Deals",
+        tag: "Investment Bank",
+        description: "An AI-native investment bank investing in entrepreneurs and raising the capital they need to grow, active across Europe, the US, and Africa.",
+        logo: "/summit.jpeg",
+        logoHint: "triangle logo",
+        website: "https://summit.deals/"
+    },
 ];
 
 export const initiatives: Initiative[] = [
@@ -190,44 +198,44 @@ export const fieldPhotos: FieldPhoto[] = [
   {
     src: "/cofound-workshop.jpg",
     alt: "A Staunch cofounding workshop session",
-    width: 1536,
-    height: 2048,
+    width: 1200,
+    height: 1600,
   },
   {
     src: "/impact-founder-gathering.jpg",
     alt: "The team at an Impact Founder meetup",
-    width: 1170,
-    height: 1730,
+    width: 1082,
+    height: 1600,
   },
   {
     src: "/open-letter-event.jpg",
     alt: "The team at The Open Letter event",
-    width: 2400,
-    height: 1800,
+    width: 1600,
+    height: 1200,
   },
   {
     src: "/podcast-fitness-entrepreneurship.jpg",
     alt: "Recording a podcast on fitness and entrepreneurship",
-    width: 1800,
-    height: 2400,
+    width: 1200,
+    height: 1600,
   },
   {
     src: "/podcast-disrupting-vc.jpg",
     alt: "Recording a podcast on disrupting venture capital",
-    width: 1800,
-    height: 2400,
+    width: 1200,
+    height: 1600,
   },
   {
     src: "/team-field-moment.jpg",
     alt: "The team working together",
-    width: 1600,
-    height: 2400,
+    width: 1067,
+    height: 1600,
   },
   {
     src: "/sf-conference.jpg",
     alt: "At a startup conference in San Francisco",
-    width: 1800,
-    height: 2400,
+    width: 1200,
+    height: 1600,
   },
   {
     src: "/summer-school-mentor.jpg",

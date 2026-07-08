@@ -115,8 +115,8 @@ export default function HomePage() {
               <FieldImage
                 src="/bag-on-campus.jpg"
                 alt="The Staunch team on campus with Bag Learning"
-                width={1800}
-                height={2400}
+                width={1200}
+                height={1600}
                 className="h-72 lg:h-[420px] justify-self-center lg:justify-self-stretch lg:self-center"
               />
             </StaggerItem>
@@ -126,8 +126,8 @@ export default function HomePage() {
               <FieldImage
                 src="/y-combinator.jpg"
                 alt="The Staunch team at Y Combinator"
-                width={1536}
-                height={2048}
+                width={1200}
+                height={1600}
                 className="order-last h-72 lg:order-first lg:h-[420px] justify-self-center lg:justify-self-stretch lg:self-center"
               />
               <Link href="/ecosystem#initiatives" className="flex group w-full min-h-[320px]">

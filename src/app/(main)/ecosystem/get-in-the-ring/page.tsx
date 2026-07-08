@@ -109,8 +109,8 @@ export default function GetInTheRingPage() {
           <FieldImage
             src="/gitr-stage.jpg"
             alt="The Get In The Ring stage"
-            width={1920}
-            height={1280}
+            width={1600}
+            height={1067}
             className="h-64 sm:h-80 lg:h-[440px]"
             sizes="(max-width: 640px) 100vw, 60vw"
           />
@@ -119,8 +119,8 @@ export default function GetInTheRingPage() {
           <FieldImage
             src="/gitr-crowd.jpg"
             alt="The room at a Get In The Ring event"
-            width={1800}
-            height={2400}
+            width={1200}
+            height={1600}
             className="h-80 sm:h-80 lg:h-[440px]"
             sizes="(max-width: 640px) 100vw, 30vw"
           />

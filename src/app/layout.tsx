@@ -58,9 +58,9 @@ export const metadata: Metadata = {
       "A cross-border network for Africa's tech startups. Capital, expertise, and operators who've scaled before.",
     images: [
       {
-        url: "/Logo Square.png",
+        url: "/logo-square.jpg",
         width: 1200,
-        height: 630,
+        height: 1200,
         alt: "Staunch Ventures",
       },
     ],
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     title: "Staunch Ventures: Backing Africa's Boldest Founders",
     description:
       "A cross-border network for Africa's tech startups.",
-    images: ["/Logo Square.png"],
+    images: ["/logo-square.jpg"],
   },
   robots: {
     index: true,

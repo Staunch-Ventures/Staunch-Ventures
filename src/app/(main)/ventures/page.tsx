@@ -139,8 +139,8 @@ export default function VenturesPage() {
                 <FieldImage
                   src="/cofound-workshop.jpg"
                   alt="The Staunch team in a cofounding workshop session"
-                  width={1536}
-                  height={2048}
+                  width={1200}
+                  height={1600}
                   className="h-80 md:h-[480px]"
                 />
               </div>

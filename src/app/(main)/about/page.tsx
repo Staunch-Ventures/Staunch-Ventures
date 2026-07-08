@@ -93,8 +93,8 @@ export default function AboutPage() {
             <FieldImage
               src="/bag-trust-summit.jpg"
               alt="The Staunch team at the Bag Trust Summit"
-              width={1600}
-              height={2400}
+              width={1067}
+              height={1600}
               className="h-80 w-auto lg:h-full lg:max-h-[560px]"
               sizes="(max-width: 1024px) 100vw, 380px"
             />
