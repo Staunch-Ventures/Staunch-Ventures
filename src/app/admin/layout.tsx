@@ -10,15 +10,29 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 divider-fade-b bg-background/85 backdrop-blur-md">
-        <div className="mx-auto max-w-9xl flex h-14 items-center justify-between px-4 lg:px-8">
-          <Link href="/admin" className="flex items-center gap-3">
-            <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={110} height={28} />
-            <span className="rounded-full border border-border bg-muted/60 px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
-              Internal
-            </span>
+      {/* App backdrop — painted over the marketing aurora (later in DOM at the
+          same z-index): flat navy with the brand linework kept barely-there.
+          The tool should feel quieter than the site. */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-background" />
+        <div className="absolute inset-0 bg-linework opacity-[0.05]" />
+        <div className="absolute inset-0 bg-grain opacity-[0.03] mix-blend-overlay" />
+      </div>
+
+      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
+        {/* The brand accent lives here — a thin ember line instead of an
+            orange wash behind the content. */}
+        <div className="h-[2px] bg-gradient-to-r from-primary via-[hsl(38_92%_58%)] to-transparent" aria-hidden />
+        <div className="mx-auto max-w-9xl flex h-12 items-center gap-3 px-4 lg:px-8">
+          <Link href="/admin" className="flex items-center gap-2.5">
+            <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={96} height={24} />
+            <span className="h-4 w-px bg-border" aria-hidden />
+            <span className="text-[13px] font-semibold tracking-tight text-foreground">Deal Flow</span>
           </Link>
-          <form action="/api/admin/logout" method="post">
+          <span className="rounded-md border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+            Internal
+          </span>
+          <form action="/api/admin/logout" method="post" className="ml-auto">
             <button
               type="submit"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -28,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </form>
         </div>
       </header>
-      <main className="flex-1 mx-auto w-full max-w-9xl px-4 lg:px-8 py-10">{children}</main>
+      <main className="flex-1 mx-auto w-full max-w-9xl px-4 lg:px-8 py-6">{children}</main>
     </div>
   );
 }

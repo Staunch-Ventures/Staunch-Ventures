@@ -30,17 +30,25 @@ export const INVESTOR_TYPES = [
 ] as const;
 
 /**
- * Pipeline stages for the admin board. Columns run left → right; drag a card
- * to advance it. `dot`/`column` are full Tailwind class literals (the JIT
- * scanner reads this file). Terminal stages (backed/passed) sit rightmost.
+ * Pipeline stages for the admin board. Columns run left → right and each one
+ * states a fact about what has happened: nothing yet (New), we've read it
+ * (Reviewed), we're engaged (In Talks), we wired money (Invested). Rejected
+ * is deliberately not a column — rejected deals leave the board and live in
+ * their own list view. `dot` values are full Tailwind class literals (the
+ * JIT scanner reads this file).
  */
 export const STARTUP_STATUSES = [
   { value: "new", label: "New", dot: "bg-primary" },
-  { value: "reviewing", label: "Reviewing", dot: "bg-[hsl(210_90%_60%)]" },
-  { value: "meeting", label: "Meeting", dot: "bg-[hsl(38_92%_58%)]" },
-  { value: "backed", label: "Backed", dot: "bg-success" },
-  { value: "passed", label: "Passed", dot: "bg-muted-foreground/60" },
+  { value: "reviewed", label: "Reviewed", dot: "bg-[hsl(210_90%_60%)]" },
+  { value: "in-talks", label: "In Talks", dot: "bg-[hsl(38_92%_58%)]" },
+  { value: "invested", label: "Invested", dot: "bg-success" },
 ] as const;
+
+export const STARTUP_REJECTED = {
+  value: "rejected",
+  label: "Rejected",
+  dot: "bg-muted-foreground/60",
+} as const;
 
 export const INVESTOR_STATUSES = [
   { value: "new", label: "New", dot: "bg-primary" },

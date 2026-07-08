@@ -1,14 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { Lock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [password, setPassword] = React.useState("");
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -27,8 +25,11 @@ export default function AdminLoginPage() {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error || "Sign-in failed");
       }
-      router.replace("/admin");
-      router.refresh();
+      // Hard navigation, deliberately not router.replace(): the client router
+      // has cached the pre-auth "/admin → /admin/login" redirect, so a soft
+      // transition bounces straight back here and the button spins forever.
+      // A full page load re-runs the middleware with the fresh cookie.
+      window.location.assign("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign-in failed");
       setBusy(false);

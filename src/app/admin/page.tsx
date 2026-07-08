@@ -52,30 +52,28 @@ export default async function AdminPage({
   }));
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-2">Deal flow</p>
-          <h1 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">
-            {tab === "startups" ? "Startup pipeline" : "Investor pipeline"}
-          </h1>
-        </div>
-        <div className="flex items-center gap-1 rounded-full border border-border bg-card/60 p-1">
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-xl font-semibold tracking-tight">
+          {tab === "startups" ? "Startup pipeline" : "Investor pipeline"}
+        </h1>
+        <div className="flex items-center gap-0.5 rounded-lg border border-border bg-card/60 p-0.5">
           {[
-            { key: "startups", label: `Startups (${startups.length})` },
-            { key: "investors", label: `Investors (${investors.length})` },
+            { key: "startups", label: "Startups", count: startups.length },
+            { key: "investors", label: "Investors", count: investors.length },
           ].map((t) => (
             <Link
               key={t.key}
               href={`/admin?tab=${t.key}`}
               className={cn(
-                "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                "flex items-center gap-1.5 rounded-[7px] px-3.5 py-1 text-[13px] font-medium transition-colors",
                 tab === t.key
-                  ? "bg-muted text-foreground border border-border-strong"
+                  ? "bg-muted text-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
               {t.label}
+              <span className="text-xs tabular-nums text-muted-foreground/70">{t.count}</span>
             </Link>
           ))}
         </div>

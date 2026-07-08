@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Download, FileText, Paperclip, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getSql } from "@/lib/db";
-import { STARTUP_STATUSES } from "@/lib/intake";
+import { STARTUP_STATUSES, STARTUP_REJECTED } from "@/lib/intake";
 import { updateStartupStatusForm } from "@/app/admin/actions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,8 @@ function downloadUrl(url: string): string {
   return `${url}${url.includes("?") ? "&" : "?"}download=1`;
 }
 
-/** Pipeline control: one form per stage, current stage highlighted. */
+/** Pipeline control: one form per stage, current stage highlighted. Rejected
+ *  sits apart — it removes the deal from the board into the rejected list. */
 function StatusPills({ id, current }: { id: string; current: string }) {
   return (
     <div className="flex flex-wrap items-center gap-1.5">
@@ -46,6 +47,23 @@ function StatusPills({ id, current }: { id: string; current: string }) {
           </button>
         </form>
       ))}
+      <span className="mx-1 h-4 w-px bg-border" aria-hidden />
+      <form action={updateStartupStatusForm}>
+        <input type="hidden" name="id" value={id} />
+        <input type="hidden" name="status" value={STARTUP_REJECTED.value} />
+        <button
+          type="submit"
+          disabled={current === STARTUP_REJECTED.value}
+          className={cn(
+            "flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+            current === STARTUP_REJECTED.value
+              ? "border-destructive/50 bg-destructive/15 text-destructive-foreground"
+              : "border-border bg-card/60 text-muted-foreground hover:text-destructive-foreground hover:border-destructive/50 hover:bg-destructive/10"
+          )}
+        >
+          {STARTUP_REJECTED.label}
+        </button>
+      </form>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { getSql } from "@/lib/db";
-import { STARTUP_STATUSES, INVESTOR_STATUSES } from "@/lib/intake";
+import { STARTUP_STATUSES, STARTUP_REJECTED, INVESTOR_STATUSES } from "@/lib/intake";
 
 /**
  * Status moves for the deal board. Called directly from the client board
@@ -11,7 +11,7 @@ import { STARTUP_STATUSES, INVESTOR_STATUSES } from "@/lib/intake";
  * status_changed_at powers the time-in-stage aging signal on cards.
  */
 
-const startupValues = STARTUP_STATUSES.map((s) => s.value) as string[];
+const startupValues = [...STARTUP_STATUSES.map((s) => s.value), STARTUP_REJECTED.value] as string[];
 const investorValues = INVESTOR_STATUSES.map((s) => s.value) as string[];
 
 export async function updateStartupStatus(id: string, status: string): Promise<void> {
