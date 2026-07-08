@@ -36,14 +36,14 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic>
                   <Button asChild variant="brand" size="pill-lg">
-                    <Link href="/contact">
+                    <Link href="/invest">
                       Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                 </Magnetic>
                 <Button asChild variant="outline" size="pill-lg">
-                  <Link href="/contact">Pitch Your Startup</Link>
+                  <Link href="/pitch">Pitch Your Startup</Link>
                 </Button>
               </div>
 
@@ -282,13 +282,13 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <Button asChild variant="brand" size="pill-lg">
-                    <Link href="/contact">
+                    <Link href="/invest">
                       Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="pill-lg">
-                    <Link href="/contact">Pitch Your Startup</Link>
+                    <Link href="/pitch">Pitch Your Startup</Link>
                   </Button>
                 </div>
               </div>

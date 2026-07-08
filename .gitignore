@@ -46,3 +46,4 @@ firestore-debug.log
 
 # licensed design source files (not for public serving/distribution)
 /design-source/
+.env*.local

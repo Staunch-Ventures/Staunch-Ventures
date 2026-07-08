@@ -159,13 +159,13 @@ export default function VenturesPage() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button asChild variant="brand" size="pill-lg">
-            <Link href="/contact">
+            <Link href="/invest">
               Invest
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
           <Button asChild variant="outline" size="pill-lg">
-            <Link href="/contact">Pitch Your Startup</Link>
+            <Link href="/pitch">Pitch Your Startup</Link>
           </Button>
         </div>
       </ScrollReveal>

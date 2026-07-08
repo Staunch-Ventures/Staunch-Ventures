@@ -41,13 +41,13 @@ export function SiteFooter() {
           <div className="col-span-1 md:col-span-3 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Get involved</h4>
             <Link
-              href="/contact"
+              href="/invest"
               className="text-foreground/80 hover:text-foreground transition-colors"
             >
               Invest
             </Link>
             <Link
-              href="/contact"
+              href="/pitch"
               className="text-foreground/80 hover:text-foreground transition-colors"
             >
               Pitch Your Startup
