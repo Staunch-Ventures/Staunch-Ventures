@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Linkedin, ArrowUpRight } from "lucide-react";
+import { Linkedin } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -39,18 +39,18 @@ export function SiteFooter() {
             <Link href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
           </div>
           <div className="col-span-1 md:col-span-3 flex flex-col gap-3 text-sm">
-            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Platform</h4>
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Get involved</h4>
             <Link
-              href="/investor"
-              className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground transition-colors"
+              href="/contact"
+              className="text-foreground/80 hover:text-foreground transition-colors"
             >
-              Invest <ArrowUpRight className="h-3.5 w-3.5" />
+              Invest
             </Link>
             <Link
-              href="/startup"
-              className="inline-flex items-center gap-1 text-foreground/80 hover:text-foreground transition-colors"
+              href="/contact"
+              className="text-foreground/80 hover:text-foreground transition-colors"
             >
-              Pitch Your Startup <ArrowUpRight className="h-3.5 w-3.5" />
+              Pitch Your Startup
             </Link>
           </div>
         </div>
