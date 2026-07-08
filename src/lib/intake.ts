@@ -37,6 +37,30 @@ export const TICKET_SIZES = [
   "$1M+",
 ] as const;
 
+/**
+ * Pipeline stages for the admin board. Columns run left → right; drag a card
+ * to advance it. `dot`/`column` are full Tailwind class literals (the JIT
+ * scanner reads this file). Terminal stages (backed/passed) sit rightmost.
+ */
+export const STARTUP_STATUSES = [
+  { value: "new", label: "New", dot: "bg-primary" },
+  { value: "reviewing", label: "Reviewing", dot: "bg-[hsl(210_90%_60%)]" },
+  { value: "meeting", label: "Meeting", dot: "bg-[hsl(38_92%_58%)]" },
+  { value: "backed", label: "Backed", dot: "bg-success" },
+  { value: "passed", label: "Passed", dot: "bg-muted-foreground/60" },
+] as const;
+
+export const INVESTOR_STATUSES = [
+  { value: "new", label: "New", dot: "bg-primary" },
+  { value: "contacted", label: "Contacted", dot: "bg-[hsl(210_90%_60%)]" },
+  { value: "in-conversation", label: "In Conversation", dot: "bg-[hsl(38_92%_58%)]" },
+  { value: "committed", label: "Committed", dot: "bg-success" },
+  { value: "passed", label: "Passed", dot: "bg-muted-foreground/60" },
+] as const;
+
+export type StartupStatus = (typeof STARTUP_STATUSES)[number]["value"];
+export type InvestorStatus = (typeof INVESTOR_STATUSES)[number]["value"];
+
 export const CAPS = {
   founderMessage: 600,
   teamDescription: 800,

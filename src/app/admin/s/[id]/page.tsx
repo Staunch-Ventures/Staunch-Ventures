@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { ArrowLeft, Download, FileText, Paperclip, ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { getSql } from "@/lib/db";
+import { STARTUP_STATUSES } from "@/lib/intake";
+import { updateStartupStatusForm } from "@/app/admin/actions";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
@@ -22,15 +23,31 @@ function downloadUrl(url: string): string {
   return `${url}${url.includes("?") ? "&" : "?"}download=1`;
 }
 
-async function setStatus(formData: FormData) {
-  "use server";
-  const id = String(formData.get("id") ?? "");
-  const status = String(formData.get("status") ?? "");
-  if (!id || !["new", "reviewed"].includes(status)) return;
-  const sql = getSql();
-  await sql`UPDATE startup_applications SET status = ${status} WHERE id = ${id}::uuid`;
-  revalidatePath(`/admin/s/${id}`);
-  revalidatePath("/admin");
+/** Pipeline control: one form per stage, current stage highlighted. */
+function StatusPills({ id, current }: { id: string; current: string }) {
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      {STARTUP_STATUSES.map((s) => (
+        <form key={s.value} action={updateStartupStatusForm}>
+          <input type="hidden" name="id" value={id} />
+          <input type="hidden" name="status" value={s.value} />
+          <button
+            type="submit"
+            disabled={s.value === current}
+            className={cn(
+              "flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+              s.value === current
+                ? "border-primary/40 bg-primary/10 text-primary"
+                : "border-border bg-card/60 text-muted-foreground hover:text-foreground hover:border-border-strong"
+            )}
+          >
+            <span className={cn("h-1.5 w-1.5 rounded-full", s.dot)} />
+            {s.label}
+          </button>
+        </form>
+      ))}
+    </div>
+  );
 }
 
 export default async function StartupDetailPage({
@@ -79,30 +96,19 @@ export default async function StartupDetailPage({
 
   return (
     <div className="space-y-8 max-w-4xl">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
           <Link href="/admin">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            All applications
+            Pipeline
           </Link>
         </Button>
-        <form action={setStatus}>
-          <input type="hidden" name="id" value={r.id} />
-          <input type="hidden" name="status" value={r.status === "new" ? "reviewed" : "new"} />
-          <Button type="submit" variant="outline" size="pill-sm">
-            {r.status === "new" ? "Mark as reviewed" : "Mark as new"}
-          </Button>
-        </form>
+        <StatusPills id={r.id} current={r.status} />
       </div>
 
       <div>
         <div className="flex flex-wrap items-center gap-3 mb-2">
           <h1 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">{r.company_name}</h1>
-          {r.status === "new" ? (
-            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">New</Badge>
-          ) : (
-            <Badge variant="secondary" className="bg-muted/60 text-muted-foreground">Reviewed</Badge>
-          )}
         </div>
         <p className="text-muted-foreground">
           {r.founder_name} · {r.email}
