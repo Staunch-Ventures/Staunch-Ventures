@@ -215,7 +215,7 @@ export function PitchForm() {
               <FieldLabel htmlFor="teamDescription">The team</FieldLabel>
               <CharCount value={teamDescription} max={CAPS.teamDescription} />
             </div>
-            <Textarea id="teamDescription" rows={4} placeholder="Who's building this, and what have you built before?" value={teamDescription} onChange={(e) => setTeamDescription(e.target.value)} maxLength={CAPS.teamDescription} required />
+            <Textarea id="teamDescription" rows={4} placeholder="Who's building this, and what have they built before?" value={teamDescription} onChange={(e) => setTeamDescription(e.target.value)} maxLength={CAPS.teamDescription} required />
           </div>
         </section>
 

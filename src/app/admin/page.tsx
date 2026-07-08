@@ -19,7 +19,7 @@ export default async function AdminPage({
                africa_hq, africa_customers, africa_expansion,
                sectors, stage, raise_amount, status
         FROM startup_applications ORDER BY created_at DESC LIMIT 500`,
-    sql`SELECT id, created_at, status_changed_at, name, firm, investor_type, ticket_size, sectors, status
+    sql`SELECT id, created_at, status_changed_at, name, firm, investor_type, location, sectors, status
         FROM investor_inquiries ORDER BY created_at DESC LIMIT 500`,
   ]);
 
@@ -46,7 +46,7 @@ export default async function AdminPage({
     name: String(r.name),
     firm: r.firm ? String(r.firm) : null,
     investorType: String(r.investor_type),
-    ticketSize: r.ticket_size ? String(r.ticket_size) : null,
+    location: r.location ? String(r.location) : null,
     sectors: (r.sectors as string[]) ?? [],
     status: String(r.status),
   }));

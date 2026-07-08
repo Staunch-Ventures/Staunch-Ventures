@@ -45,7 +45,7 @@ export type InvestorCard = {
   name: string;
   firm: string | null;
   investorType: string;
-  ticketSize: string | null;
+  location: string | null;
   sectors: string[];
   status: string;
 };
@@ -433,11 +433,6 @@ function InvestorCardView({
         <span className="rounded-full bg-muted/60 border border-border px-2 py-0.5 text-[11px] font-medium text-foreground/80">
           {card.investorType}
         </span>
-        {card.ticketSize && (
-          <span className="rounded-full bg-muted/60 border border-border px-2 py-0.5 text-[11px] font-medium text-foreground/80">
-            {card.ticketSize}
-          </span>
-        )}
         {card.sectors.slice(0, 2).map((s) => (
           <span key={s} className="rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[11px] font-medium text-primary">
             {s}
@@ -448,7 +443,15 @@ function InvestorCardView({
         )}
       </div>
 
-      <div className="mt-2.5 flex items-center justify-end text-[11px]">
+      <div className="mt-2.5 flex items-center justify-between gap-2 text-[11px] text-muted-foreground">
+        <span className="flex items-center gap-1 truncate">
+          {card.location && (
+            <>
+              <MapPin className="h-3 w-3 shrink-0 text-primary/70" strokeWidth={2} />
+              <span className="truncate">{card.location}</span>
+            </>
+          )}
+        </span>
         <AgeChip since={card.statusChangedAt} />
       </div>
     </Link>

@@ -27,10 +27,10 @@ export async function POST(request: Request): Promise<NextResponse> {
   const sql = getSql();
   const rows = await sql`
     INSERT INTO investor_inquiries (
-      name, firm, email, linkedin, investor_type, ticket_size, sectors, message
+      name, firm, email, linkedin, location, investor_type, sectors, message
     ) VALUES (
       ${p.name}, ${p.firm || null}, ${p.email}, ${p.linkedin || null},
-      ${p.investorType}, ${p.ticketSize || null}, ${p.sectors}, ${p.message || null}
+      ${p.location || null}, ${p.investorType}, ${p.sectors}, ${p.message || null}
     ) RETURNING id`;
 
   return NextResponse.json({ ok: true, id: rows[0].id });

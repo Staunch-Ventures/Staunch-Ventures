@@ -66,8 +66,8 @@ export default async function InvestorDetailPage({
     firm: string | null;
     email: string;
     linkedin: string | null;
+    location: string | null;
     investor_type: string;
-    ticket_size: string | null;
     sectors: string[];
     message: string | null;
     status: string;
@@ -112,8 +112,8 @@ export default async function InvestorDetailPage({
             <p className="font-medium">{r.investor_type}</p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1.5">Typical ticket</p>
-            <p className="font-medium">{r.ticket_size || "—"}</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1.5">Based in</p>
+            <p className="font-medium">{r.location || "—"}</p>
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-border">

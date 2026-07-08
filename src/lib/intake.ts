@@ -29,14 +29,6 @@ export const INVESTOR_TYPES = [
   "Other",
 ] as const;
 
-export const TICKET_SIZES = [
-  "Under $25K",
-  "$25K – $100K",
-  "$100K – $500K",
-  "$500K – $1M",
-  "$1M+",
-] as const;
-
 /**
  * Pipeline stages for the admin board. Columns run left → right; drag a card
  * to advance it. `dot`/`column` are full Tailwind class literals (the JIT
@@ -106,8 +98,8 @@ export const investSchema = z.object({
   firm: z.string().trim().max(160).optional().or(z.literal("")),
   email: z.string().trim().email().max(200),
   linkedin: z.string().trim().max(300).optional().or(z.literal("")),
+  location: z.string().trim().max(120).optional().or(z.literal("")),
   investorType: z.enum(INVESTOR_TYPES),
-  ticketSize: z.enum(TICKET_SIZES).optional(),
   sectors: z.array(z.enum(SECTORS)).max(SECTORS.length),
   message: z.string().trim().max(CAPS.investorMessage).optional().or(z.literal("")),
 });
