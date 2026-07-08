@@ -18,7 +18,10 @@ export default function HomePage() {
   return (
     <div className="flex flex-col w-full">
       {/* Hero */}
-      <section className="relative w-full pt-28 md:pt-36 lg:pt-44 pb-20 lg:pb-28">
+      {/* overflow-x-clip: the floating chip on HeroVisual pokes 20px past the
+          card edge, which is wider than the 16px mobile gutter — without the
+          clip it drags a few px of horizontal page scroll on small phones. */}
+      <section className="relative w-full overflow-x-clip pt-28 md:pt-36 lg:pt-44 pb-20 lg:pb-28">
         <div className="mx-auto max-w-9xl px-4 lg:px-8 relative">
           <div className="grid gap-16 lg:grid-cols-12 lg:gap-12 items-center">
             <ScrollReveal className="lg:col-span-6 flex flex-col justify-center space-y-7">

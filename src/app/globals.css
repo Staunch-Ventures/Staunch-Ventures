@@ -226,12 +226,19 @@
       transparent 65%
     );
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.35s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     z-index: 1;
   }
   .spotlight:hover::after {
     opacity: 1;
+  }
+  /* Interactive cards lift 4px on hover (hover:-translate-y-1) but the glow
+     paints on this non-moving wrapper — translate it in lockstep so the
+     spotlight rides the card instead of being left behind. cursor-pointer is
+     the marker class unique to the interactive card variant. */
+  .spotlight:hover:has(.cursor-pointer)::after {
+    transform: translateY(-0.25rem);
   }
 
   /* Heading gradients */

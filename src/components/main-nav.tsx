@@ -77,7 +77,7 @@ export function MainNav() {
           : ""
       )}
     >
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl flex h-16 items-center justify-between px-4 lg:px-8">
         {/* --- Desktop View --- */}
         <div className="hidden min-[1140px]:flex w-full items-center">
           {/* Logo */}

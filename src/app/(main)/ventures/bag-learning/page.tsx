@@ -64,7 +64,7 @@ export default function BagLearningPage() {
               data-ai-hint={venture.logoHint}
             />
           </div>
-          <p className="text-xs uppercase tracking-wider text-primary mb-3">{venture.sector}</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">{venture.sector}</p>
           <h1 className="text-balance text-4xl md:text-6xl font-serif font-normal tracking-heading mb-6 leading-[1.0] text-foreground">
             {venture.companyName}
           </h1>
