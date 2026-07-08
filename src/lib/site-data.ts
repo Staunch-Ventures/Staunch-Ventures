@@ -134,6 +134,14 @@ export const growthPartners: GrowthPartner[] = [
         logoHint: "geometric logo",
         website: "https://www.aqvc.com/"
     },
+    {
+        name: "Dinao",
+        tag: "Financing Partner",
+        description: "A specialist in tailored financing for underserved entrepreneurs, backing talented founders with the capital and support they need to grow.",
+        logo: "/dinao.png",
+        logoHint: "abstract logo",
+        website: "https://dinao.nl/"
+    },
 ];
 
 export const initiatives: Initiative[] = [
