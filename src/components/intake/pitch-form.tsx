@@ -171,7 +171,7 @@ export function PitchForm() {
             </div>
             <div className="space-y-2">
               <FieldLabel htmlFor="raiseAmount" optional>Raise amount</FieldLabel>
-              <Input id="raiseAmount" placeholder="e.g. $250K" value={raiseAmount} onChange={(e) => setRaiseAmount(e.target.value)} maxLength={120} />
+              <Input id="raiseAmount" placeholder="e.g. R5M" value={raiseAmount} onChange={(e) => setRaiseAmount(e.target.value)} maxLength={120} />
             </div>
           </div>
 

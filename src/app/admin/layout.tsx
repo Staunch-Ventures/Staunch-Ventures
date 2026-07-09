@@ -18,17 +18,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="absolute inset-0 bg-grain opacity-[0.03] mix-blend-overlay" />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md overflow-hidden">
-        {/* The brand accent: the site's ember glow, scoped to the header bar. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(110% 220% at 88% 0%, hsl(16 90% 56% / 0.20), transparent 55%), radial-gradient(70% 180% at 30% 0%, hsl(38 92% 58% / 0.07), transparent 60%)",
-          }}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-linework opacity-[0.07]" aria-hidden />
+      <header className="sticky top-0 z-50 border-b border-primary/25 bg-primary/15 backdrop-blur-md overflow-hidden">
+        {/* The brand accent: the whole bar, translucent ember — not a corner glow. */}
+        <div className="pointer-events-none absolute inset-0 bg-linework opacity-[0.08]" aria-hidden />
         <div className="relative mx-auto max-w-9xl flex h-12 items-center gap-3 px-4 lg:px-8">
           <Link href="/admin" className="flex items-center gap-2.5">
             <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={96} height={24} />
