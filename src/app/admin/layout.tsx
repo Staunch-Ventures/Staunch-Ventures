@@ -18,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="absolute inset-0 bg-grain opacity-[0.03] mix-blend-overlay" />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-primary/25 bg-primary/15 backdrop-blur-lg overflow-hidden">
+      <header className="sticky top-0 z-50 border-b border-primary/25 bg-primary/15 backdrop-blur-2xl overflow-hidden">
         {/* The brand accent: the whole bar, translucent ember — not a corner glow. */}
         <div className="pointer-events-none absolute inset-0 bg-linework opacity-[0.08]" aria-hidden />
         <div className="relative mx-auto max-w-9xl flex h-12 items-center gap-3 px-4 lg:px-8">
