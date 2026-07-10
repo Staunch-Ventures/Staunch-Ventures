@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 
 /**
  * Marquee — seamless infinite horizontal scroll. Duplicates children once and
- * translates -50% so the loop is gapless. Pauses on hover. CSS-driven.
+ * translates -50% so the loop is gapless. CSS-driven, never pauses: pausing on
+ * hover made the strip freeze and snap, so the animation runs uninterrupted.
  */
 export function Marquee({
   children,
@@ -28,7 +29,7 @@ export function Marquee({
       )}
     >
       <div
-        className="flex w-max animate-[marquee_linear_infinite] group-hover:[animation-play-state:paused]"
+        className="flex w-max animate-[marquee_linear_infinite]"
         style={{ animationDuration: `${speed}s` }}
       >
         <div className="flex shrink-0 items-center">{children}</div>

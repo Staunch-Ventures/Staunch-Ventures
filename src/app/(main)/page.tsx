@@ -238,7 +238,7 @@ export default function HomePage() {
               {growthPartners.map((partner) => (
                 <div
                   key={partner.name}
-                  className="mx-3 flex h-24 w-44 shrink-0 items-center justify-center rounded-2xl border border-border bg-card/60 backdrop-blur-md px-6 transition-colors hover:bg-card"
+                  className="mx-3 flex h-24 w-44 shrink-0 items-center justify-center rounded-2xl border border-border bg-card/90 px-6 transition-colors hover:bg-card"
                 >
                   <div className="relative h-12 w-full opacity-60 transition-opacity hover:opacity-100">
                     <Image
