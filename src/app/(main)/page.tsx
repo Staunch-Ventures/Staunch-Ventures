@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight, Network, Rocket, Coins, Users2 } from "lucide
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { growthPartners, initiatives, startupsCofounded, ventures } from "@/lib/site-data";
+import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { HeroVisual } from "@/components/marketing/hero-visual";
 import { FieldImage } from "@/components/marketing/field-image";
@@ -36,14 +37,14 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic>
                   <Button asChild variant="brand" size="pill-lg">
-                    <Link href="/invest">
+                    <Link href={INVEST_MAILTO}>
                       Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                 </Magnetic>
                 <Button asChild variant="outline" size="pill-lg">
-                  <Link href="/pitch">Pitch Your Startup</Link>
+                  <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch Your Startup</Link>
                 </Button>
               </div>
 
@@ -282,13 +283,13 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <Button asChild variant="brand" size="pill-lg">
-                    <Link href="/invest">
+                    <Link href={INVEST_MAILTO}>
                       Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="pill-lg">
-                    <Link href="/pitch">Pitch Your Startup</Link>
+                    <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch Your Startup</Link>
                   </Button>
                 </div>
               </div>

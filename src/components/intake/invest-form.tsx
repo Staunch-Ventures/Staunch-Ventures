@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { SECTORS, INVESTOR_TYPES, CAPS } from "@/lib/intake";
+import { SECTORS, INVESTOR_TYPES, CAPS, PITCH_URL } from "@/lib/intake";
 import { FieldLabel, ChipGroup, CharCount } from "./form-bits";
 
 type Sector = (typeof SECTORS)[number];
@@ -16,8 +16,14 @@ type InvestorType = (typeof INVESTOR_TYPES)[number];
 /**
  * Deliberately near-zero friction: two text fields and one chip row are all
  * that's required. The form's real job is routing — founders belong at
- * /pitch (the banner sends them there), while investors should feel like
+ * PITCH_URL (the banner sends them there), while investors should feel like
  * they're leaving a card, not filing an application.
+ *
+ * Note: /invest is no longer linked from the site (see PITCH_URL/INVEST_MAILTO
+ * in lib/intake.ts) — startup pitches now route to a third-party CRM intake
+ * tool, and investor inquiries route to Oliver's inbox directly. This page
+ * and its backing DB/blob infra stay live, unlinked, in case either process
+ * comes back in-house.
  */
 export function InvestForm() {
   const [name, setName] = React.useState("");
@@ -94,7 +100,7 @@ export function InvestForm() {
         <Rocket className="h-4 w-4 text-primary shrink-0" strokeWidth={1.75} />
         <p className="text-muted-foreground">
           Raising for a startup? This route is for investors —{" "}
-          <Link href="/pitch" className="font-medium text-foreground hover:text-primary transition-colors">
+          <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-primary transition-colors">
             pitch us here instead
           </Link>
           .

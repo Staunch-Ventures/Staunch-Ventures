@@ -8,6 +8,7 @@ import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-revea
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { FieldImage } from "@/components/marketing/field-image";
 import { ventures, startupsCofounded } from "@/lib/site-data";
+import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
 
 const focusAreas = [
   { label: "EdTech", state: "Core focus" },
@@ -159,13 +160,13 @@ export default function VenturesPage() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button asChild variant="brand" size="pill-lg">
-            <Link href="/invest">
+            <Link href={INVEST_MAILTO}>
               Invest
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
           <Button asChild variant="outline" size="pill-lg">
-            <Link href="/pitch">Pitch Your Startup</Link>
+            <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch Your Startup</Link>
           </Button>
         </div>
       </ScrollReveal>

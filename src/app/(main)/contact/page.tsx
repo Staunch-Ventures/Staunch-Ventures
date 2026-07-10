@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { MapPin, Linkedin, Rocket, Coins, ArrowRight } from "lucide-react";
+import { MapPin, Linkedin, Rocket, Coins, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { FieldImage } from "@/components/marketing/field-image";
+import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
 
 export default function ContactPage() {
   return (
@@ -23,7 +24,7 @@ export default function ContactPage() {
       {/* The two doors */}
       <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto mb-6">
         <ScrollReveal className="flex">
-          <Link href="/pitch" className="flex group w-full">
+          <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer" className="flex group w-full">
             <SpotlightCard className="w-full flex">
               <Card variant="interactive" className="w-full flex flex-col p-8">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 mb-5">
@@ -31,19 +32,19 @@ export default function ContactPage() {
                 </span>
                 <h2 className="text-xl font-semibold tracking-tight mb-2">Founders</h2>
                 <p className="text-muted-foreground text-sm text-pretty flex-grow">
-                  Raising for an early-stage startup? Send us your deck through
+                  Raising for an early-stage startup? Submit your deck through
                   our application form.
                 </p>
                 <div className="mt-6 font-medium text-foreground flex items-center text-sm transition-colors group-hover:text-primary">
                   Pitch your startup
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </Card>
             </SpotlightCard>
           </Link>
         </ScrollReveal>
         <ScrollReveal delay={0.05} className="flex">
-          <Link href="/invest" className="flex group w-full">
+          <Link href={INVEST_MAILTO} className="flex group w-full">
             <SpotlightCard className="w-full flex">
               <Card variant="interactive" className="w-full flex flex-col p-8">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 mb-5">
@@ -52,7 +53,7 @@ export default function ContactPage() {
                 <h2 className="text-xl font-semibold tracking-tight mb-2">Investors</h2>
                 <p className="text-muted-foreground text-sm text-pretty flex-grow">
                   Interested in backing Africa&apos;s next chapter alongside us?
-                  Introduce yourself.
+                  Email Oliver directly.
                 </p>
                 <div className="mt-6 font-medium text-foreground flex items-center text-sm transition-colors group-hover:text-primary">
                   Invest with us

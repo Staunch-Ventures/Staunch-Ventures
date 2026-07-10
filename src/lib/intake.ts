@@ -7,6 +7,17 @@ import { z } from "zod";
  * sector fit, stage fit, and African nexus.
  */
 
+/**
+ * Public-facing link targets. Startup pitches now route to Staunch's
+ * third-party intake tool (integrates with the CRM directly) rather than
+ * /pitch; investor inquiries route to Oliver's inbox rather than /invest.
+ * Both internal routes and their backing DB/blob infra stay in the codebase,
+ * unlinked, in case either comes back in-house later.
+ */
+export const PITCH_URL = "https://staunchventures.decilehub.com/submit_your_company";
+export const INVEST_EMAIL = "oliver@staunchventures.com";
+export const INVEST_MAILTO = `mailto:${INVEST_EMAIL}`;
+
 export const SECTORS = [
   "EdTech",
   "HealthTech / MedTech",

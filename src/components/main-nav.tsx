@@ -8,6 +8,7 @@ import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
+import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 
@@ -124,10 +125,10 @@ export function MainNav() {
           {/* CTA */}
           <div className="flex-1 flex items-center justify-end gap-2">
             <Button asChild variant="ghost" size="pill">
-              <Link href="/pitch">Pitch</Link>
+              <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch</Link>
             </Button>
             <Button asChild variant="brand" size="pill">
-              <Link href="/invest">Invest</Link>
+              <Link href={INVEST_MAILTO}>Invest</Link>
             </Button>
           </div>
         </div>
@@ -173,10 +174,10 @@ export function MainNav() {
                 </nav>
                 <div className="mt-auto p-6 space-y-3">
                   <Button asChild variant="outline" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href="/pitch">Pitch Your Startup</Link>
+                    <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch Your Startup</Link>
                   </Button>
                   <Button asChild variant="brand" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href="/invest">Invest</Link>
+                    <Link href={INVEST_MAILTO}>Invest</Link>
                   </Button>
                 </div>
               </div>
