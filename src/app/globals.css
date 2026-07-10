@@ -293,12 +293,14 @@
     background-size: 16px 16px;
   }
 
-  /* Woven linework — brand pattern (public/patterns/staunch-pattern.svg),
-     terracotta lines on a transparent ground (generated from the design
-     source; see design-source/). Gives flat panels ambient depth without
-     resorting to photographic imagery. Usage sites set opacity. */
+  /* Woven linework — brand pattern, terracotta lines on a transparent ground.
+     Uses a pre-rasterised PNG tile, NOT the source SVG: the SVG is 250+ vector
+     instances and browsers decode background-image SVGs asynchronously, so on
+     a full-viewport fixed backdrop the lines took ~2 min to appear on first
+     load. A raster tile decodes once, instantly. (Source SVG + full-res PNG
+     live in public/patterns/ and design-source/.) Usage sites set opacity. */
   .bg-linework {
-    background-image: url("/patterns/staunch-pattern.svg");
+    background-image: url("/patterns/staunch-linework.png");
     background-size: 560px 560px;
   }
 
