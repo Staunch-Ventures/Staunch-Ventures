@@ -3,20 +3,25 @@ import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
+// Body copy + UI. Preloaded — it paints above the fold everywhere.
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
+// Monospace is only used inside charts (chart.tsx), never above the fold.
+// preload:false keeps it out of the critical request chain so it doesn't
+// contend with the body/heading fonts for bandwidth on first paint.
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
+  preload: false,
 });
 
-// Editorial display serif — used only for large headings. Pairs against
-// Inter body copy.
+// Editorial display serif — the hero heading (LCP element on most pages).
+// Keep it preloaded so the largest text paints without a late font swap.
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-serif",

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, Network, Rocket, Coins, Users2 } from "lucide-react";
