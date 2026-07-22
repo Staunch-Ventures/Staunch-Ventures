@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { FieldImage } from "@/components/marketing/field-image";
+import { FieldVideo } from "@/components/marketing/field-video";
 
 const coreValues = [
   {
@@ -40,7 +41,8 @@ export default function AboutPage() {
       <ScrollReveal>
         <SpotlightCard>
           <Card className="p-8 md:p-12">
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            {/* Copy takes the slack — the clip is vertical, so its column sizes to the footage */}
+            <div className="grid md:grid-cols-[1fr_auto] gap-8 md:gap-12 items-center">
               <div className="space-y-6">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">Our Philosophy</p>
                 <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">
@@ -64,14 +66,16 @@ export default function AboutPage() {
                   </li>
                 </ul>
               </div>
-              <FieldImage
-                src="/Philosophy.jpg"
-                alt="The Staunch team at work"
-                eyebrow="Built for Africa"
-                caption="Operators who've scaled before."
-                className="h-80 md:h-96 w-full"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              <div className="flex justify-center">
+                <FieldVideo
+                  src="/staunch-ventures.mp4"
+                  poster="/staunch-ventures-poster.jpg"
+                  title="Staunch Ventures on founder-first collaboration"
+                  width={608}
+                  height={1080}
+                  className="h-[420px] md:h-[520px]"
+                />
+              </div>
             </div>
           </Card>
         </SpotlightCard>

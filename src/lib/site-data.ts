@@ -196,6 +196,12 @@ export const fieldPhotos: FieldPhoto[] = [
     height: 1082,
   },
   {
+    src: "/adam-scza-joburg.jpg",
+    alt: "Looking out over the floor at the SCZA summit in Johannesburg",
+    width: 1200,
+    height: 1600,
+  },
+  {
     src: "/cofound-workshop.jpg",
     alt: "A Staunch cofounding workshop session",
     width: 1200,
