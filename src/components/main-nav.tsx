@@ -125,7 +125,7 @@ export function MainNav() {
           {/* CTA */}
           <div className="flex-1 flex items-center justify-end gap-2">
             <Button asChild variant="ghost" size="pill">
-              <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch</Link>
+              <Link href={PITCH_URL}>Pitch</Link>
             </Button>
             <Button asChild variant="brand" size="pill">
               <Link href={INVEST_MAILTO}>Invest</Link>
@@ -174,7 +174,7 @@ export function MainNav() {
                 </nav>
                 <div className="mt-auto p-6 space-y-3">
                   <Button asChild variant="outline" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch Your Startup</Link>
+                    <Link href={PITCH_URL}>Pitch Your Startup</Link>
                   </Button>
                   <Button asChild variant="brand" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
                     <Link href={INVEST_MAILTO}>Invest</Link>

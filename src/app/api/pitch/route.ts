@@ -1,6 +1,47 @@
 import { NextResponse } from "next/server";
-import { getSql } from "@/lib/db";
-import { pitchSchema } from "@/lib/intake";
+import { pitchSchema, screenPitch, type PitchPayload, type Disqualification } from "@/lib/intake";
+import { createPitchPage } from "@/lib/notion";
+
+/**
+ * Inbound pitch intake.
+ *
+ * Order matters here. Mandate screening runs *before* the Notion write so a
+ * disqualified application never becomes a Venture Pipeline row — which is
+ * what keeps the screening agent from spending tokens on companies we could
+ * never invest in.
+ *
+ * Notion is the only store this route touches. Nothing here depends on Neon.
+ */
+
+/**
+ * Records an auto-declined application to the server log, and nowhere else.
+ *
+ * Declines deliberately do not go into the Venture Pipeline: that database is
+ * the agent's work queue, and putting rejects in it would re-introduce exactly
+ * the cost this gate exists to avoid. They aren't worth a database of their
+ * own either — the log answers "are we turning away more than we expected?"
+ * without another system to maintain.
+ *
+ * If decline analytics ever matter more than that, this is the one function to
+ * change: give it a separate store (its own Notion database, say) and nothing
+ * else in the route moves.
+ */
+function logDecline(p: PitchPayload, dq: Disqualification): void {
+  console.info(
+    "[pitch] declined",
+    JSON.stringify({
+      reason: dq.code,
+      company: p.companyName,
+      email: p.email,
+      companyType: p.companyType,
+      techProfile: p.techProfile,
+      stage: p.stage,
+      primaryMarket: p.primaryMarket,
+      saConnection: p.saConnection,
+      at: new Date().toISOString(),
+    })
+  );
+}
 
 export async function POST(request: Request): Promise<NextResponse> {
   let json: unknown;
@@ -25,21 +66,25 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
   const p = parsed.data;
 
-  const sql = getSql();
-  const rows = await sql`
-    INSERT INTO startup_applications (
-      company_name, website, founder_name, email, linkedin,
-      hq_country, africa_hq, africa_customers, africa_expansion,
-      sectors, stage, raise_amount, traction,
-      team_description, founder_message,
-      deck_url, deck_filename, supporting_docs
-    ) VALUES (
-      ${p.companyName}, ${p.website || null}, ${p.founderName}, ${p.email}, ${p.linkedin || null},
-      ${p.hqCountry}, ${p.africaHq}, ${p.africaCustomers}, ${p.africaExpansion},
-      ${p.sectors}, ${p.stage}, ${p.raiseAmount || null}, ${p.traction || null},
-      ${p.teamDescription}, ${p.founderMessage},
-      ${p.deck.url}, ${p.deck.filename}, ${JSON.stringify(p.supportingDocs)}
-    ) RETURNING id`;
+  // The authoritative mandate gate. The form runs the same check for instant
+  // feedback, but that is a courtesy — this is the one that counts.
+  const disqualified = screenPitch(p);
+  if (disqualified) {
+    logDecline(p, disqualified);
+    // 200, not an error status: the request succeeded, the answer is just no.
+    return NextResponse.json({ ok: true, declined: true, reason: disqualified.reason });
+  }
 
-  return NextResponse.json({ ok: true, id: rows[0].id });
+  try {
+    const page = await createPitchPage(p);
+    return NextResponse.json({ ok: true, id: page.id });
+  } catch (err) {
+    // Surface nothing internal to the founder, but keep the detail in logs —
+    // a failure here is almost always a Notion token/sharing misconfiguration.
+    console.error("[pitch] notion write failed", err);
+    return NextResponse.json(
+      { error: "We couldn't submit your application just now. Please try again shortly." },
+      { status: 502 }
+    );
+  }
 }

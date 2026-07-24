@@ -49,8 +49,6 @@ export function SiteFooter() {
             </Link>
             <Link
               href={PITCH_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-foreground/80 hover:text-foreground transition-colors"
             >
               Pitch Your Startup

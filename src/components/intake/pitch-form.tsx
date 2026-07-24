@@ -2,56 +2,107 @@
 
 import * as React from "react";
 import { upload } from "@vercel/blob/client";
-import { ArrowRight, FileText, Paperclip, X, CheckCircle2 } from "lucide-react";
+import { ArrowRight, FileText, Paperclip, X, CheckCircle2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { SECTORS, STAGES, CAPS, MAX_FILE_MB, MAX_SUPPORTING_DOCS } from "@/lib/intake";
-import { FieldLabel, ChipGroup, CharCount, CheckRow } from "./form-bits";
+import {
+  SECTORS,
+  STAGES,
+  COMPANY_TYPES,
+  TECH_PROFILES,
+  PRIMARY_MARKETS,
+  SA_CONNECTIONS,
+  CAPS,
+  MAX_FILE_MB,
+  MAX_SUPPORTING_DOCS,
+  screenPitch,
+  advisePitch,
+  impliedValuation,
+  formatZar,
+} from "@/lib/intake";
+import { FieldLabel, ChipGroup, CharCount } from "./form-bits";
 
 type Sector = (typeof SECTORS)[number];
 type Stage = (typeof STAGES)[number];
+type CompanyType = (typeof COMPANY_TYPES)[number];
+type TechProfile = (typeof TECH_PROFILES)[number];
+type PrimaryMarket = (typeof PRIMARY_MARKETS)[number];
+type SaConnection = (typeof SA_CONNECTIONS)[number];
+
+/** Numeric inputs are held as strings so a half-typed value stays editable. */
+const toNumber = (value: string): number | null => {
+  const n = Number(value.replace(/[\s,]/g, ""));
+  return value.trim() && Number.isFinite(n) ? n : null;
+};
 
 export function PitchForm() {
   const [companyName, setCompanyName] = React.useState("");
   const [website, setWebsite] = React.useState("");
+  const [companyType, setCompanyType] = React.useState<CompanyType[]>([]);
+  const [techProfile, setTechProfile] = React.useState<TechProfile[]>([]);
+  const [stage, setStage] = React.useState<Stage[]>([]);
+  const [primaryMarket, setPrimaryMarket] = React.useState<PrimaryMarket[]>([]);
+  const [saConnection, setSaConnection] = React.useState<SaConnection[]>([]);
+  const [sectors, setSectors] = React.useState<Sector[]>([]);
+  const [summary, setSummary] = React.useState("");
+  const [traction, setTraction] = React.useState("");
+  const [raiseAmount, setRaiseAmount] = React.useState("");
+  const [equityOffered, setEquityOffered] = React.useState("");
   const [founderName, setFounderName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [linkedin, setLinkedin] = React.useState("");
-  const [hqCountry, setHqCountry] = React.useState("");
-  const [africaHq, setAfricaHq] = React.useState(false);
-  const [africaCustomers, setAfricaCustomers] = React.useState(false);
-  const [africaExpansion, setAfricaExpansion] = React.useState(false);
-  const [sectors, setSectors] = React.useState<Sector[]>([]);
-  const [stage, setStage] = React.useState<Stage[]>([]);
-  const [raiseAmount, setRaiseAmount] = React.useState("");
-  const [traction, setTraction] = React.useState("");
   const [teamDescription, setTeamDescription] = React.useState("");
-  const [founderMessage, setFounderMessage] = React.useState("");
   const [deck, setDeck] = React.useState<File | null>(null);
   const [docs, setDocs] = React.useState<File[]>([]);
   const [honeypot, setHoneypot] = React.useState("");
 
-  const [phase, setPhase] = React.useState<"idle" | "uploading" | "saving" | "done">("idle");
+  const [phase, setPhase] = React.useState<"idle" | "uploading" | "saving" | "done" | "declined">("idle");
+  const [declineReason, setDeclineReason] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const deckInputRef = React.useRef<HTMLInputElement>(null);
   const docsInputRef = React.useRef<HTMLInputElement>(null);
 
   const busy = phase === "uploading" || phase === "saving";
 
+  /**
+   * Live mandate check, from the same rules the API enforces. Runs on every
+   * render against whatever has been answered so far, so a founder learns
+   * they're out of mandate before writing a pitch or uploading a deck.
+   */
+  const screenInput = {
+    companyType: companyType[0],
+    techProfile: techProfile[0],
+    stage: stage[0],
+    primaryMarket: primaryMarket[0],
+    saConnection: saConnection[0],
+  };
+  const blocker = screenPitch(screenInput);
+  /** In mandate, but worth flagging. Never prevents submission. */
+  const advisory = blocker ? null : advisePitch(screenInput);
+
+  const raise = toNumber(raiseAmount);
+  const equity = toNumber(equityOffered);
+  const valuation = impliedValuation(raise, equity);
+
   const validate = (): string | null => {
     if (!companyName.trim()) return "Company name is required.";
+    if (companyType.length === 0) return "Pick your company type.";
+    if (techProfile.length === 0) return "Tell us how technology fits in.";
+    if (stage.length === 0) return "Pick the round you're raising.";
+    if (primaryMarket.length === 0) return "Pick your primary market.";
+    if (saConnection.length === 0) return "Tell us your connection to South Africa.";
+    if (sectors.length === 0) return "Pick at least one sector.";
+    if (!summary.trim()) return "Add a short summary of what you're building.";
+    if (summary.length > CAPS.summary) return "The summary is over the character limit.";
+    if (traction.length > CAPS.traction) return "Traction is over the character limit.";
+    if (raise === null || raise <= 0) return "Tell us how much you're raising.";
+    if (equity !== null && (equity <= 0 || equity >= 100)) return "Equity offered must be between 0 and 100%.";
     if (!founderName.trim()) return "Founder name is required.";
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return "A valid email is required.";
-    if (!hqCountry.trim()) return "HQ country is required.";
-    if (sectors.length === 0) return "Pick at least one sector.";
-    if (stage.length === 0) return "Pick your stage.";
     if (!teamDescription.trim()) return "Tell us about the team.";
     if (teamDescription.length > CAPS.teamDescription) return "Team description is over the character limit.";
-    if (!founderMessage.trim()) return "Add a short message about what you're building.";
-    if (founderMessage.length > CAPS.founderMessage) return "Founder message is over the character limit.";
-    if (traction.length > CAPS.traction) return "Traction is over the character limit.";
     if (!deck) return "Your pitch deck (PDF) is required.";
     if (deck.type !== "application/pdf") return "The pitch deck must be a PDF.";
     if (deck.size > MAX_FILE_MB * 1024 * 1024) return `The deck is over ${MAX_FILE_MB}MB.`;
@@ -64,6 +115,15 @@ export function PitchForm() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Out-of-mandate answers never reach the network — no upload, no write.
+    if (blocker) {
+      setDeclineReason(blocker.reason);
+      setPhase("declined");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     const problem = validate();
     if (problem) {
       setError(problem);
@@ -97,26 +157,33 @@ export function PitchForm() {
           founderName,
           email,
           linkedin,
-          hqCountry,
-          africaHq,
-          africaCustomers,
-          africaExpansion,
+          companyType: companyType[0],
+          techProfile: techProfile[0],
+          primaryMarket: primaryMarket[0],
+          saConnection: saConnection[0],
           sectors,
           stage: stage[0],
-          raiseAmount,
+          raiseAmount: raise,
+          equityOffered: equity,
           traction,
           teamDescription,
-          founderMessage,
+          summary,
           deck: { url: deckBlob.url, filename: deck!.name },
           supportingDocs: docBlobs,
           companyUrl2: honeypot,
         }),
       });
+      const body = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
         throw new Error(body.error || "Something went wrong saving your application.");
       }
-      setPhase("done");
+      // The server runs the same mandate check and has the final say.
+      if (body.declined) {
+        setDeclineReason(body.reason ?? null);
+        setPhase("declined");
+      } else {
+        setPhase("done");
+      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       setPhase("idle");
@@ -134,6 +201,29 @@ export function PitchForm() {
         <p className="text-muted-foreground text-pretty max-w-md mx-auto">
           Thank you — your deck is with the team. We read every application and
           will reach out if there&apos;s a fit with our mandate.
+        </p>
+      </Card>
+    );
+  }
+
+  if (phase === "declined") {
+    return (
+      <Card className="p-8 md:p-12 text-center">
+        <Info className="h-10 w-10 text-muted-foreground mx-auto mb-5" strokeWidth={1.5} />
+        <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading mb-3">
+          Not a fit right now
+        </h2>
+        <p className="text-muted-foreground text-pretty max-w-md mx-auto">
+          {declineReason ?? "This one falls outside our current investment mandate."}
+        </p>
+        <p className="text-sm text-muted-foreground/80 text-pretty max-w-md mx-auto mt-4">
+          We&apos;d rather tell you now than leave you waiting. If your circumstances
+          change — or you think we&apos;ve read this wrong — you&apos;re welcome to reach
+          us at{" "}
+          <a href="mailto:hello@staunchventures.com" className="text-foreground hover:text-primary transition-colors">
+            hello@staunchventures.com
+          </a>
+          .
         </p>
       </Card>
     );
@@ -159,82 +249,172 @@ export function PitchForm() {
           <div className="grid sm:grid-cols-2 gap-5">
             <div className="space-y-2">
               <FieldLabel htmlFor="companyName">Company name</FieldLabel>
-              <Input id="companyName" value={companyName} onChange={(e) => setCompanyName(e.target.value)} maxLength={120} required />
+              <Input id="companyName" placeholder="Acme Health" value={companyName} onChange={(e) => setCompanyName(e.target.value)} maxLength={120} required />
             </div>
             <div className="space-y-2">
               <FieldLabel htmlFor="website" optional>Website</FieldLabel>
-              <Input id="website" type="url" placeholder="https://" value={website} onChange={(e) => setWebsite(e.target.value)} maxLength={200} />
-            </div>
-            <div className="space-y-2">
-              <FieldLabel htmlFor="hqCountry">HQ country</FieldLabel>
-              <Input id="hqCountry" value={hqCountry} onChange={(e) => setHqCountry(e.target.value)} maxLength={80} required />
-            </div>
-            <div className="space-y-2">
-              <FieldLabel htmlFor="raiseAmount" optional>Raise amount</FieldLabel>
-              <Input id="raiseAmount" placeholder="e.g. R5M" value={raiseAmount} onChange={(e) => setRaiseAmount(e.target.value)} maxLength={120} />
+              <Input id="website" type="url" placeholder="https://acme.co.za" value={website} onChange={(e) => setWebsite(e.target.value)} maxLength={200} />
             </div>
           </div>
+        </section>
 
+        {/* Mandate questions first: five taps that decide whether it's worth
+            either side's time, before anyone writes prose or uploads a deck. */}
+        <section className="space-y-5 border-t border-border pt-8">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-primary">Fit check</p>
+            <p className="text-sm text-muted-foreground mt-2 text-pretty">
+              Five quick questions. We ask them up front so neither of us spends
+              time on something that was never going to fit.
+            </p>
+          </div>
           <div className="space-y-2">
-            <FieldLabel>Sectors</FieldLabel>
+            <FieldLabel>What kind of organisation are you?</FieldLabel>
+            <ChipGroup options={COMPANY_TYPES} value={companyType} onChange={setCompanyType} />
+          </div>
+          <div className="space-y-2">
+            <FieldLabel>How central is technology to the business?</FieldLabel>
+            <ChipGroup options={TECH_PROFILES} value={techProfile} onChange={setTechProfile} />
+          </div>
+          <div className="space-y-2">
+            <FieldLabel>Which round are you raising?</FieldLabel>
+            <ChipGroup options={STAGES} value={stage} onChange={setStage} />
+          </div>
+          <div className="space-y-2">
+            <FieldLabel>Where do you mainly operate today?</FieldLabel>
+            <ChipGroup options={PRIMARY_MARKETS} value={primaryMarket} onChange={setPrimaryMarket} />
+          </div>
+          <div className="space-y-2">
+            <FieldLabel>Your connection to South Africa</FieldLabel>
+            <ChipGroup options={SA_CONNECTIONS} value={saConnection} onChange={setSaConnection} />
+          </div>
+        </section>
+
+        <section className="space-y-5 border-t border-border pt-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary">What you&apos;re building</p>
+          <div className="space-y-2">
+            <FieldLabel>Sectors — pick any that apply</FieldLabel>
             <ChipGroup options={SECTORS} value={sectors} onChange={setSectors} multi />
           </div>
           <div className="space-y-2">
-            <FieldLabel>Stage</FieldLabel>
-            <ChipGroup options={STAGES} value={stage} onChange={setStage} />
-          </div>
-
-          <div className="space-y-2">
-            <FieldLabel>Africa</FieldLabel>
-            <div className="grid sm:grid-cols-3 gap-2">
-              <CheckRow checked={africaHq} onChange={setAfricaHq}>Headquartered in Africa</CheckRow>
-              <CheckRow checked={africaCustomers} onChange={setAfricaCustomers}>Active customers in Africa</CheckRow>
-              <CheckRow checked={africaExpansion} onChange={setAfricaExpansion}>Planning African expansion</CheckRow>
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="summary">In a sentence or two, what do you do?</FieldLabel>
+              <CharCount value={summary} max={CAPS.summary} />
             </div>
+            <Textarea
+              id="summary"
+              rows={3}
+              placeholder="We give rural clinics offline-first patient records. 40 clinics across KZN use us today."
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              maxLength={CAPS.summary}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="traction" optional>Traction so far</FieldLabel>
+              <CharCount value={traction} max={CAPS.traction} />
+            </div>
+            <Textarea
+              id="traction"
+              rows={2}
+              placeholder="R120k MRR · 3,200 active users · 2 signed pilots"
+              value={traction}
+              onChange={(e) => setTraction(e.target.value)}
+              maxLength={CAPS.traction}
+            />
           </div>
         </section>
 
         <section className="space-y-5 border-t border-border pt-8">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary">The people</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary">The raise</p>
           <div className="grid sm:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <FieldLabel htmlFor="founderName">Founder name</FieldLabel>
-              <Input id="founderName" value={founderName} onChange={(e) => setFounderName(e.target.value)} maxLength={120} required />
+              <FieldLabel htmlFor="raiseAmount">How much are you raising? (ZAR)</FieldLabel>
+              <Input
+                id="raiseAmount"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                step={1000}
+                placeholder="5000000"
+                value={raiseAmount}
+                onChange={(e) => setRaiseAmount(e.target.value)}
+              />
+              {raise !== null && raise > 0 && (
+                <p className="text-xs text-muted-foreground tabular-nums">{formatZar(raise)}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <FieldLabel htmlFor="equityOffered" optional>For how much equity? (%)</FieldLabel>
+              <Input
+                id="equityOffered"
+                type="number"
+                inputMode="decimal"
+                min={0}
+                max={99.9}
+                step={0.5}
+                placeholder="10"
+                value={equityOffered}
+                onChange={(e) => setEquityOffered(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground/70">Leave blank if it&apos;s still open.</p>
+            </div>
+          </div>
+
+          {/* Arithmetic on what they just told us — shown so a founder can
+              sanity-check the number their ask implies before submitting. */}
+          {valuation && (
+            <div className="flex gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3.5">
+              <Info className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" strokeWidth={1.75} />
+              <p className="text-sm text-muted-foreground text-pretty">
+                That implies a pre-money valuation of{" "}
+                <span className="font-medium text-foreground tabular-nums">{formatZar(valuation.preMoney)}</span>{" "}
+                <span className="text-muted-foreground/70 tabular-nums">
+                  ({formatZar(valuation.postMoney)} post-money)
+                </span>
+                . If that isn&apos;t what you meant, adjust the numbers above.
+              </p>
+            </div>
+          )}
+        </section>
+
+        <section className="space-y-5 border-t border-border pt-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary">You and the team</p>
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <FieldLabel htmlFor="founderName">Your name</FieldLabel>
+              <Input id="founderName" placeholder="Thandi Mokoena" value={founderName} onChange={(e) => setFounderName(e.target.value)} maxLength={120} required />
             </div>
             <div className="space-y-2">
               <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={200} required />
+              <Input id="email" type="email" placeholder="thandi@acme.co.za" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={200} required />
             </div>
             <div className="space-y-2 sm:col-span-2">
-              <FieldLabel htmlFor="linkedin" optional>Founder LinkedIn</FieldLabel>
-              <Input id="linkedin" type="url" placeholder="https://linkedin.com/in/…" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} maxLength={300} />
+              <FieldLabel htmlFor="linkedin" optional>LinkedIn</FieldLabel>
+              <Input id="linkedin" type="url" placeholder="https://linkedin.com/in/thandimokoena" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} maxLength={300} />
             </div>
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <FieldLabel htmlFor="teamDescription">The team</FieldLabel>
+              <FieldLabel htmlFor="teamDescription">Who&apos;s building this?</FieldLabel>
               <CharCount value={teamDescription} max={CAPS.teamDescription} />
             </div>
-            <Textarea id="teamDescription" rows={4} placeholder="Who's building this, and what have they built before?" value={teamDescription} onChange={(e) => setTeamDescription(e.target.value)} maxLength={CAPS.teamDescription} required />
+            <Textarea
+              id="teamDescription"
+              rows={3}
+              placeholder="Two co-founders. Thandi led engineering at Discovery for five years; Sipho ran clinic operations at Netcare."
+              value={teamDescription}
+              onChange={(e) => setTeamDescription(e.target.value)}
+              maxLength={CAPS.teamDescription}
+              required
+            />
           </div>
         </section>
 
         <section className="space-y-5 border-t border-border pt-8">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary">The pitch</p>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <FieldLabel htmlFor="founderMessage">Message from the founder</FieldLabel>
-              <CharCount value={founderMessage} max={CAPS.founderMessage} />
-            </div>
-            <Textarea id="founderMessage" rows={4} placeholder="What are you building, and why now?" value={founderMessage} onChange={(e) => setFounderMessage(e.target.value)} maxLength={CAPS.founderMessage} required />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <FieldLabel htmlFor="traction" optional>Traction</FieldLabel>
-              <CharCount value={traction} max={CAPS.traction} />
-            </div>
-            <Textarea id="traction" rows={2} placeholder="Revenue, users, pilots — one or two lines." value={traction} onChange={(e) => setTraction(e.target.value)} maxLength={CAPS.traction} />
-          </div>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary">Documents</p>
 
           {/* Deck upload */}
           <div className="space-y-2">
@@ -269,7 +449,7 @@ export function PitchForm() {
 
           {/* Supporting docs */}
           <div className="space-y-2">
-            <FieldLabel optional>Supporting documents (up to {MAX_SUPPORTING_DOCS})</FieldLabel>
+            <FieldLabel optional>Anything else? (up to {MAX_SUPPORTING_DOCS} files)</FieldLabel>
             <input
               ref={docsInputRef}
               type="file"
@@ -309,6 +489,28 @@ export function PitchForm() {
           </div>
         </section>
 
+        {/* Mandate blocker — shown the moment an answer puts them out of scope,
+            so nobody fills in a deck they can't submit. */}
+        {blocker && (
+          <div role="status" className="flex gap-3 rounded-xl border border-border-strong bg-muted/40 px-4 py-3.5">
+            <Info className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" strokeWidth={1.75} />
+            <p className="text-sm text-muted-foreground text-pretty">
+              {blocker.reason}
+            </p>
+          </div>
+        )}
+
+        {/* In-mandate, but we'd rather say where they stand than stay quiet.
+            Purely informational — submission carries on as normal. */}
+        {advisory && (
+          <div role="status" className="flex gap-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3.5">
+            <Info className="h-4 w-4 mt-0.5 shrink-0 text-primary" strokeWidth={1.75} />
+            <p className="text-sm text-muted-foreground text-pretty">
+              {advisory.message}
+            </p>
+          </div>
+        )}
+
         {error && (
           <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive-foreground">
             {error}
@@ -319,9 +521,9 @@ export function PitchForm() {
           <p className="text-xs text-muted-foreground max-w-xs text-pretty">
             Your deck is kept confidential and reviewed only by the Staunch team.
           </p>
-          <Button type="submit" variant="brand" size="pill-lg" disabled={busy}>
+          <Button type="submit" variant="brand" size="pill-lg" disabled={busy || Boolean(blocker)}>
             {phase === "uploading" ? "Uploading deck…" : phase === "saving" ? "Submitting…" : "Submit application"}
-            {!busy && <ArrowRight className="ml-1 h-4 w-4" />}
+            {!busy && !blocker && <ArrowRight className="ml-1 h-4 w-4" />}
           </Button>
         </div>
       </Card>

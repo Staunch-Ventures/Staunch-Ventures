@@ -166,7 +166,7 @@ export default function VenturesPage() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="pill-lg">
-            <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer">Pitch Your Startup</Link>
+            <Link href={PITCH_URL}>Pitch Your Startup</Link>
           </Button>
         </div>
       </ScrollReveal>

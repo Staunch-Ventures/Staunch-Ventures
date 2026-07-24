@@ -100,7 +100,7 @@ export function InvestForm() {
         <Rocket className="h-4 w-4 text-primary shrink-0" strokeWidth={1.75} />
         <p className="text-muted-foreground">
           Raising for a startup? This route is for investors —{" "}
-          <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-primary transition-colors">
+          <Link href={PITCH_URL} className="font-medium text-foreground hover:text-primary transition-colors">
             pitch us here instead
           </Link>
           .

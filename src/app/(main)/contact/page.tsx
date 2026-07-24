@@ -24,7 +24,7 @@ export default function ContactPage() {
       {/* The two doors */}
       <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto mb-6">
         <ScrollReveal className="flex">
-          <Link href={PITCH_URL} target="_blank" rel="noopener noreferrer" className="flex group w-full">
+          <Link href={PITCH_URL} className="flex group w-full">
             <SpotlightCard className="w-full flex">
               <Card variant="interactive" className="w-full flex flex-col p-8">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 mb-5">

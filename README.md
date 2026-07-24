@@ -33,20 +33,33 @@ npm run build      # production build
 ## Deal-flow intake
 
 Founders apply at `/pitch` (deck upload + structured mandate fields), investors
-introduce themselves at `/invest`. Submissions land in the team dashboard at
-`/admin` — shared team password, sessions last 30 days.
+introduce themselves at `/invest`. Startup pitches write **straight into the
+Notion "Venture Pipeline" database** — see [docs/notion-intake.md](docs/notion-intake.md)
+for setup and the full field mapping. Investor inquiries still land in the team
+dashboard at `/admin` — shared team password, sessions last 30 days.
 
-- **Database**: Neon Postgres (project `Staunch-Intake`), tables
-  `startup_applications` and `investor_inquiries`.
+- **Pipeline**: Notion `Venture Pipeline`. New applications arrive at
+  **Status = Sourced, Source = Form**; every judgment field is left empty for
+  the team and the screening agent. `npm run notion:check` verifies the Notion
+  schema still matches the form.
+- **Database**: Neon Postgres (project `Staunch-Intake`) is now investor-side
+  only — `investor_inquiries`, plus the dormant `startup_applications`
+  (historic pitches, still readable in `/admin`). The pitch path never touches
+  it.
 - **Files**: pitch decks and supporting docs go to Vercel Blob (store
   `staunch-decks`) via client uploads — the 4.5MB serverless body limit
-  doesn't apply. URLs are unguessable but public: don't share them.
+  doesn't apply. Notion links them as external files, so nothing large moves
+  through the API route. URLs are unguessable but public: don't share them.
 - **Env vars** (set in Vercel + `.env.local`, never committed):
-  `DATABASE_URL`, `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`. Rotating
-  `ADMIN_PASSWORD` signs everyone out.
-- **No AI screening yet** — intake is deliberately judgment-free. The fields
-  mirror the mandate gates (sector, stage, African nexus) so a screener can
-  bolt on later without a schema change.
+  `NOTION_TOKEN`, `NOTION_PITCH_DATABASE_ID`, `DATABASE_URL`,
+  `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`. Rotating `ADMIN_PASSWORD` signs
+  everyone out.
+- **Hard mandate gate before the write** — `screenPitch()` in
+  `src/lib/intake.ts` blocks non-profits, non-tech, Series B+, and applications
+  with no African nexus (Series A outside South Africa is a non-blocking
+  advisory, not a block). Declines are logged and never become pipeline rows, so
+  the screening agent only ever sees deals we could actually invest in. The form
+  runs the same rules live; the API route is the authoritative one.
 
 ## Conventions
 
