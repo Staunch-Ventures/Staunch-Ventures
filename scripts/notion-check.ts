@@ -4,22 +4,18 @@
  *
  *   npm run notion:check
  *
- * The Notion schema is hand-curated and deliberately lean, so this script's job
- * is to catch drift, not to impose structure: rename a property or delete an
- * option in Notion and submissions start failing silently at the API boundary.
- * Run this after any schema edit, and it will name the exact mismatch.
+ * The expectations come from PITCH_PROPERTIES in src/lib/notion.ts, the same
+ * table the writer builds its payload from, so this can't pass while the form
+ * is quietly writing something else.
+ *
+ * A mismatch is no longer fatal at runtime — the writer drops unmatched
+ * properties into the page body rather than failing the submission — but it
+ * does mean answers are landing as loose text instead of queryable fields, so
+ * everything here should stay green.
  */
 
 import { config } from "dotenv";
-import {
-  SECTORS,
-  STAGES,
-  COMPANY_TYPES,
-  TECH_PROFILES,
-  PRIMARY_MARKETS,
-  SA_CONNECTIONS,
-} from "../src/lib/intake";
-import { NOTION_PROPS } from "../src/lib/notion";
+import { PITCH_PROPERTIES } from "../src/lib/notion";
 
 config({ path: ".env.local" });
 
@@ -37,33 +33,6 @@ type NotionDatabase = {
   title?: { plain_text: string }[];
   properties: Record<string, NotionProperty>;
 };
-
-/** Property name → the Notion type the writer assumes, and required options. */
-const EXPECTED: { name: string; type: string; options?: readonly string[] }[] = [
-  { name: NOTION_PROPS.company, type: "title" },
-  { name: NOTION_PROPS.founders, type: "rich_text" },
-  { name: NOTION_PROPS.email, type: "email" },
-  { name: NOTION_PROPS.linkedin, type: "url" },
-  { name: NOTION_PROPS.website, type: "url" },
-  { name: NOTION_PROPS.companyType, type: "select", options: COMPANY_TYPES },
-  { name: NOTION_PROPS.techProfile, type: "select", options: TECH_PROFILES },
-  { name: NOTION_PROPS.primaryMarket, type: "select", options: PRIMARY_MARKETS },
-  { name: NOTION_PROPS.saConnection, type: "select", options: SA_CONNECTIONS },
-  { name: NOTION_PROPS.sector, type: "multi_select", options: SECTORS },
-  { name: NOTION_PROPS.stage, type: "select", options: STAGES },
-  { name: NOTION_PROPS.asking, type: "rich_text" },
-  { name: NOTION_PROPS.preMoney, type: "number" },
-  { name: NOTION_PROPS.problem, type: "rich_text" },
-  { name: NOTION_PROPS.solution, type: "rich_text" },
-  { name: NOTION_PROPS.traction, type: "rich_text" },
-  { name: NOTION_PROPS.team, type: "rich_text" },
-  { name: NOTION_PROPS.whyThisTeam, type: "rich_text" },
-  { name: NOTION_PROPS.source, type: "select", options: ["Form"] },
-  { name: NOTION_PROPS.status, type: "status", options: ["Sourced"] },
-  { name: NOTION_PROPS.deck, type: "files" },
-  { name: NOTION_PROPS.supportingDocs, type: "files" },
-  { name: NOTION_PROPS.agentAnalysis, type: "files" },
-];
 
 async function main() {
   const token = process.env.NOTION_TOKEN;
@@ -92,32 +61,43 @@ async function main() {
   const title = db.title?.map((t) => t.plain_text).join("") || "(untitled)";
   console.log(`\nDatabase: ${title}\n`);
 
+  const specs = Object.values(PITCH_PROPERTIES);
   const problems: string[] = [];
 
-  for (const want of EXPECTED) {
-    const actual = db.properties[want.name];
+  for (const spec of specs) {
+    const actual = db.properties[spec.name];
+    const by = "writtenBy" in spec && spec.writtenBy === "agent" ? "  (agent)" : "";
+
     if (!actual) {
-      problems.push(`MISSING   "${want.name}" (expected ${want.type})`);
+      problems.push(`MISSING         "${spec.name}" — expected ${spec.type}`);
+      console.log(`  ✗   ${spec.name} — missing`);
       continue;
     }
-    if (actual.type !== want.type) {
-      problems.push(`WRONG TYPE "${want.name}" is ${actual.type}, the form writes ${want.type}`);
+    if (actual.type !== spec.type) {
+      problems.push(`WRONG TYPE      "${spec.name}" is ${actual.type}, expected ${spec.type}`);
+      console.log(`  ✗   ${spec.name} — is ${actual.type}, expected ${spec.type}`);
       continue;
     }
-    if (want.options) {
+
+    const wanted = "options" in spec ? spec.options : undefined;
+    if (wanted) {
       const have = (actual.select ?? actual.multi_select ?? actual.status)?.options ?? [];
-      const missing = want.options.filter((o) => !have.some((h) => h.name === o));
+      const missing = wanted.filter((o) => !have.some((h) => h.name === o));
       if (missing.length > 0) {
-        problems.push(`MISSING OPTIONS "${want.name}": ${missing.map((m) => `"${m}"`).join(", ")}`);
+        problems.push(
+          `MISSING OPTIONS "${spec.name}": ${missing.map((m) => `"${m}"`).join(", ")}`
+        );
+        console.log(`  ✗   ${spec.name} — missing options: ${missing.join(", ")}`);
+        continue;
       }
     }
-    console.log(`  ok  ${want.name} (${actual.type})`);
+    console.log(`  ok  ${spec.name} (${actual.type})${by}`);
   }
 
   // Not a failure — just worth knowing the pipeline carries more than the form
-  // fills, since those are the team's and the agent's columns.
+  // fills, since those are the team's own columns.
   const extra = Object.keys(db.properties).filter(
-    (name) => !EXPECTED.some((e) => e.name === name)
+    (name) => !specs.some((s) => s.name === name)
   );
   if (extra.length > 0) {
     console.log(`\nTeam-owned properties the form never writes (${extra.length}):`);
@@ -125,13 +105,16 @@ async function main() {
   }
 
   if (problems.length > 0) {
-    console.log("\nProblems:");
+    console.log(`\n${problems.length} problem(s):`);
     for (const p of problems) console.log(`  ✗ ${p}`);
-    console.log("");
+    console.log(
+      "\nSubmissions still succeed — unmatched answers are written to the page\n" +
+        "body instead — but they won't be queryable until this is fixed.\n"
+    );
     process.exit(1);
   }
 
-  console.log("\nAll good — Notion matches the pitch form.\n");
+  console.log(`\nAll ${specs.length} properties aligned — Notion matches the pitch form.\n`);
 }
 
 main().catch((err) => {

@@ -156,8 +156,8 @@ export const pitchSchema = z.object({
   solution: z.string().trim().min(1).max(CAPS.solution),
   traction: z.string().trim().max(CAPS.traction).optional().or(z.literal("")),
   teamDescription: z.string().trim().min(1).max(CAPS.teamDescription),
-  /** Founder-market fit in the founder's own words — the team's verdict on it
-   *  lives in Notion's `Founder-Market Fit` select, which the form never sets. */
+  /** Founder-market fit, in the founder's own words. Lands in Notion's
+   *  `Founder-Market Fit` property, which is this answer and nothing else. */
   whyThisTeam: z.string().trim().min(1).max(CAPS.whyThisTeam),
   deck: uploadedFileSchema,
   supportingDocs: z.array(uploadedFileSchema).max(MAX_SUPPORTING_DOCS),

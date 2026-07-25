@@ -53,6 +53,7 @@ fails silently at the API boundary.
 | Email | `Email` | email |
 | LinkedIn | `LinkedIn` | url |
 | Who's building this? | `Team` | text (500 cap) |
+| Why are you the right people to solve it? | `Founder-Market Fit` | text (400 cap) |
 | Pitch deck | `Pitch Deck` | files (external → Blob) |
 | Anything else? | `Supporting Docs` | files (external → Blob) |
 | *(automatic)* | `Source` = **Form** | select |
@@ -90,10 +91,25 @@ is labelled correctly without anyone thinking about it.
 
 ### Team-owned properties
 
-`Owner` · `Notes` · `Track` · `Geography` · `Conviction` · `Founder-Market Fit`
-· `Company Stage` · `Added`, plus the `Agent Analysis` files property, where the
-external screening agent uploads its PDF. **The form never writes any of these.**
-No judgment field is ever set by an applicant.
+`Owner` · `Notes` · `Track` · `Geography` · `Conviction` · `Company Stage` ·
+`Added`, plus the `Agent Analysis` files property, where the external screening
+agent uploads its PDF. **The form never writes any of these.** No judgment
+field is ever set by an applicant.
+
+`Founder-Market Fit` is not one of them: it holds the founder's own answer to
+"why are you the right people to solve it?". There is deliberately no scored
+verdict beside it — the case the founder makes is the record, and the agent's
+read of that case lives in its uploaded analysis.
+
+### Schema drift is not fatal
+
+`createPitchPage` reads the live schema before writing and sends only the
+properties that still exist with the expected type. Anything mismatched is
+dropped from the payload and appended to the page body under a ⚠️ callout, so
+the row is still created and the founder's words survive as text — they just
+stop being queryable until the mismatch is fixed. `npm run notion:check` names
+the mismatch, and both the writer and that check read the same
+`PITCH_PROPERTIES` table in `src/lib/notion.ts`, so they cannot disagree.
 
 ## Screening rules
 

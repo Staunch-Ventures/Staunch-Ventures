@@ -1,4 +1,15 @@
-import { formatAsking, formatZar, impliedValuation, type PitchPayload } from "@/lib/intake";
+import {
+  COMPANY_TYPES,
+  PRIMARY_MARKETS,
+  SA_CONNECTIONS,
+  SECTORS,
+  STAGES,
+  TECH_PROFILES,
+  formatAsking,
+  formatZar,
+  impliedValuation,
+  type PitchPayload,
+} from "@/lib/intake";
 
 /**
  * Notion write path for inbound pitches.
@@ -20,41 +31,61 @@ const NOTION_API = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
 
 /**
- * Notion property names, exactly as they appear in the Venture Pipeline
- * database. Renaming a property in Notion should be matched here — but if it
- * isn't, the submission still goes through (see `createPitchPage`).
+ * The single source of truth for what this app expects of the Venture
+ * Pipeline schema: the Notion property name, the type it must be, and any
+ * option values that have to exist.
+ *
+ * Both consumers read this one table — `createPitchPage` below when it writes,
+ * and `npm run notion:check` when it verifies — so the writer and the checker
+ * cannot drift apart and report a false "all good". Adding a field here is the
+ * only edit needed to cover both.
  *
  * Two names are easy to confuse: `Stage` is the round being raised, while
  * `Status` is our pipeline position. They are different properties.
  */
-export const NOTION_PROPS = {
-  company: "Company",
-  founders: "Founder(s)",
-  email: "Email",
-  linkedin: "LinkedIn",
-  website: "Website",
-  companyType: "Company Type",
-  techProfile: "Tech Profile",
-  primaryMarket: "Primary Market",
-  saConnection: "SA Connection",
-  sector: "Sector",
-  stage: "Stage",
-  asking: "Asking",
-  preMoney: "Pre-money (ZAR)",
-  problem: "Problem",
-  solution: "Solution",
-  traction: "Traction",
-  team: "Team",
-  /** The founder's own case for founder-market fit. Distinct from the
-   *  `Founder-Market Fit` select, which is the team's verdict on that case. */
-  whyThisTeam: "Why This Team",
-  source: "Source",
-  status: "Status",
-  deck: "Pitch Deck",
-  supportingDocs: "Supporting Docs",
-  /** Files property — the external screening agent uploads its PDF here. */
-  agentAnalysis: "Agent Analysis",
-} as const;
+export const PITCH_PROPERTIES = {
+  company: { name: "Company", type: "title" },
+  founders: { name: "Founder(s)", type: "rich_text" },
+  email: { name: "Email", type: "email" },
+  linkedin: { name: "LinkedIn", type: "url" },
+  website: { name: "Website", type: "url" },
+  companyType: { name: "Company Type", type: "select", options: COMPANY_TYPES },
+  techProfile: { name: "Tech Profile", type: "select", options: TECH_PROFILES },
+  primaryMarket: { name: "Primary Market", type: "select", options: PRIMARY_MARKETS },
+  saConnection: { name: "SA Connection", type: "select", options: SA_CONNECTIONS },
+  sector: { name: "Sector", type: "multi_select", options: SECTORS },
+  stage: { name: "Stage", type: "select", options: STAGES },
+  asking: { name: "Asking", type: "rich_text" },
+  preMoney: { name: "Pre-money (ZAR)", type: "number" },
+  problem: { name: "Problem", type: "rich_text" },
+  solution: { name: "Solution", type: "rich_text" },
+  traction: { name: "Traction", type: "rich_text" },
+  team: { name: "Team", type: "rich_text" },
+  /**
+   * Founder-market fit, in the founder's own words — the answer to "why are
+   * you the right people to solve it?". There is deliberately no separate
+   * scored verdict beside it: the case the founder makes is the record, and
+   * the screening agent's read of it lives in its uploaded analysis.
+   */
+  whyThisTeam: { name: "Founder-Market Fit", type: "rich_text" },
+  source: { name: "Source", type: "select", options: ["Form"] },
+  status: { name: "Status", type: "status", options: ["Sourced"] },
+  deck: { name: "Pitch Deck", type: "files" },
+  supportingDocs: { name: "Supporting Docs", type: "files" },
+  /**
+   * Written by the external screening agent, never by the form — but it still
+   * has to exist, so the agent has somewhere to put its PDF.
+   */
+  agentAnalysis: { name: "Agent Analysis", type: "files", writtenBy: "agent" },
+} as const satisfies Record<
+  string,
+  { name: string; type: string; options?: readonly string[]; writtenBy?: "agent" }
+>;
+
+/** Convenience view of the same table: key → Notion property name. */
+export const NOTION_PROPS = Object.fromEntries(
+  Object.entries(PITCH_PROPERTIES).map(([key, spec]) => [key, spec.name])
+) as { [K in keyof typeof PITCH_PROPERTIES]: (typeof PITCH_PROPERTIES)[K]["name"] };
 
 /** Where applications from the public form land before anyone looks at them. */
 const FORM_DEFAULTS = { source: "Form", status: "Sourced" } as const;
@@ -99,6 +130,8 @@ const fileEntry = (f: { url: string; filename: string }) => ({
  * property turns out to be missing.
  */
 type Field = { name: string; type: string; value: unknown; text: string };
+
+type PitchPropertyKey = keyof typeof PITCH_PROPERTIES;
 
 type Schema = Record<string, string>;
 
@@ -153,49 +186,60 @@ async function fetchSchema(token: string, databaseId: string): Promise<Schema | 
 export async function createPitchPage(p: PitchPayload): Promise<{ id: string; url: string }> {
   const { token, databaseId } = notionEnv();
 
+  /** Name and type always come from PITCH_PROPERTIES, never typed by hand. */
+  const field = (key: PitchPropertyKey, value: unknown, text: string): Field => ({
+    name: PITCH_PROPERTIES[key].name,
+    type: PITCH_PROPERTIES[key].type,
+    value,
+    text,
+  });
+
+  const asking = formatAsking(p.raiseAmount, p.equityOffered);
+
   const fields: Field[] = [
-    { name: NOTION_PROPS.founders, type: "rich_text", value: richText(p.founderName), text: p.founderName },
-    { name: NOTION_PROPS.email, type: "email", value: { email: p.email }, text: p.email },
-    { name: NOTION_PROPS.companyType, type: "select", value: { select: { name: p.companyType } }, text: p.companyType },
-    { name: NOTION_PROPS.techProfile, type: "select", value: { select: { name: p.techProfile } }, text: p.techProfile },
-    { name: NOTION_PROPS.primaryMarket, type: "select", value: { select: { name: p.primaryMarket } }, text: p.primaryMarket },
-    { name: NOTION_PROPS.saConnection, type: "select", value: { select: { name: p.saConnection } }, text: p.saConnection },
-    { name: NOTION_PROPS.stage, type: "select", value: { select: { name: p.stage } }, text: p.stage },
-    { name: NOTION_PROPS.sector, type: "multi_select", value: { multi_select: p.sectors.map((name) => ({ name })) }, text: p.sectors.join(", ") },
-    { name: NOTION_PROPS.asking, type: "rich_text", value: richText(formatAsking(p.raiseAmount, p.equityOffered)), text: formatAsking(p.raiseAmount, p.equityOffered) },
-    { name: NOTION_PROPS.problem, type: "rich_text", value: richText(p.problem), text: p.problem },
-    { name: NOTION_PROPS.solution, type: "rich_text", value: richText(p.solution), text: p.solution },
-    { name: NOTION_PROPS.team, type: "rich_text", value: richText(p.teamDescription), text: p.teamDescription },
-    { name: NOTION_PROPS.whyThisTeam, type: "rich_text", value: richText(p.whyThisTeam), text: p.whyThisTeam },
-    { name: NOTION_PROPS.source, type: "select", value: { select: { name: FORM_DEFAULTS.source } }, text: FORM_DEFAULTS.source },
-    { name: NOTION_PROPS.status, type: "status", value: { status: { name: FORM_DEFAULTS.status } }, text: FORM_DEFAULTS.status },
-    { name: NOTION_PROPS.deck, type: "files", value: { files: [fileEntry(p.deck)] }, text: p.deck.url },
+    field("founders", richText(p.founderName), p.founderName),
+    field("email", { email: p.email }, p.email),
+    field("companyType", { select: { name: p.companyType } }, p.companyType),
+    field("techProfile", { select: { name: p.techProfile } }, p.techProfile),
+    field("primaryMarket", { select: { name: p.primaryMarket } }, p.primaryMarket),
+    field("saConnection", { select: { name: p.saConnection } }, p.saConnection),
+    field("stage", { select: { name: p.stage } }, p.stage),
+    field("sector", { multi_select: p.sectors.map((name) => ({ name })) }, p.sectors.join(", ")),
+    field("asking", richText(asking), asking),
+    field("problem", richText(p.problem), p.problem),
+    field("solution", richText(p.solution), p.solution),
+    field("team", richText(p.teamDescription), p.teamDescription),
+    field("whyThisTeam", richText(p.whyThisTeam), p.whyThisTeam),
+    field("source", { select: { name: FORM_DEFAULTS.source } }, FORM_DEFAULTS.source),
+    field("status", { status: { name: FORM_DEFAULTS.status } }, FORM_DEFAULTS.status),
+    field("deck", { files: [fileEntry(p.deck)] }, p.deck.url),
   ];
 
   if (p.traction?.trim()) {
-    fields.push({ name: NOTION_PROPS.traction, type: "rich_text", value: richText(p.traction.trim()), text: p.traction.trim() });
+    fields.push(field("traction", richText(p.traction.trim()), p.traction.trim()));
   }
 
   // Only meaningful when the founder named an equity percentage.
   const valuation = impliedValuation(p.raiseAmount, p.equityOffered);
   if (valuation) {
     const pre = Math.round(valuation.preMoney);
-    fields.push({ name: NOTION_PROPS.preMoney, type: "number", value: { number: pre }, text: formatZar(pre) });
+    fields.push(field("preMoney", { number: pre }, formatZar(pre)));
   }
 
   // Notion errors on a null url value, so only send these when they parse.
   const website = toUrl(p.website);
-  if (website) fields.push({ name: NOTION_PROPS.website, type: "url", value: { url: website }, text: website });
+  if (website) fields.push(field("website", { url: website }, website));
   const linkedin = toUrl(p.linkedin);
-  if (linkedin) fields.push({ name: NOTION_PROPS.linkedin, type: "url", value: { url: linkedin }, text: linkedin });
+  if (linkedin) fields.push(field("linkedin", { url: linkedin }, linkedin));
 
   if (p.supportingDocs.length > 0) {
-    fields.push({
-      name: NOTION_PROPS.supportingDocs,
-      type: "files",
-      value: { files: p.supportingDocs.map(fileEntry) },
-      text: p.supportingDocs.map((d) => d.url).join("\n"),
-    });
+    fields.push(
+      field(
+        "supportingDocs",
+        { files: p.supportingDocs.map(fileEntry) },
+        p.supportingDocs.map((d) => d.url).join("\n")
+      )
+    );
   }
 
   const schema = await fetchSchema(token, databaseId);
