@@ -59,8 +59,18 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const parsed = pitchSchema.safeParse(json);
   if (!parsed.success) {
+    const fieldErrors = parsed.error.flatten().fieldErrors;
+    // Logged because the founder only ever sees a tidy message: without this,
+    // a rejected submission is invisible and unexplainable after the fact.
+    // Keys that aren't questions on the current form mean the browser is
+    // running a stale bundle against a newer schema.
+    console.warn("[pitch] validation failed", JSON.stringify(fieldErrors));
     return NextResponse.json(
-      { error: "Please check the highlighted fields", details: parsed.error.flatten() },
+      {
+        error: "Please check the highlighted fields",
+        fields: Object.keys(fieldErrors),
+        details: parsed.error.flatten(),
+      },
       { status: 400 }
     );
   }

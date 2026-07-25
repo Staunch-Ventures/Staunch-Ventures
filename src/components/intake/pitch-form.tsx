@@ -37,6 +37,55 @@ const toNumber = (value: string): number | null => {
   return value.trim() && Number.isFinite(n) ? n : null;
 };
 
+/**
+ * Payload keys → the question as it's worded on screen, so a server-side
+ * rejection can name the field a founder actually recognises.
+ */
+const FIELD_LABELS: Record<string, string> = {
+  companyName: "Company name",
+  website: "Website",
+  companyType: "What kind of organisation are you?",
+  techProfile: "How central is technology to the business?",
+  stage: "Which round are you raising?",
+  primaryMarket: "Where do you mainly operate today?",
+  saConnection: "Your connection to South Africa",
+  sectors: "Sectors",
+  problem: "What problem are you solving?",
+  solution: "How are you solving it?",
+  traction: "Traction so far",
+  raiseAmount: "How much are you raising?",
+  equityOffered: "For how much equity?",
+  founderName: "Your name",
+  email: "Email",
+  linkedin: "LinkedIn",
+  teamDescription: "Who's building this?",
+  whyThisTeam: "Why are you the right people to solve it?",
+  deck: "Pitch deck",
+  supportingDocs: "Supporting documents",
+};
+
+/**
+ * Turns the API's list of rejected fields into something actionable.
+ *
+ * If the server rejects a field this page never sent, the page is older than
+ * the API — a question was added after the tab was loaded. Telling someone to
+ * check a field that isn't on their screen is worse than useless, so that case
+ * asks for a reload instead.
+ */
+function describeRejectedFields(fields: unknown, sent: Record<string, unknown>): string | null {
+  if (!Array.isArray(fields) || fields.length === 0) return null;
+  const keys = fields.filter((f): f is string => typeof f === "string");
+  if (keys.length === 0) return null;
+
+  const notOnThisPage = keys.some((k) => !(k in sent));
+  if (notOnThisPage) {
+    return "This page is out of date — please refresh and submit again.";
+  }
+
+  const labels = keys.map((k) => FIELD_LABELS[k] ?? k);
+  return `Please check: ${labels.join(", ")}.`;
+}
+
 export function PitchForm() {
   const [companyName, setCompanyName] = React.useState("");
   const [website, setWebsite] = React.useState("");
@@ -154,10 +203,7 @@ export function PitchForm() {
       }
 
       setPhase("saving");
-      const res = await fetch("/api/pitch", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const payload = {
           companyName,
           website,
           founderName,
@@ -179,11 +225,19 @@ export function PitchForm() {
           deck: { url: deckBlob.url, filename: deck!.name },
           supportingDocs: docBlobs,
           companyUrl2: honeypot,
-        }),
+      };
+      const res = await fetch("/api/pitch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(body.error || "Something went wrong saving your application.");
+        throw new Error(
+          describeRejectedFields(body.fields, payload) ||
+            body.error ||
+            "Something went wrong saving your application."
+        );
       }
       // The server runs the same mandate check and has the final say.
       if (body.declined) {
