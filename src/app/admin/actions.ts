@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getSql } from "@/lib/db";
+import { getSql, isDatabaseConfigured } from "@/lib/db";
 import { STARTUP_STATUSES, STARTUP_REJECTED, INVESTOR_STATUSES } from "@/lib/intake";
 
 /**
@@ -9,12 +9,16 @@ import { STARTUP_STATUSES, STARTUP_REJECTED, INVESTOR_STATUSES } from "@/lib/int
  * (drag & drop) and via form actions on the detail pages. These run behind
  * the /admin middleware gate, so only authenticated sessions reach them.
  * status_changed_at powers the time-in-stage aging signal on cards.
+ *
+ * Dormant while no database is configured — the board renders its archived
+ * state in that case, so nothing can reach these anyway.
  */
 
 const startupValues = [...STARTUP_STATUSES.map((s) => s.value), STARTUP_REJECTED.value] as string[];
 const investorValues = INVESTOR_STATUSES.map((s) => s.value) as string[];
 
 export async function updateStartupStatus(id: string, status: string): Promise<void> {
+  if (!isDatabaseConfigured()) return;
   if (!id || !startupValues.includes(status)) return;
   const sql = getSql();
   await sql`UPDATE startup_applications
@@ -25,6 +29,7 @@ export async function updateStartupStatus(id: string, status: string): Promise<v
 }
 
 export async function updateInvestorStatus(id: string, status: string): Promise<void> {
+  if (!isDatabaseConfigured()) return;
   if (!id || !investorValues.includes(status)) return;
   const sql = getSql();
   await sql`UPDATE investor_inquiries

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Download, FileText, Paperclip, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getSql } from "@/lib/db";
+import { getSql, isDatabaseConfigured } from "@/lib/db";
 import { STARTUP_STATUSES, STARTUP_REJECTED } from "@/lib/intake";
 import { updateStartupStatusForm } from "@/app/admin/actions";
 import { Card } from "@/components/ui/card";
@@ -74,6 +74,9 @@ export default async function StartupDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  // Dormant without a database — /admin explains why; a deal detail can't.
+  if (!isDatabaseConfigured()) notFound();
+
   const sql = getSql();
   let rows: Record<string, unknown>[] = [];
   try {

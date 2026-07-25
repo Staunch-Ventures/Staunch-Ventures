@@ -1,9 +1,29 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { getSql } from "@/lib/db";
+import { getSql, isDatabaseConfigured } from "@/lib/db";
 import { DealBoard, type StartupCard, type InvestorCard } from "@/components/admin/deal-board";
+import { Card } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
+
+/**
+ * Shown when no database is wired up. The board is kept whole rather than
+ * deleted — startup pitches moved to Notion and the investor side is paused,
+ * but this UI is worth reusing, so it says what happened instead of throwing.
+ */
+function ArchivedNotice() {
+  return (
+    <Card className="p-8 md:p-12 text-center">
+      <h1 className="text-xl font-semibold tracking-tight mb-3">Dashboard archived</h1>
+      <p className="text-sm text-muted-foreground text-pretty max-w-md mx-auto">
+        Startup pitches now go straight to the Notion Venture Pipeline, and the
+        Neon database behind this board has been shut down. The board itself is
+        untouched — set <code className="text-foreground">DATABASE_URL</code> and
+        it works exactly as before.
+      </p>
+    </Card>
+  );
+}
 
 export default async function AdminPage({
   searchParams,
@@ -12,6 +32,8 @@ export default async function AdminPage({
 }) {
   const params = await searchParams;
   const tab = params.tab === "investors" ? "investors" : "startups";
+
+  if (!isDatabaseConfigured()) return <ArchivedNotice />;
 
   const sql = getSql();
   const [startupRows, investorRows] = await Promise.all([
