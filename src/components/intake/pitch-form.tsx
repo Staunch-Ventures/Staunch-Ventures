@@ -21,6 +21,7 @@ import {
   advisePitch,
   impliedValuation,
   formatZar,
+  type PitchInput,
 } from "@/lib/intake";
 import { FieldLabel, ChipGroup, CharCount } from "./form-bits";
 
@@ -179,9 +180,11 @@ export function PitchForm() {
       return;
     }
 
-    const problem = validate();
-    if (problem) {
-      setError(problem);
+    // Named `invalid`, not `problem` — the form has a `problem` answer, and
+    // shadowing it here once sent null to the API in place of the founder's text.
+    const invalid = validate();
+    if (invalid) {
+      setError(invalid);
       return;
     }
 
@@ -203,19 +206,23 @@ export function PitchForm() {
       }
 
       setPhase("saving");
-      const payload = {
+      // Typed against the schema: a missing or wrongly-typed answer fails the
+      // build instead of reaching a founder as a validation error. The `!`s are
+      // safe because validate() has already established each chip group has a
+      // selection.
+      const payload: PitchInput & { companyUrl2: string } = {
           companyName,
           website,
           founderName,
           email,
           linkedin,
-          companyType: companyType[0],
-          techProfile: techProfile[0],
-          primaryMarket: primaryMarket[0],
-          saConnection: saConnection[0],
+          companyType: companyType[0]!,
+          techProfile: techProfile[0]!,
+          primaryMarket: primaryMarket[0]!,
+          saConnection: saConnection[0]!,
           sectors,
-          stage: stage[0],
-          raiseAmount: raise,
+          stage: stage[0]!,
+          raiseAmount: raise!,
           equityOffered: equity,
           problem,
           solution,

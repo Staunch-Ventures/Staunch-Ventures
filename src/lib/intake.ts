@@ -165,6 +165,13 @@ export const pitchSchema = z.object({
 
 export type PitchPayload = z.infer<typeof pitchSchema>;
 
+/**
+ * What the form must put on the wire. Annotating the request body with this
+ * turns a field the client fills wrongly into a compile error rather than a
+ * validation failure the founder has to decipher.
+ */
+export type PitchInput = z.input<typeof pitchSchema>;
+
 /* ------------------------------------------------------------------ *
  * The raise
  * ------------------------------------------------------------------ */
