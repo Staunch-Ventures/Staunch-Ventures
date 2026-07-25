@@ -108,14 +108,19 @@ export type StartupStatus = (typeof STARTUP_STATUSES)[number]["value"];
 export type InvestorStatus = (typeof INVESTOR_STATUSES)[number]["value"];
 
 /**
- * Character limits. `summary` is deliberately tight: it lands in Notion's
- * `Summary` property, which is read at a glance on a board card, so it has to
- * stay a pitch rather than becoming an essay.
+ * Character limits.
+ *
+ * The narrative fields are deliberately tight. Each one lands in a Notion text
+ * property that gets read at a glance, and the discipline is the point: a
+ * founder who can't state the problem in 300 characters usually hasn't found
+ * it yet. `problem` is the tightest for exactly that reason.
  */
 export const CAPS = {
-  summary: 400,
-  teamDescription: 500,
+  problem: 300,
+  solution: 400,
   traction: 300,
+  teamDescription: 500,
+  whyThisTeam: 400,
   investorMessage: 600,
 } as const;
 
@@ -146,9 +151,14 @@ export const pitchSchema = z.object({
   raiseAmount: z.number().positive().max(10_000_000_000),
   /** Percent. Optional — plenty of founders leave this open to negotiation. */
   equityOffered: z.number().positive().lt(100).optional().nullable(),
+  /* The pitch, as three questions: what's broken, how you fix it, why you. */
+  problem: z.string().trim().min(1).max(CAPS.problem),
+  solution: z.string().trim().min(1).max(CAPS.solution),
   traction: z.string().trim().max(CAPS.traction).optional().or(z.literal("")),
   teamDescription: z.string().trim().min(1).max(CAPS.teamDescription),
-  summary: z.string().trim().min(1).max(CAPS.summary),
+  /** Founder-market fit in the founder's own words — the team's verdict on it
+   *  lives in Notion's `Founder-Market Fit` select, which the form never sets. */
+  whyThisTeam: z.string().trim().min(1).max(CAPS.whyThisTeam),
   deck: uploadedFileSchema,
   supportingDocs: z.array(uploadedFileSchema).max(MAX_SUPPORTING_DOCS),
 });

@@ -46,7 +46,8 @@ export function PitchForm() {
   const [primaryMarket, setPrimaryMarket] = React.useState<PrimaryMarket[]>([]);
   const [saConnection, setSaConnection] = React.useState<SaConnection[]>([]);
   const [sectors, setSectors] = React.useState<Sector[]>([]);
-  const [summary, setSummary] = React.useState("");
+  const [problem, setProblem] = React.useState("");
+  const [solution, setSolution] = React.useState("");
   const [traction, setTraction] = React.useState("");
   const [raiseAmount, setRaiseAmount] = React.useState("");
   const [equityOffered, setEquityOffered] = React.useState("");
@@ -54,6 +55,7 @@ export function PitchForm() {
   const [email, setEmail] = React.useState("");
   const [linkedin, setLinkedin] = React.useState("");
   const [teamDescription, setTeamDescription] = React.useState("");
+  const [whyThisTeam, setWhyThisTeam] = React.useState("");
   const [deck, setDeck] = React.useState<File | null>(null);
   const [docs, setDocs] = React.useState<File[]>([]);
   const [honeypot, setHoneypot] = React.useState("");
@@ -94,8 +96,10 @@ export function PitchForm() {
     if (primaryMarket.length === 0) return "Pick your primary market.";
     if (saConnection.length === 0) return "Tell us your connection to South Africa.";
     if (sectors.length === 0) return "Pick at least one sector.";
-    if (!summary.trim()) return "Add a short summary of what you're building.";
-    if (summary.length > CAPS.summary) return "The summary is over the character limit.";
+    if (!problem.trim()) return "Tell us what problem you're solving.";
+    if (problem.length > CAPS.problem) return "The problem description is over the character limit.";
+    if (!solution.trim()) return "Tell us how you're solving it.";
+    if (solution.length > CAPS.solution) return "The solution description is over the character limit.";
     if (traction.length > CAPS.traction) return "Traction is over the character limit.";
     if (raise === null || raise <= 0) return "Tell us how much you're raising.";
     if (equity !== null && (equity <= 0 || equity >= 100)) return "Equity offered must be between 0 and 100%.";
@@ -103,6 +107,8 @@ export function PitchForm() {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return "A valid email is required.";
     if (!teamDescription.trim()) return "Tell us about the team.";
     if (teamDescription.length > CAPS.teamDescription) return "Team description is over the character limit.";
+    if (!whyThisTeam.trim()) return "Tell us why you're the right team to solve this.";
+    if (whyThisTeam.length > CAPS.whyThisTeam) return "That answer is over the character limit.";
     if (!deck) return "Your pitch deck (PDF) is required.";
     if (deck.type !== "application/pdf") return "The pitch deck must be a PDF.";
     if (deck.size > MAX_FILE_MB * 1024 * 1024) return `The deck is over ${MAX_FILE_MB}MB.`;
@@ -165,9 +171,11 @@ export function PitchForm() {
           stage: stage[0],
           raiseAmount: raise,
           equityOffered: equity,
+          problem,
+          solution,
           traction,
           teamDescription,
-          summary,
+          whyThisTeam,
           deck: { url: deckBlob.url, filename: deck!.name },
           supportingDocs: docBlobs,
           companyUrl2: honeypot,
@@ -298,16 +306,31 @@ export function PitchForm() {
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <FieldLabel htmlFor="summary">In a sentence or two, what do you do?</FieldLabel>
-              <CharCount value={summary} max={CAPS.summary} />
+              <FieldLabel htmlFor="problem">What problem are you solving?</FieldLabel>
+              <CharCount value={problem} max={CAPS.problem} />
             </div>
             <Textarea
-              id="summary"
+              id="problem"
               rows={3}
-              placeholder="We give rural clinics offline-first patient records. 40 clinics across KZN use us today."
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-              maxLength={CAPS.summary}
+              placeholder="Rural clinics still keep patient records on paper, so notes go missing between visits and follow-up care breaks down."
+              value={problem}
+              onChange={(e) => setProblem(e.target.value)}
+              maxLength={CAPS.problem}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="solution">How are you solving it?</FieldLabel>
+              <CharCount value={solution} max={CAPS.solution} />
+            </div>
+            <Textarea
+              id="solution"
+              rows={3}
+              placeholder="An offline-first records app that syncs when signal returns, so nothing depends on connectivity at the point of care. 40 clinics across KZN use it today."
+              value={solution}
+              onChange={(e) => setSolution(e.target.value)}
+              maxLength={CAPS.solution}
               required
             />
           </div>
@@ -408,6 +431,21 @@ export function PitchForm() {
               value={teamDescription}
               onChange={(e) => setTeamDescription(e.target.value)}
               maxLength={CAPS.teamDescription}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="whyThisTeam">Why are you the right people to solve it?</FieldLabel>
+              <CharCount value={whyThisTeam} max={CAPS.whyThisTeam} />
+            </div>
+            <Textarea
+              id="whyThisTeam"
+              rows={3}
+              placeholder="Thandi spent five years building clinical systems at Discovery; Sipho ran operations across 12 rural clinics and lived this problem daily."
+              value={whyThisTeam}
+              onChange={(e) => setWhyThisTeam(e.target.value)}
+              maxLength={CAPS.whyThisTeam}
               required
             />
           </div>
