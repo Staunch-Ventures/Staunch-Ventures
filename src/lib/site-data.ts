@@ -150,6 +150,14 @@ export const growthPartners: GrowthPartner[] = [
         logoHint: "triangle logo",
         website: "https://summit.deals/"
     },
+    {
+        name: "Mzansi Combinator",
+        tag: "AI Incubator",
+        description: "The investment and incubation arm of the Gauteng AI Community, built to support bold founders shaping the future of Africa and helping them build and scale AI startups.",
+        logo: "/mzansi-combinator-logo.png",
+        logoHint: "rocket logo green",
+        website: "https://www.gaic.co.za/mzansi-combinator"
+    },
 ];
 
 export const initiatives: Initiative[] = [
