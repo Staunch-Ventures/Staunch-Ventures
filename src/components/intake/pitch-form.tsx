@@ -11,6 +11,7 @@ import {
   SECTORS,
   STAGES,
   COMPANY_TYPES,
+  CUSTOMER_TYPES,
   TECH_PROFILES,
   PRIMARY_MARKETS,
   SA_CONNECTIONS,
@@ -23,11 +24,12 @@ import {
   formatZar,
   type PitchInput,
 } from "@/lib/intake";
-import { FieldLabel, ChipGroup, CharCount } from "./form-bits";
+import { FieldLabel, ChipGroup, CharCount, CheckRow } from "./form-bits";
 
 type Sector = (typeof SECTORS)[number];
 type Stage = (typeof STAGES)[number];
 type CompanyType = (typeof COMPANY_TYPES)[number];
+type CustomerType = (typeof CUSTOMER_TYPES)[number];
 type TechProfile = (typeof TECH_PROFILES)[number];
 type PrimaryMarket = (typeof PRIMARY_MARKETS)[number];
 type SaConnection = (typeof SA_CONNECTIONS)[number];
@@ -45,7 +47,9 @@ const toNumber = (value: string): number | null => {
 const FIELD_LABELS: Record<string, string> = {
   companyName: "Company name",
   website: "Website",
+  registrationNumber: "Company registration number",
   companyType: "What kind of organisation are you?",
+  customerType: "Who are your customers?",
   techProfile: "How central is technology to the business?",
   stage: "Which round are you raising?",
   primaryMarket: "Where do you mainly operate today?",
@@ -56,6 +60,7 @@ const FIELD_LABELS: Record<string, string> = {
   traction: "Traction so far",
   raiseAmount: "How much are you raising?",
   equityOffered: "For how much equity?",
+  founderMajority: "Do the founders still hold a majority?",
   founderName: "Your name",
   email: "Email",
   linkedin: "LinkedIn",
@@ -90,7 +95,9 @@ function describeRejectedFields(fields: unknown, sent: Record<string, unknown>):
 export function PitchForm() {
   const [companyName, setCompanyName] = React.useState("");
   const [website, setWebsite] = React.useState("");
+  const [registrationNumber, setRegistrationNumber] = React.useState("");
   const [companyType, setCompanyType] = React.useState<CompanyType[]>([]);
+  const [customerType, setCustomerType] = React.useState<CustomerType[]>([]);
   const [techProfile, setTechProfile] = React.useState<TechProfile[]>([]);
   const [stage, setStage] = React.useState<Stage[]>([]);
   const [primaryMarket, setPrimaryMarket] = React.useState<PrimaryMarket[]>([]);
@@ -101,6 +108,7 @@ export function PitchForm() {
   const [traction, setTraction] = React.useState("");
   const [raiseAmount, setRaiseAmount] = React.useState("");
   const [equityOffered, setEquityOffered] = React.useState("");
+  const [founderMajority, setFounderMajority] = React.useState(false);
   const [founderName, setFounderName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [linkedin, setLinkedin] = React.useState("");
@@ -146,6 +154,7 @@ export function PitchForm() {
     if (primaryMarket.length === 0) return "Pick your primary market.";
     if (saConnection.length === 0) return "Tell us your connection to South Africa.";
     if (sectors.length === 0) return "Pick at least one sector.";
+    if (customerType.length === 0) return "Tell us who your customers are.";
     if (!problem.trim()) return "Tell us what problem you're solving.";
     if (problem.length > CAPS.problem) return "The problem description is over the character limit.";
     if (!solution.trim()) return "Tell us how you're solving it.";
@@ -213,10 +222,12 @@ export function PitchForm() {
       const payload: PitchInput & { companyUrl2: string } = {
           companyName,
           website,
+          registrationNumber,
           founderName,
           email,
           linkedin,
           companyType: companyType[0]!,
+          customerType: customerType[0]!,
           techProfile: techProfile[0]!,
           primaryMarket: primaryMarket[0]!,
           saConnection: saConnection[0]!,
@@ -224,6 +235,7 @@ export function PitchForm() {
           stage: stage[0]!,
           raiseAmount: raise!,
           equityOffered: equity,
+          founderMajority,
           problem,
           solution,
           traction,
@@ -324,6 +336,17 @@ export function PitchForm() {
               <FieldLabel htmlFor="website" optional>Website</FieldLabel>
               <Input id="website" type="url" placeholder="https://acme.co.za" value={website} onChange={(e) => setWebsite(e.target.value)} maxLength={200} />
             </div>
+            <div className="space-y-2">
+              <FieldLabel htmlFor="registrationNumber" optional>Company registration number</FieldLabel>
+              <Input
+                id="registrationNumber"
+                placeholder="2024/123456/07"
+                value={registrationNumber}
+                onChange={(e) => setRegistrationNumber(e.target.value)}
+                maxLength={60}
+              />
+              <p className="text-xs text-muted-foreground/70">Leave blank if you haven&apos;t registered yet.</p>
+            </div>
           </div>
         </section>
 
@@ -364,6 +387,14 @@ export function PitchForm() {
           <div className="space-y-2">
             <FieldLabel>Sectors — pick any that apply</FieldLabel>
             <ChipGroup options={SECTORS} value={sectors} onChange={setSectors} multi />
+          </div>
+          {/* Who pays — distinct from what kind of organisation they are. */}
+          <div className="space-y-2">
+            <FieldLabel>Who are your customers?</FieldLabel>
+            <ChipGroup options={CUSTOMER_TYPES} value={customerType} onChange={setCustomerType} />
+            <p className="text-xs text-muted-foreground/70">
+              Whoever actually pays you — businesses, consumers, both, or government.
+            </p>
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -445,6 +476,14 @@ export function PitchForm() {
               />
               <p className="text-xs text-muted-foreground/70">Leave blank if it&apos;s still open.</p>
             </div>
+          </div>
+
+          {/* Cap-table health, which the equity on offer doesn't tell us:
+              10% for sale says nothing about what the founders already gave away. */}
+          <div className="space-y-2">
+            <CheckRow checked={founderMajority} onChange={setFounderMajority}>
+              The founders still hold a majority of the company
+            </CheckRow>
           </div>
 
           {/* Arithmetic on what they just told us — shown so a founder can

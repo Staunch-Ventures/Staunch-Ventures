@@ -48,6 +48,13 @@ export const COMPANY_TYPES = [
   "Other",
 ] as const;
 
+/**
+ * Who actually pays. `Company Type` says what kind of organisation the
+ * applicant is; this says who buys from them, which is a different question
+ * and the one the mandate's view on selling to government turns on.
+ */
+export const CUSTOMER_TYPES = ["B2B", "B2C", "B2B2C", "B2G"] as const;
+
 export const TECH_PROFILES = [
   "Tech product or platform",
   "Tech-enabled business",
@@ -138,10 +145,14 @@ export const uploadedFileSchema = z.object({
 export const pitchSchema = z.object({
   companyName: z.string().trim().min(1).max(120),
   website: z.string().trim().max(200).optional().or(z.literal("")),
+  /** CIPC registration, e.g. 2024/123456/07. Optional: idea-stage founders
+   *  are in mandate and often haven't registered an entity yet. */
+  registrationNumber: z.string().trim().max(60).optional().or(z.literal("")),
   founderName: z.string().trim().min(1).max(120),
   email: z.string().trim().email().max(200),
   linkedin: z.string().trim().max(300).optional().or(z.literal("")),
   companyType: z.enum(COMPANY_TYPES),
+  customerType: z.enum(CUSTOMER_TYPES),
   techProfile: z.enum(TECH_PROFILES),
   primaryMarket: z.enum(PRIMARY_MARKETS),
   saConnection: z.enum(SA_CONNECTIONS),
@@ -151,6 +162,12 @@ export const pitchSchema = z.object({
   raiseAmount: z.number().positive().max(10_000_000_000),
   /** Percent. Optional — plenty of founders leave this open to negotiation. */
   equityOffered: z.number().positive().lt(100).optional().nullable(),
+  /**
+   * Whether the founders still hold a majority *after everything raised so
+   * far* — a different question from `equityOffered`, which is only the slice
+   * being sold in this round. 10% on offer says nothing about what's left.
+   */
+  founderMajority: z.boolean(),
   /* The pitch, as three questions: what's broken, how you fix it, why you. */
   problem: z.string().trim().min(1).max(CAPS.problem),
   solution: z.string().trim().min(1).max(CAPS.solution),

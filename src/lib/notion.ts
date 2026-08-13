@@ -1,5 +1,6 @@
 import {
   COMPANY_TYPES,
+  CUSTOMER_TYPES,
   PRIMARY_MARKETS,
   SA_CONNECTIONS,
   SECTORS,
@@ -49,7 +50,10 @@ export const PITCH_PROPERTIES = {
   email: { name: "Email", type: "email" },
   linkedin: { name: "LinkedIn", type: "url" },
   website: { name: "Website", type: "url" },
+  registrationNumber: { name: "Registration Number", type: "rich_text" },
   companyType: { name: "Company Type", type: "select", options: COMPANY_TYPES },
+  /** Who pays them, as opposed to what kind of organisation they are. */
+  customerType: { name: "Customer Type", type: "select", options: CUSTOMER_TYPES },
   techProfile: { name: "Tech Profile", type: "select", options: TECH_PROFILES },
   primaryMarket: { name: "Primary Market", type: "select", options: PRIMARY_MARKETS },
   saConnection: { name: "SA Connection", type: "select", options: SA_CONNECTIONS },
@@ -57,6 +61,8 @@ export const PITCH_PROPERTIES = {
   stage: { name: "Stage", type: "select", options: STAGES },
   asking: { name: "Asking", type: "rich_text" },
   preMoney: { name: "Pre-money (ZAR)", type: "number" },
+  /** Founders still hold >50% after prior rounds — not what's on offer here. */
+  founderMajority: { name: "Founder Majority", type: "checkbox" },
   problem: { name: "Problem", type: "rich_text" },
   solution: { name: "Solution", type: "rich_text" },
   traction: { name: "Traction", type: "rich_text" },
@@ -200,12 +206,19 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
     field("founders", richText(p.founderName), p.founderName),
     field("email", { email: p.email }, p.email),
     field("companyType", { select: { name: p.companyType } }, p.companyType),
+    field("customerType", { select: { name: p.customerType } }, p.customerType),
     field("techProfile", { select: { name: p.techProfile } }, p.techProfile),
     field("primaryMarket", { select: { name: p.primaryMarket } }, p.primaryMarket),
     field("saConnection", { select: { name: p.saConnection } }, p.saConnection),
     field("stage", { select: { name: p.stage } }, p.stage),
     field("sector", { multi_select: p.sectors.map((name) => ({ name })) }, p.sectors.join(", ")),
     field("asking", richText(asking), asking),
+    // Always written: an unticked box is an answer ("no"), not a blank.
+    field(
+      "founderMajority",
+      { checkbox: p.founderMajority },
+      p.founderMajority ? "Yes" : "No"
+    ),
     field("problem", richText(p.problem), p.problem),
     field("solution", richText(p.solution), p.solution),
     field("team", richText(p.teamDescription), p.teamDescription),
@@ -217,6 +230,11 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
 
   if (p.traction?.trim()) {
     fields.push(field("traction", richText(p.traction.trim()), p.traction.trim()));
+  }
+
+  if (p.registrationNumber?.trim()) {
+    const reg = p.registrationNumber.trim();
+    fields.push(field("registrationNumber", richText(reg), reg));
   }
 
   // Only meaningful when the founder named an equity percentage.
