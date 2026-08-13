@@ -34,6 +34,7 @@ function logDecline(p: PitchPayload, dq: Disqualification): void {
       company: p.companyName,
       email: p.email,
       companyType: p.companyType,
+      customerType: p.customerType,
       techProfile: p.techProfile,
       stage: p.stage,
       primaryMarket: p.primaryMarket,

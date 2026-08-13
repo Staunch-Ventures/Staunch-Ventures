@@ -133,6 +133,7 @@ export function PitchForm() {
    */
   const screenInput = {
     companyType: companyType[0],
+    customerType: customerType[0],
     techProfile: techProfile[0],
     stage: stage[0],
     primaryMarket: primaryMarket[0],
@@ -149,12 +150,12 @@ export function PitchForm() {
   const validate = (): string | null => {
     if (!companyName.trim()) return "Company name is required.";
     if (companyType.length === 0) return "Pick your company type.";
+    if (customerType.length === 0) return "Tell us who your customers are.";
     if (techProfile.length === 0) return "Tell us how technology fits in.";
     if (stage.length === 0) return "Pick the round you're raising.";
     if (primaryMarket.length === 0) return "Pick your primary market.";
     if (saConnection.length === 0) return "Tell us your connection to South Africa.";
     if (sectors.length === 0) return "Pick at least one sector.";
-    if (customerType.length === 0) return "Tell us who your customers are.";
     if (!problem.trim()) return "Tell us what problem you're solving.";
     if (problem.length > CAPS.problem) return "The problem description is over the character limit.";
     if (!solution.trim()) return "Tell us how you're solving it.";
@@ -356,13 +357,21 @@ export function PitchForm() {
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary">Fit check</p>
             <p className="text-sm text-muted-foreground mt-2 text-pretty">
-              Five quick questions. We ask them up front so neither of us spends
+              Six quick questions. We ask them up front so neither of us spends
               time on something that was never going to fit.
             </p>
           </div>
           <div className="space-y-2">
             <FieldLabel>What kind of organisation are you?</FieldLabel>
             <ChipGroup options={COMPANY_TYPES} value={companyType} onChange={setCompanyType} />
+          </div>
+          {/* Who pays — distinct from what kind of organisation they are. */}
+          <div className="space-y-2">
+            <FieldLabel>Who are your customers?</FieldLabel>
+            <ChipGroup options={CUSTOMER_TYPES} value={customerType} onChange={setCustomerType} />
+            <p className="text-xs text-muted-foreground/70">
+              Whoever actually pays you — businesses, consumers, both, or government.
+            </p>
           </div>
           <div className="space-y-2">
             <FieldLabel>How central is technology to the business?</FieldLabel>
@@ -387,14 +396,6 @@ export function PitchForm() {
           <div className="space-y-2">
             <FieldLabel>Sectors — pick any that apply</FieldLabel>
             <ChipGroup options={SECTORS} value={sectors} onChange={setSectors} multi />
-          </div>
-          {/* Who pays — distinct from what kind of organisation they are. */}
-          <div className="space-y-2">
-            <FieldLabel>Who are your customers?</FieldLabel>
-            <ChipGroup options={CUSTOMER_TYPES} value={customerType} onChange={setCustomerType} />
-            <p className="text-xs text-muted-foreground/70">
-              Whoever actually pays you — businesses, consumers, both, or government.
-            </p>
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">

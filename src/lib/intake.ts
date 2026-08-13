@@ -243,6 +243,7 @@ export function formatAsking(raiseAmount: number, equityPct?: number | null): st
  */
 export type ScreenInput = {
   companyType?: (typeof COMPANY_TYPES)[number];
+  customerType?: (typeof CUSTOMER_TYPES)[number];
   techProfile?: (typeof TECH_PROFILES)[number];
   stage?: (typeof STAGES)[number];
   primaryMarket?: (typeof PRIMARY_MARKETS)[number];
@@ -251,7 +252,7 @@ export type ScreenInput = {
 
 export type Disqualification = {
   /** Stable identifier, stored with declined submissions for reporting. */
-  code: "not-for-profit" | "not-tech" | "too-late-stage" | "no-africa-nexus";
+  code: "not-for-profit" | "sells-to-government" | "not-tech" | "too-late-stage" | "no-africa-nexus";
   /** Which answer triggered it — the form highlights this field. */
   field: keyof ScreenInput;
   /** Shown to the founder. Written to be read by a person who just got a no. */
@@ -265,7 +266,7 @@ export type Disqualification = {
  * once the answers it depends on are present.
  */
 export function screenPitch(input: ScreenInput): Disqualification | null {
-  const { companyType, techProfile, stage, primaryMarket, saConnection } = input;
+  const { companyType, customerType, techProfile, stage, primaryMarket, saConnection } = input;
 
   // 1. For-profit only. Non-profits and public entities fall outside a
   //    venture-equity mandate entirely.
@@ -278,7 +279,20 @@ export function screenPitch(input: ScreenInput): Disqualification | null {
     };
   }
 
-  // 2. Technology-driven, broadly defined — a tech-enabled business counts.
+  // 2. Who pays. B2G is the case rule 1 misses entirely: a for-profit tech
+  //    company can still sell primarily to government, and that revenue base
+  //    sits outside the mandate. B2B2C is untouched — a government somewhere
+  //    in the chain isn't the same as government being the customer.
+  if (customerType === "B2G") {
+    return {
+      code: "sells-to-government",
+      field: "customerType",
+      reason:
+        "Our mandate doesn't extend to companies selling primarily to government, so we're not able to take this one further.",
+    };
+  }
+
+  // 3. Technology-driven, broadly defined — a tech-enabled business counts.
   if (techProfile === "Not technology-driven") {
     return {
       code: "not-tech",
@@ -288,7 +302,7 @@ export function screenPitch(input: ScreenInput): Disqualification | null {
     };
   }
 
-  // 3. Early stage only.
+  // 4. Early stage only.
   if (stage === "Series B+") {
     return {
       code: "too-late-stage",
@@ -298,7 +312,7 @@ export function screenPitch(input: ScreenInput): Disqualification | null {
     };
   }
 
-  // 4. African nexus: operating mainly in Africa, or based in / actively
+  // 5. African nexus: operating mainly in Africa, or based in / actively
   //    expanding into South Africa. Missing all three is out of mandate.
   if (
     primaryMarket === "Outside Africa" &&
