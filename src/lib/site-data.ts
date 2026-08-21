@@ -158,6 +158,14 @@ export const growthPartners: GrowthPartner[] = [
         logoHint: "rocket logo green",
         website: "https://www.gaic.co.za/mzansi-combinator"
     },
+    {
+        name: "One Eleven",
+        tag: "Software Studio",
+        description: "A Johannesburg-based software consultancy that solves the business problem first and the software second, building web, mobile, AI and automation products as a long-term partner.",
+        logo: "/one-eleven-logo.png",
+        logoHint: "red chevron logo",
+        website: "https://oneeleven.tech/"
+    },
 ];
 
 export const initiatives: Initiative[] = [
