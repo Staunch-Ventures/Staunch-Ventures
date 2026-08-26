@@ -11,7 +11,7 @@ founder fills /pitch
    │                                  founder sees a courteous decline
    │                                  ✗ never reaches Notion, agent never runs
    └─ eligible → Notion row created
-                 Status = Sourced, Source = Form
+                 Status = Sourcing..., Source = Form
 ```
 
 The screening gate lives **in front of** the Notion write on purpose. Anything
@@ -40,7 +40,7 @@ fails silently at the API boundary.
 | Company name | `Company` | title |
 | Website | `Website` | url |
 | What kind of organisation are you? | `Company Type` | select |
-| How central is technology? | `Tech Profile` | select |
+| How central is technology? | *(not stored — screening only)* | — |
 | Which round are you raising? | `Stage` | select |
 | Where do you mainly operate? | `Primary Market` | select |
 | Connection to South Africa | `SA Connection` | select |
@@ -57,7 +57,7 @@ fails silently at the API boundary.
 | Pitch deck | `Pitch Deck` | files (external → Blob) |
 | Anything else? | `Supporting Docs` | files (external → Blob) |
 | *(automatic)* | `Source` = **Form** | select |
-| *(automatic)* | `Status` = **Sourced** | status |
+| *(automatic)* | `Status` = **Sourcing...** | status |
 
 Files stay in Vercel Blob and attach to Notion as external URLs, so nothing
 large passes through the API route.
@@ -110,6 +110,12 @@ the row is still created and the founder's words survive as text — they just
 stop being queryable until the mismatch is fixed. `npm run notion:check` names
 the mismatch, and both the writer and that check read the same
 `PITCH_PROPERTIES` table in `src/lib/notion.ts`, so they cannot disagree.
+
+A renamed **`Status` option** counts as drift for the same reason. Notion
+creates missing `select` and `multi_select` options on demand, but never
+`status` options — naming one that isn't on the board makes it reject the whole
+page. So the writer checks that option exists before sending it, and files the
+row without a status rather than losing the application.
 
 ## Screening rules
 

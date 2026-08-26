@@ -63,6 +63,9 @@ async function main() {
 
   const specs = Object.values(PITCH_PROPERTIES);
   const problems: string[] = [];
+  // Called out separately below: unlike select options, these can't be created
+  // by the API, so this one needs a human in the Notion UI.
+  let missingStatusOption = false;
 
   for (const spec of specs) {
     const actual = db.properties[spec.name];
@@ -84,6 +87,7 @@ async function main() {
       const have = (actual.select ?? actual.multi_select ?? actual.status)?.options ?? [];
       const missing = wanted.filter((o) => !have.some((h) => h.name === o));
       if (missing.length > 0) {
+        if (actual.type === "status") missingStatusOption = true;
         problems.push(
           `MISSING OPTIONS "${spec.name}": ${missing.map((m) => `"${m}"`).join(", ")}`
         );
@@ -111,6 +115,14 @@ async function main() {
       "\nSubmissions still succeed — unmatched answers are written to the page\n" +
         "body instead — but they won't be queryable until this is fixed.\n"
     );
+    if (missingStatusOption) {
+      console.log(
+        'A missing "Status" option is the one thing this list can\'t fix itself:\n' +
+          "Notion creates select options on demand but never status options, so\n" +
+          "add it by hand in the board's Status column (or point PITCH_PROPERTIES\n" +
+          "at the option that's already there).\n"
+      );
+    }
     process.exit(1);
   }
 

@@ -5,7 +5,6 @@ import {
   SA_CONNECTIONS,
   SECTORS,
   STAGES,
-  TECH_PROFILES,
   formatAsking,
   formatZar,
   impliedValuation,
@@ -54,7 +53,12 @@ export const PITCH_PROPERTIES = {
   companyType: { name: "Company Type", type: "select", options: COMPANY_TYPES },
   /** Who pays them, as opposed to what kind of organisation they are. */
   customerType: { name: "Customer Type", type: "select", options: CUSTOMER_TYPES },
-  techProfile: { name: "Tech Profile", type: "select", options: TECH_PROFILES },
+  /*
+   * Tech Profile is deliberately absent. The form still asks it and
+   * `screenPitch` still declines on it, but it earns no column: by the time a
+   * row exists the answer has already done its job, and the survivors are all
+   * some flavour of "technology-driven".
+   */
   primaryMarket: { name: "Primary Market", type: "select", options: PRIMARY_MARKETS },
   saConnection: { name: "SA Connection", type: "select", options: SA_CONNECTIONS },
   sector: { name: "Sector", type: "multi_select", options: SECTORS },
@@ -75,7 +79,7 @@ export const PITCH_PROPERTIES = {
    */
   whyThisTeam: { name: "Founder-Market Fit", type: "rich_text" },
   source: { name: "Source", type: "select", options: ["Form"] },
-  status: { name: "Status", type: "status", options: ["Sourced"] },
+  status: { name: "Status", type: "status", options: ["Sourcing..."] },
   deck: { name: "Pitch Deck", type: "files" },
   supportingDocs: { name: "Supporting Docs", type: "files" },
   /**
@@ -94,7 +98,7 @@ export const NOTION_PROPS = Object.fromEntries(
 ) as { [K in keyof typeof PITCH_PROPERTIES]: (typeof PITCH_PROPERTIES)[K]["name"] };
 
 /** Where applications from the public form land before anyone looks at them. */
-const FORM_DEFAULTS = { source: "Form", status: "Sourced" } as const;
+const FORM_DEFAULTS = { source: "Form", status: "Sourcing..." } as const;
 
 function notionEnv() {
   const token = process.env.NOTION_TOKEN;
@@ -139,10 +143,46 @@ type Field = { name: string; type: string; value: unknown; text: string };
 
 type PitchPropertyKey = keyof typeof PITCH_PROPERTIES;
 
-type Schema = Record<string, string>;
+/**
+ * The live shape of one Notion property: its type, plus — for `status` only —
+ * the options that exist on the board. Nothing else needs its options read,
+ * because `select` and `multi_select` options are created on demand by the API
+ * and `status` options are not. See `writable`.
+ */
+type Schema = Record<string, { type: string; options?: string[] }>;
+
+/** The option a `status` payload names. */
+const statusOption = (value: unknown): string | undefined =>
+  (value as { status?: { name?: string } }).status?.name;
 
 /**
- * The live property name → type map, cached briefly. Notion schemas change by
+ * Whether a field can be written as a property, or has drifted.
+ *
+ * The property must exist with the expected type — and, for `status`, must
+ * already have the option we're naming. That last case is the sharp one:
+ * Notion creates missing `select`/`multi_select` options on demand, but
+ * `status` options can only be added by hand in the UI, and naming one that
+ * doesn't exist makes Notion reject the *entire* page. Treating it as ordinary
+ * drift means a renamed status column costs us the status, not the application.
+ */
+function writable(f: Field, schema: Schema): boolean {
+  const prop = schema[f.name];
+  if (!prop || prop.type !== f.type) return false;
+  if (f.type !== "status") return true;
+  const option = statusOption(f.value);
+  return option !== undefined && (prop.options?.includes(option) ?? false);
+}
+
+/** Why a field was dropped, for the log line and the page-body callout. */
+function mismatch(f: Field, schema: Schema): string {
+  const prop = schema[f.name];
+  if (!prop) return `expected ${f.type}, found nothing`;
+  if (prop.type !== f.type) return `expected ${f.type}, found ${prop.type}`;
+  return `no "${statusOption(f.value)}" option on the board`;
+}
+
+/**
+ * The live property name → shape map, cached briefly. Notion schemas change by
  * hand, so this is re-read periodically rather than trusted forever; the cache
  * just stops every submission paying for the lookup.
  */
@@ -156,9 +196,14 @@ async function fetchSchema(token: string, databaseId: string): Promise<Schema | 
       headers: { Authorization: `Bearer ${token}`, "Notion-Version": NOTION_VERSION },
     });
     if (!res.ok) return null;
-    const db = (await res.json()) as { properties: Record<string, { type: string }> };
-    const schema = Object.fromEntries(
-      Object.entries(db.properties).map(([name, p]) => [name, p.type])
+    const db = (await res.json()) as {
+      properties: Record<string, { type: string; status?: { options: { name: string }[] } }>;
+    };
+    const schema: Schema = Object.fromEntries(
+      Object.entries(db.properties).map(([name, p]) => [
+        name,
+        { type: p.type, options: p.status?.options.map((o) => o.name) },
+      ])
     );
     schemaCache = { at: Date.now(), schema };
     return schema;
@@ -207,7 +252,6 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
     field("email", { email: p.email }, p.email),
     field("companyType", { select: { name: p.companyType } }, p.companyType),
     field("customerType", { select: { name: p.customerType } }, p.customerType),
-    field("techProfile", { select: { name: p.techProfile } }, p.techProfile),
     field("primaryMarket", { select: { name: p.primaryMarket } }, p.primaryMarket),
     field("saConnection", { select: { name: p.saConnection } }, p.saConnection),
     field("stage", { select: { name: p.stage } }, p.stage),
@@ -261,24 +305,28 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
   }
 
   const schema = await fetchSchema(token, databaseId);
-  const keep = schema ? fields.filter((f) => schema[f.name] === f.type) : fields;
-  const dropped = schema ? fields.filter((f) => schema[f.name] !== f.type) : [];
+  const keep = schema ? fields.filter((f) => writable(f, schema)) : fields;
+  // Carries *why* it drifted, resolved while the live schema is still in hand.
+  const dropped = schema
+    ? fields.filter((f) => !writable(f, schema)).map((f) => ({ ...f, why: mismatch(f, schema) }))
+    : [];
 
   const properties: Record<string, unknown> = Object.fromEntries(keep.map((f) => [f.name, f.value]));
 
   // The title is the one property that can't be skipped — a row with no name
   // is unusable. If it's been renamed, write to whatever the title is now.
   const titleName =
-    schema && schema[NOTION_PROPS.company] === "title"
+    schema && schema[NOTION_PROPS.company]?.type === "title"
       ? NOTION_PROPS.company
-      : (schema && Object.keys(schema).find((n) => schema[n] === "title")) ?? NOTION_PROPS.company;
+      : (schema && Object.keys(schema).find((n) => schema[n].type === "title")) ??
+        NOTION_PROPS.company;
   properties[titleName] = { title: [{ text: { content: p.companyName } }] };
 
   const children: unknown[] = [];
   if (dropped.length > 0) {
     console.warn(
       "[notion] schema drift — these answers had no matching property and were written to the page body:",
-      dropped.map((f) => `${f.name} (expected ${f.type}, found ${schema?.[f.name] ?? "nothing"})`).join("; ")
+      dropped.map((f) => `${f.name} (${f.why})`).join("; ")
     );
     children.push(
       {
