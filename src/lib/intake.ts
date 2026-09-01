@@ -121,15 +121,29 @@ export type InvestorStatus = (typeof INVESTOR_STATUSES)[number]["value"];
  * property that gets read at a glance, and the discipline is the point: a
  * founder who can't state the problem in 300 characters usually hasn't found
  * it yet. `problem` is the tightest for exactly that reason.
+ *
+ * `traction` is the tightest of the evidence fields on purpose: it asks for
+ * three numbers, not a narrative. The numbers themselves are separate fields.
  */
 export const CAPS = {
   problem: 300,
   solution: 400,
+  whyNow: 250,
   traction: 300,
   teamDescription: 500,
   whyThisTeam: 400,
   investorMessage: 600,
 } as const;
+
+/**
+ * Ceilings for the numeric answers. High enough never to bind on a real
+ * early-stage raise, low enough that a runaway paste is caught here rather
+ * than landing in Notion as a number nobody can sort around.
+ */
+const MAX_ZAR = 10_000_000_000;
+const MAX_COUNT = 1_000_000_000;
+/** 50 years. A runway answer beyond this is a units mistake, not a fact. */
+const MAX_RUNWAY_MONTHS = 600;
 
 /** Upload limits enforced both in the form UI and the blob token route. */
 export const MAX_FILE_MB = 25;
@@ -158,20 +172,52 @@ export const pitchSchema = z.object({
   saConnection: z.enum(SA_CONNECTIONS),
   sectors: z.array(z.enum(SECTORS)).min(1).max(SECTORS.length),
   stage: z.enum(STAGES),
-  /** ZAR. Structured rather than free text so a valuation can be derived. */
-  raiseAmount: z.number().positive().max(10_000_000_000),
-  /** Percent. Optional — plenty of founders leave this open to negotiation. */
-  equityOffered: z.number().positive().lt(100).optional().nullable(),
-  /**
-   * Whether the founders still hold a majority *after everything raised so
-   * far* — a different question from `equityOffered`, which is only the slice
-   * being sold in this round. 10% on offer says nothing about what's left.
-   */
-  founderMajority: z.boolean(),
-  /* The pitch, as three questions: what's broken, how you fix it, why you. */
+
+  /* The pitch, as four questions: what's broken, how you fix it, why now,
+     and — over in the team section — why you. */
   problem: z.string().trim().min(1).max(CAPS.problem),
   solution: z.string().trim().min(1).max(CAPS.solution),
-  traction: z.string().trim().max(CAPS.traction).optional().or(z.literal("")),
+  whyNow: z.string().trim().min(1).max(CAPS.whyNow),
+
+  /*
+   * Traction: numbers first, prose second.
+   *
+   * The counts are required and accept 0, so "pre-revenue" is a stated answer
+   * rather than an ambiguous blank — a distinction that matters when the
+   * pipeline is sorted on these columns. Burn and runway are optional: they
+   * are the most confidential answers on the form and they are already in the
+   * deck, so requiring them costs good applications and buys little.
+   */
+  revenueLast12m: z.number().min(0).max(MAX_ZAR),
+  payingCustomers: z.number().int().min(0).max(MAX_COUNT),
+  activeUsers: z.number().int().min(0).max(MAX_COUNT).optional().nullable(),
+  /** The three numbers that best show traction — not a narrative. */
+  traction: z.string().trim().min(1).max(CAPS.traction),
+  monthlyExpenses: z.number().min(0).max(MAX_ZAR).optional().nullable(),
+  runwayMonths: z.number().min(0).max(MAX_RUNWAY_MONTHS).optional().nullable(),
+
+  /*
+   * The raise.
+   *
+   * We ask for the round and the valuation, never for a percentage. Ownership
+   * is arithmetic on those two (see `impliedRound`), and it is the more stable
+   * pair: prior SAFEs, an already-committed slice, and any venture-building
+   * component all move the percentage while leaving the round intact.
+   */
+  /** ZAR, and the *whole* round — not the portion Staunch might take. */
+  raiseAmount: z.number().positive().max(MAX_ZAR),
+  /** ZAR. Optional — plenty of rounds are still open on price. */
+  preMoneyValuation: z.number().positive().max(MAX_ZAR).optional().nullable(),
+  /** ZAR already committed or soft-circled. Says whether there's a lead and
+   *  how much room is left, which the round size alone never does. */
+  committedAmount: z.number().min(0).max(MAX_ZAR).optional().nullable(),
+  /**
+   * Whether the founders still hold a majority *after everything raised so
+   * far*. A separate question from this round's price: a keen valuation says
+   * nothing about what previous rounds already took off the table.
+   */
+  founderMajority: z.boolean(),
+
   teamDescription: z.string().trim().min(1).max(CAPS.teamDescription),
   /** Founder-market fit, in the founder's own words. Lands in Notion's
    *  `Founder-Market Fit` property, which is this answer and nothing else. */
@@ -198,29 +244,67 @@ export function formatZar(amount: number): string {
   return `R${Math.round(amount).toLocaleString("en-US")}`;
 }
 
-/**
- * Raising `amount` in exchange for `equityPct` of the company implies what the
- * whole company is being valued at: the round buys that percentage, so
- * post-money = amount ÷ percentage, and pre-money is what's left once the new
- * cash is taken back out.
- *
- * Returns null unless both inputs are present and sane — an implied valuation
- * off a missing or nonsensical percentage is worse than no number at all.
- */
-export function impliedValuation(
-  raiseAmount?: number | null,
-  equityPct?: number | null
-): { preMoney: number; postMoney: number } | null {
-  if (!raiseAmount || !equityPct) return null;
-  if (equityPct <= 0 || equityPct >= 100) return null;
-  const postMoney = raiseAmount / (equityPct / 100);
-  return { postMoney, preMoney: postMoney - raiseAmount };
+/** `20%`, `7.5%` — one decimal, and no trailing `.0`. */
+export function formatPercent(pct: number): string {
+  return `${Number(pct.toFixed(1))}%`;
 }
 
-/** Human-readable form of the ask, for Notion's `Asking` text property. */
-export function formatAsking(raiseAmount: number, equityPct?: number | null): string {
-  const amount = formatZar(raiseAmount);
-  return equityPct ? `${amount} for ${equityPct}% equity` : amount;
+/**
+ * What a round of `raiseAmount` at `preMoney` implies: the company is worth
+ * pre-money plus the new cash once the round closes, and this round's
+ * investors collectively own the new cash as a share of that total.
+ *
+ * This is the direction the form asks in — round size and price — because
+ * those are the two numbers a founder actually knows. The percentage falls
+ * out; asking for it directly would be asking them to do this arithmetic
+ * backwards, against a figure that prior instruments keep moving.
+ *
+ * Returns null unless both inputs are present and positive: a share derived
+ * from a missing price is worse than no number at all.
+ */
+export function impliedRound(
+  raiseAmount?: number | null,
+  preMoney?: number | null
+): { postMoney: number; newInvestorPct: number } | null {
+  if (!raiseAmount || !preMoney) return null;
+  if (raiseAmount <= 0 || preMoney <= 0) return null;
+  const postMoney = preMoney + raiseAmount;
+  return { postMoney, newInvestorPct: (raiseAmount / postMoney) * 100 };
+}
+
+/**
+ * How much of the round is already spoken for, as a percentage.
+ *
+ * Null when there's nothing to report, and capped at 100 so an over-committed
+ * answer reads as "full" rather than as a number that can't be true.
+ */
+export function committedShare(
+  raiseAmount?: number | null,
+  committed?: number | null
+): number | null {
+  if (!raiseAmount || raiseAmount <= 0) return null;
+  if (committed === null || committed === undefined || committed <= 0) return null;
+  return Math.min((committed / raiseAmount) * 100, 100);
+}
+
+/**
+ * Human-readable form of the ask, for Notion's `Asking` text property — the
+ * one place the three raise answers are read as a single sentence:
+ * `R5,000,000 at R20,000,000 pre-money (20%) · R1,500,000 committed`.
+ */
+export function formatAsking(
+  raiseAmount: number,
+  preMoney?: number | null,
+  committed?: number | null
+): string {
+  const round = impliedRound(raiseAmount, preMoney);
+  let ask = formatZar(raiseAmount);
+  if (round && preMoney) {
+    ask += ` at ${formatZar(preMoney)} pre-money (${formatPercent(round.newInvestorPct)})`;
+  }
+  return committed && committed > 0
+    ? `${ask} · ${formatZar(committed)} committed`
+    : ask;
 }
 
 /* ------------------------------------------------------------------ *

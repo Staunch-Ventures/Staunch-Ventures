@@ -7,7 +7,6 @@ import {
   STAGES,
   formatAsking,
   formatZar,
-  impliedValuation,
   type PitchPayload,
 } from "@/lib/intake";
 
@@ -64,12 +63,31 @@ export const PITCH_PROPERTIES = {
   sector: { name: "Sector", type: "multi_select", options: SECTORS },
   stage: { name: "Stage", type: "select", options: STAGES },
   asking: { name: "Asking", type: "rich_text" },
+  /**
+   * Stated by the founder, not inferred. The form asks for the price of the
+   * round directly rather than for a slice of equity, so this column now holds
+   * what they said instead of what we back-calculated from a percentage.
+   */
   preMoney: { name: "Pre-money (ZAR)", type: "number" },
+  /** Already committed or soft-circled — whether the round has a lead. */
+  committed: { name: "Committed (ZAR)", type: "number" },
   /** Founders still hold >50% after prior rounds — not what's on offer here. */
   founderMajority: { name: "Founder Majority", type: "checkbox" },
   problem: { name: "Problem", type: "rich_text" },
   solution: { name: "Solution", type: "rich_text" },
+  whyNow: { name: "Why Now", type: "rich_text" },
+  /*
+   * Traction: numbers the board can sort on, plus the founder's own three
+   * headline figures. `Revenue 12m` and `Paying Customers` are always written,
+   * 0 included — a zero is the answer "pre-revenue", whereas an empty column
+   * would read as a question we never asked.
+   */
+  revenueLast12m: { name: "Revenue 12m (ZAR)", type: "number" },
+  payingCustomers: { name: "Paying Customers", type: "number" },
+  activeUsers: { name: "Active Users", type: "number" },
   traction: { name: "Traction", type: "rich_text" },
+  monthlyExpenses: { name: "Monthly Expenses (ZAR)", type: "number" },
+  runwayMonths: { name: "Runway (months)", type: "number" },
   team: { name: "Team", type: "rich_text" },
   /**
    * Founder-market fit, in the founder's own words — the answer to "why are
@@ -231,8 +249,8 @@ async function fetchSchema(token: string, databaseId: string): Promise<Schema | 
  * Every judgment field — Conviction, Track, Founder-Market Fit, Company Stage,
  * Geography, Owner, Notes, and the Agent Analysis file — is deliberately left
  * empty. Those belong to the team and the screening agent, never to the
- * applicant. The only derived value written here is the implied pre-money
- * valuation, which is arithmetic on what the founder stated, not a judgment.
+ * applicant. Nothing written here is a judgment: every value is either an
+ * answer as given, or `Asking`, which is those answers in one sentence.
  */
 export async function createPitchPage(p: PitchPayload): Promise<{ id: string; url: string }> {
   const { token, databaseId } = notionEnv();
@@ -245,7 +263,7 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
     text,
   });
 
-  const asking = formatAsking(p.raiseAmount, p.equityOffered);
+  const asking = formatAsking(p.raiseAmount, p.preMoneyValuation, p.committedAmount);
 
   const fields: Field[] = [
     field("founders", richText(p.founderName), p.founderName),
@@ -265,6 +283,11 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
     ),
     field("problem", richText(p.problem), p.problem),
     field("solution", richText(p.solution), p.solution),
+    field("whyNow", richText(p.whyNow), p.whyNow),
+    field("traction", richText(p.traction), p.traction),
+    // Always written, 0 included — see the note on the property table.
+    field("revenueLast12m", { number: p.revenueLast12m }, formatZar(p.revenueLast12m)),
+    field("payingCustomers", { number: p.payingCustomers }, String(p.payingCustomers)),
     field("team", richText(p.teamDescription), p.teamDescription),
     field("whyThisTeam", richText(p.whyThisTeam), p.whyThisTeam),
     field("source", { select: { name: FORM_DEFAULTS.source } }, FORM_DEFAULTS.source),
@@ -272,21 +295,30 @@ export async function createPitchPage(p: PitchPayload): Promise<{ id: string; ur
     field("deck", { files: [fileEntry(p.deck)] }, p.deck.url),
   ];
 
-  if (p.traction?.trim()) {
-    fields.push(field("traction", richText(p.traction.trim()), p.traction.trim()));
-  }
-
   if (p.registrationNumber?.trim()) {
     const reg = p.registrationNumber.trim();
     fields.push(field("registrationNumber", richText(reg), reg));
   }
 
-  // Only meaningful when the founder named an equity percentage.
-  const valuation = impliedValuation(p.raiseAmount, p.equityOffered);
-  if (valuation) {
-    const pre = Math.round(valuation.preMoney);
-    fields.push(field("preMoney", { number: pre }, formatZar(pre)));
-  }
+  /**
+   * The optional numeric answers. Skipped entirely when unanswered, so an
+   * empty cell on the board means "didn't say" — distinct from the required
+   * counts above, where an empty cell would be a bug.
+   */
+  const optionalNumber = (
+    key: PitchPropertyKey,
+    value: number | null | undefined,
+    text: (n: number) => string
+  ): void => {
+    if (value === null || value === undefined) return;
+    fields.push(field(key, { number: value }, text(value)));
+  };
+
+  optionalNumber("activeUsers", p.activeUsers, (n) => String(n));
+  optionalNumber("monthlyExpenses", p.monthlyExpenses, formatZar);
+  optionalNumber("runwayMonths", p.runwayMonths, (n) => `${n} months`);
+  optionalNumber("preMoney", p.preMoneyValuation, formatZar);
+  optionalNumber("committed", p.committedAmount, formatZar);
 
   // Notion errors on a null url value, so only send these when they parse.
   const website = toUrl(p.website);

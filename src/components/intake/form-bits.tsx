@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 /** Uppercase eyebrow label used across the intake forms. */
@@ -112,5 +113,104 @@ export function CheckRow({
       </span>
       <span className={checked ? "text-foreground" : "text-muted-foreground"}>{children}</span>
     </button>
+  );
+}
+
+/**
+ * A numeric answer.
+ *
+ * The value is held as a string by the caller so a half-typed number stays
+ * editable, and `echo` renders the parsed value back — formatted rand, usually
+ * — so a founder can see what we read before they submit it.
+ */
+export function NumberField({
+  id,
+  label,
+  optional,
+  hint,
+  echo,
+  value,
+  onChange,
+  placeholder,
+  min = 0,
+  step,
+}: {
+  id: string;
+  label: React.ReactNode;
+  optional?: boolean;
+  hint?: React.ReactNode;
+  echo?: React.ReactNode;
+  value: string;
+  onChange: (next: string) => void;
+  placeholder?: string;
+  min?: number;
+  step?: number;
+}) {
+  return (
+    <div className="space-y-2">
+      <FieldLabel htmlFor={id} optional={optional}>
+        {label}
+      </FieldLabel>
+      <Input
+        id={id}
+        type="number"
+        inputMode="decimal"
+        min={min}
+        step={step}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {echo && <p className="text-xs text-muted-foreground tabular-nums">{echo}</p>}
+      {hint && <p className="text-xs text-muted-foreground/70">{hint}</p>}
+    </div>
+  );
+}
+
+/**
+ * Progress across a multi-step form.
+ *
+ * Completed steps are clickable so an answer can be changed without starting
+ * over; steps ahead are not, because each one is validated before the form
+ * lets you past it. On narrow screens only the current step keeps its label —
+ * the rest collapse to their number rather than wrapping into three rows.
+ */
+export function Stepper({
+  steps,
+  current,
+  onSelect,
+}: {
+  steps: readonly string[];
+  current: number;
+  onSelect: (index: number) => void;
+}) {
+  return (
+    <ol className="flex flex-wrap items-center gap-2">
+      {steps.map((label, i) => {
+        const done = i < current;
+        const isCurrent = i === current;
+        return (
+          <li key={label} className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => done && onSelect(i)}
+              disabled={!done}
+              aria-current={isCurrent ? "step" : undefined}
+              className={cn(
+                "flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                isCurrent && "border-primary/40 bg-primary/10 text-primary",
+                done &&
+                  "border-border bg-muted/40 text-muted-foreground hover:border-border-strong hover:text-foreground",
+                !done && !isCurrent && "border-border/60 text-muted-foreground/50"
+              )}
+            >
+              <span className="tabular-nums">{i + 1}</span>
+              <span className={cn("sm:inline", isCurrent ? "inline" : "hidden")}>{label}</span>
+            </button>
+            {i < steps.length - 1 && <span className="h-px w-3 bg-border sm:w-5" aria-hidden />}
+          </li>
+        );
+      })}
+    </ol>
   );
 }
