@@ -2,7 +2,7 @@ import { INVEST_EMAIL, PITCH_URL } from "@/lib/intake";
 import { CapitalLockup, CapitalLogo } from "./marks";
 
 /** Absolute, because on capital.staunchventures.com "/" is this page. */
-export const MAIN_SITE = "https://staunchventures.com";
+export const MAIN_SITE = "https://www.staunchventures.com";
 export const BRIEF_MAILTO = `mailto:${INVEST_EMAIL}?subject=${encodeURIComponent(
   "Staunch Capital: investor brief",
 )}`;

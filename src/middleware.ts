@@ -3,7 +3,7 @@ import { adminCookieValue, ADMIN_COOKIE } from "@/lib/admin-auth";
 
 /** Staunch Capital's own host. Its root serves /capital; nothing else lives there. */
 const CAPITAL_HOST = "capital.staunchventures.com";
-const MAIN_ORIGIN = "https://staunchventures.com";
+const MAIN_ORIGIN = "https://www.staunchventures.com";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
