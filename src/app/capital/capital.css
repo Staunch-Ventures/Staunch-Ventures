@@ -1,0 +1,1042 @@
+    /* ============================================================
+       TOKENS
+       ============================================================ */
+    .capital {
+      --bg:        #0f0e0c;
+      --surface:   #151310;
+      /* Two points below --bg. Enough for the eye to read a plate, not enough
+         to band on an 8-bit gradient. */
+      --deep:      #0b0a08;
+      --text:      #f2efe9;
+      --muted:     #a49f96;
+      --muted-2:   #6f6a62;
+      --faint:     #4c4842;
+      --divider:   #211f1b;
+      --gold:      #c5a572;
+      --gold-soft: rgba(197, 165, 114, 0.45);
+      --gold-tint: rgba(197, 165, 114, 0.08);
+
+      --serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
+      --sans: var(--font-satoshi), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+      --fs-label:  clamp(0.6875rem, 0.2vw + 0.62rem, 0.6875rem);
+      --fs-nav:    clamp(0.6875rem, 0.2vw + 0.62rem, 0.75rem);
+      --fs-small:  clamp(0.75rem, 0.25vw + 0.68rem, 0.8125rem);
+      --fs-card:   clamp(0.8125rem, 0.25vw + 0.74rem, 0.875rem);
+      --fs-body:   clamp(0.9375rem, 0.3vw + 0.86rem, 1rem);
+      --fs-body-lg:clamp(1.0625rem, 0.6vw + 0.9rem, 1.25rem);
+      --fs-step:   clamp(1.5rem, 1.2vw + 1.2rem, 1.875rem);
+      --fs-quote:  clamp(1.625rem, 3vw + 0.8rem, 3.25rem);
+      --fs-sub:    clamp(1.75rem, 2.6vw + 1rem, 3rem);
+      --fs-h:      clamp(2.5rem, 5.2vw + 0.6rem, 5rem);
+      --fs-hero:   clamp(2.75rem, min(8vw, 10.5vh), 7rem);
+
+      /* Density tiers. Uneven interval is the point — 間 is the pause, not the
+         absence of one. The pause sections (02, 06, 09) take --pad-vast. Ratio to
+         --pad-section is held near 1.5× at every width, including mobile. */
+      --pad-section: clamp(96px, 14vw, 200px);
+      --pad-vast:    clamp(150px, 22vw, 300px);
+
+      --gutter: clamp(24px, 6vw, 56px);
+
+      /* Measures. Sections pick one; nothing gets the default by accident. */
+      --maxw-wide:   1320px;
+      --maxw:        1120px;
+      --maxw-narrow:  880px;
+      --maxw-prose:   720px;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+      --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    /* ============================================================
+       BASE
+       ============================================================ */
+    .capital *,
+.capital *::before,
+.capital *::after { box-sizing: border-box; }
+
+    html:has(.capital) { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+    html.lenis-on:has(.capital) { scroll-behavior: auto; }
+
+    .capital {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: var(--fs-body);
+      font-weight: 400;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: clip;
+      min-height: 100vh;
+    }
+    /* The root layout paints the Staunch navy on <body>; overscroll and the
+       gaps around the fixed layers should show this ground instead. */
+    body:has(.capital) { background: #0f0e0c; }
+    /* is-loading sits on <html> (set pre-paint by the layout script), because
+       the root layout owns <body> and React would flag a class it didn't render. */
+    body.menu-open,
+html.is-loading body { overflow: hidden; }
+
+    .capital h1,
+.capital h2,
+.capital h3,
+.capital h4,
+.capital p { margin: 0; }
+    .capital a { color: inherit; text-decoration: none; }
+    .capital ul { margin: 0; padding: 0; list-style: none; }
+    .capital button { font-family: inherit; cursor: pointer; background: none; border: 0; color: inherit; }
+    .capital ::selection { background: rgba(197, 165, 114, 0.22); color: var(--text); }
+    .capital :focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
+
+    .capital .skip-link {
+      position: fixed; left: 16px; top: -120px; z-index: 500;
+      background: #000; color: var(--text); padding: 12px 18px;
+      border: 1px solid var(--gold); font-size: var(--fs-small);
+      transition: top 200ms var(--ease);
+    }
+    .capital .skip-link:focus { top: 16px; }
+
+    /* ============================================================
+       READING PROGRESS (hairline, top of viewport)
+       ============================================================ */
+    .capital .progress { position: fixed; top: 0; left: 0; right: 0; height: 1px; z-index: 120; pointer-events: none; }
+    .capital .progress__fill { height: 100%; background: var(--gold); opacity: 0.7; transform: scaleX(0); transform-origin: left; }
+
+    /* ============================================================
+       FILM GRAIN
+       ============================================================ */
+    .capital .grain {
+      position: fixed; inset: -100px; z-index: 240; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      opacity: 0.05;
+    }
+    html.js:not(.reduced) .capital .grain { animation: cap-grain-shift 1.4s steps(4) infinite; }
+    @keyframes cap-grain-shift {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-24px, 32px); }
+      50%  { transform: translate(28px, -20px); }
+      75%  { transform: translate(-18px, -30px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* ============================================================
+       PRELOADER
+       ============================================================ */
+    .capital .preloader {
+      position: fixed; inset: 0; z-index: 300;
+      background: var(--bg);
+      display: none;
+      place-items: center;
+    }
+    html.js:not(.reduced) .capital .preloader { display: grid; }
+    .capital .preloader__mark { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+    .capital .preloader__word {
+      display: block;
+      height: clamp(64px, 12vw, 104px);
+      width: auto;
+      overflow: visible;
+      opacity: 0;
+    }
+    .capital .preloader__line { display: block; width: min(240px, 40vw); height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; }
+
+    /* ============================================================
+       CUSTOM CURSOR
+       ============================================================ */
+    html.cursor-on:has(.capital),
+html.cursor-on .capital * { cursor: none !important; }
+    .capital .cursor-dot,
+.capital .cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 400;
+      pointer-events: none; border-radius: 50%; opacity: 0;
+      display: none;
+    }
+    html.cursor-on .capital .cursor-dot,
+html.cursor-on .capital .cursor-ring { display: block; }
+    .capital .cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--gold); scale: 1; transition: scale 300ms var(--ease); }
+    .capital .cursor-ring { width: 38px; height: 38px; margin: -19px 0 0 -19px; color: var(--gold-soft); scale: 1; transition: scale 400ms var(--ease), color 400ms var(--ease); }
+
+    html.cursor-hover .capital .cursor-ring { scale: 1.6; color: rgba(197, 165, 114, 0.25); }
+    html.cursor-hover .capital .cursor-dot { scale: 0.5; }
+
+    /* ============================================================
+       SHARED TYPOGRAPHY
+       ============================================================ */
+    .capital .label {
+      display: block;
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: var(--fs-label);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .capital .label__num { color: var(--faint); margin-right: 1em; font-variant-numeric: tabular-nums; }
+
+    .capital .display {
+      font-family: var(--serif);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .capital .h-section { font-size: var(--fs-h); line-height: 1.02; text-wrap: balance; }
+
+    .capital .body { font-family: var(--sans); font-weight: 400; font-size: var(--fs-body); line-height: 1.7; color: var(--muted); }
+
+    .capital .num {
+      font-family: var(--sans); font-weight: 300; font-size: var(--fs-label);
+      letter-spacing: 0.1em; color: var(--faint);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Masked line reveal structure (built by JS) */
+    .capital .line { display: block; overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+    .capital .line-inner { display: block; will-change: transform; }
+
+    /* Hairline primitive. A real element rather than a border so it can be drawn
+       on scroll — GSAP cannot target pseudo-elements. Shared by the problem rows,
+       the FAQ list, and the consultation dividers. */
+    .capital .rule { position: absolute; background: var(--divider); }
+    .capital .rule--x { left: 0; right: 0; top: 0; height: 1px; transform-origin: left; }
+    .capital .rule--y { left: 0; top: 0; bottom: 0; width: 1px; transform-origin: top; }
+    html.js:not(.reduced) .capital .rule--x { transform: scaleX(0); }
+    html.js:not(.reduced) .capital .rule--y { transform: scaleY(0); }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .capital .section { padding-block: var(--pad-section); position: relative; }
+    .capital .container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+
+    /* Measure + density modifiers. Every section names its own; the page cadence
+       is composed rather than inherited. */
+    .capital .section--vast { padding-block: var(--pad-vast); }
+    .capital .container--wide { max-width: var(--maxw-wide); }
+    .capital .container--narrow { max-width: var(--maxw-narrow); }
+    .capital .container--prose { max-width: var(--maxw-prose); }
+
+    /* Grounds. A full-bleed hairline at the boundary so the tonal shift reads as
+       a deliberate plate and not a rendering artifact. */
+    .capital .plate { background: var(--surface); }
+    .capital .plate--deep { background: var(--deep); }
+    .capital .plate,
+.capital .plate--deep { border-block: 1px solid var(--divider); }
+
+    .capital .head { margin-bottom: clamp(56px, 8vw, 104px); }
+    .capital .head .display { max-width: 20ch; }
+
+    /* Head form B — label sits in its own rail, heading in the main column. */
+    .capital .head--rail {
+      display: grid;
+      grid-template-columns: minmax(140px, 200px) 1fr;
+      gap: clamp(20px, 3vw, 40px) clamp(20px, 4vw, 64px);
+      align-items: start;
+    }
+    .capital .head--rail .label { margin-bottom: 0; padding-top: 0.5em; }
+    .capital .head--rail .display { max-width: 24ch; }
+
+    /* Head form C — heading leads, label sits out in the right margin like a
+       running head. Source order stays heading-then-label; the label is lifted
+       to the first row so it aligns with the top of the heading. */
+    .capital .head--offset {
+      display: grid;
+      grid-template-columns: 1fr minmax(160px, 240px);
+      gap: clamp(20px, 3vw, 40px) clamp(24px, 5vw, 72px);
+      align-items: start;
+    }
+    /* Both children need an explicit column. A definite row with an auto column
+       is placed before fully-auto items, which silently swaps the two. */
+    .capital .head--offset .display { grid-area: 1 / 1; max-width: 20ch; }
+    .capital .head--offset .label {
+      grid-area: 1 / 2;
+      text-align: right;
+      margin-bottom: 0;
+      padding-top: 0.5em;
+    }
+    .capital .head--offset .label__num { display: block; margin-right: 0; margin-bottom: 0.5em; }
+
+    /* Head form D — heading left, intro right, sharing a baseline. */
+    .capital .head--split {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(24px, 3.5vw, 48px) clamp(24px, 5vw, 80px);
+      align-items: end;
+    }
+    .capital .head--split .display { max-width: 18ch; }
+    .capital .head--split .label { margin-bottom: 0; }
+    .capital .head--split .head__aside {
+      font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7;
+      color: var(--muted); max-width: 42ch;
+      padding-bottom: 0.4em;
+    }
+    .capital .head--split .label { grid-column: 1 / -1; }
+
+    @media (max-width: 860px) {
+      .capital .head--rail,
+.capital .head--split,
+.capital .head--offset { grid-template-columns: 1fr; gap: 20px; }
+      .capital .head--rail .label { position: static; margin-bottom: 20px; }
+      .capital .head--split .head__aside { padding-bottom: 0; }
+      /* Label returns above the heading when the margin disappears. */
+      .capital .head--offset .label { grid-area: 1 / 1; text-align: left; padding-top: 0; margin-bottom: 0; }
+      .capital .head--offset .display { grid-area: 2 / 1; }
+      .capital .head--offset .label__num { display: inline; margin-right: 1em; margin-bottom: 0; }
+    }
+
+    /* Section content sits above any ensō ground. */
+    .capital .section > .container { position: relative; z-index: 1; }
+
+    /* ============================================================
+       ENSŌ GROUND — the mark recurs, cropped differently each time.
+       Its own ring/dot classes so it never collides with the hero's
+       GSAP targets, and so the ground can be far fainter.
+       ============================================================ */
+    /* A ground-bearing section must clip its own ghost, exactly as .hero clips its
+       ensō. Without this the ghost extends the document's scrollable width, which
+       widens the containing block of the fixed nav and pushes the burger button
+       off-screen on phones — the nav becomes unreachable.
+       The explicit class is the guarantee (universally supported); the :has() is a
+       safety net so a future ghost added without the class still clips. */
+    .capital .section--ground { overflow: clip; }
+
+    /* Continuous rotation, as in the hero. Lives on the rotor group so it never
+       competes with the wrapper transforms driven by scroll, or the svg transform
+       driven by the pointer. Period comes from --spin, set per instance. */
+
+    /* Must outrank the shorthand above, which otherwise resets direction to normal. */
+
+    /* The cropped grounds dissolve before they reach the reading column. Measured:
+       text over the ring is 6.03:1 against 7.04:1 clear of it — never a contrast
+       failure, so this is a figure-ground fix, not a legibility one. A mask costs
+       one static composite; backdrop-filter would re-read and re-blur the backdrop
+       every scroll frame over a large area, for a 1.7px hairline. Wrong tool.
+       Gradient runs from the anchored edge inward, so each ring emerges from the
+       bezel and fades out before the copy. */
+    /* Pulled back off the bezel and lifted, so most of the circle reads rather
+       than a corner sliver. Sitting high keeps the visible arc above the heading —
+       the section's rail head insets the heading, leaving this corner clear. */
+
+    /* The rings stay crisp. Softening is applied where it is actually needed —
+       behind the copy, on mobile only — by the scrim below, exactly as the hero
+       does it. Blurring the whole ring dulled it everywhere to solve a problem
+       that exists in one place. */
+
+    /* The one you see whole. Contained, unmasked, and small enough to sit in clear
+       space — the page opens on partial rings and closes on the complete mark.
+       Stroke and dot are scaled up because the svg renders ~3× smaller here. */
+
+    @media (max-width: 768px) {
+      /* The ring must never compete with text at small measures. */
+      
+      /* Restored on mobile. A phone has no margin to keep the ring clear of the
+         copy, so instead the ring is soft enough that crossing text reads as
+         atmosphere rather than a line ruled through it — see the blur above. */
+
+      /* Heavier and brighter than desktop on purpose: the scrim below diffuses
+         whatever passes under the copy, and a thin faint line does not survive a
+         blur — it disappears. This is sized so the diffused remnant still reads as
+         a soft arc, while the parts outside the scrim stay crisp. */
+
+      /* Localised softening, the hero's approach. Rather than blurring the whole
+         ring, blur the backdrop behind the copy — so the arc is diffused only
+         where it actually passes under text, and stays crisp everywhere else.
+         Masked top and bottom so the panel has no edge of its own. */
+      .capital .section--scrim > .container::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: -20px 0;
+        pointer-events: none;
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
+      }
+      /* The seal centres under the closing copy, in space made for it below. */
+
+    }
+
+    /* Hanko seal (簡素 artist’s stamp) */
+
+    /* ============================================================
+       CTA — italic, gold hairline, fill on hover
+       ============================================================ */
+    .capital .cta {
+      display: inline-block;
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: var(--fs-body-lg);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 0;
+      padding: 13px 26px;
+      background: linear-gradient(var(--gold), var(--gold)) bottom / 100% 0% no-repeat;
+      transition: color 450ms var(--ease), background-size 450ms var(--ease);
+      will-change: transform;
+    }
+    .capital .cta:hover { color: var(--bg); background-size: 100% 100%; }
+
+    .capital .textlink {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--sans); font-size: var(--fs-small); color: var(--muted-2);
+      letter-spacing: 0.02em;
+      transition: color 300ms var(--ease);
+    }
+    .capital .textlink:hover { color: var(--text); }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    .capital .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: clamp(18px, 2.4vw, 26px) var(--gutter);
+      background: transparent;
+      transition: background-color 500ms var(--ease), backdrop-filter 500ms var(--ease), transform 500ms var(--ease);
+    }
+    .capital .nav.scrolled {
+      background: rgba(15, 14, 12, 0.82);
+      -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    }
+    .capital .nav.nav-hidden { transform: translateY(-105%); }
+    .capital .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; max-width: 1400px; margin-inline: auto; }
+    .capital .brand { display: inline-flex; align-items: center; }
+    .capital .brand .lockup { transition: opacity 300ms var(--ease); }
+    .capital .brand:hover .lockup { opacity: 0.8; }
+    .capital .nav__links { display: flex; align-items: center; gap: clamp(1.5rem, 2.5vw, 2.75rem); }
+    .capital .nav__link {
+      position: relative;
+      font-family: var(--sans); font-weight: 400; font-size: var(--fs-nav);
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted-2);
+      transition: color 300ms var(--ease);
+    }
+    .capital .nav__link::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px;
+      background: var(--gold);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 450ms var(--ease);
+    }
+    .capital .nav__link:hover { color: var(--text); }
+    .capital .nav__link:hover::after { transform: scaleX(1); transform-origin: left; }
+    .capital .nav__cta {
+      font-family: var(--serif); font-style: italic; font-weight: 400;
+      font-size: clamp(0.875rem, 0.3vw + 0.8rem, 0.9375rem);
+      color: var(--gold);
+      transition: color 300ms var(--ease);
+    }
+    .capital .nav__cta:hover { color: var(--text); }
+
+    .capital .burger { display: none; width: 44px; height: 44px; place-items: center; color: var(--text); transition: opacity 300ms var(--ease), visibility 300ms var(--ease); }
+    .capital .burger svg { width: 22px; height: 22px; }
+    body.menu-open .capital .burger { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* ============================================================
+       MOBILE MENU
+       ============================================================ */
+    .capital .mobile-menu {
+      position: fixed; inset: 0; z-index: 130; /* above the nav so the close button is reachable */
+      background: var(--bg);
+      display: flex; flex-direction: column; justify-content: center; gap: 0.25rem;
+      padding: var(--gutter);
+      opacity: 0; visibility: hidden;
+      transition: opacity 400ms var(--ease), visibility 400ms var(--ease);
+    }
+    .capital .mobile-menu.open { opacity: 1; visibility: visible; }
+    .capital .mobile-menu a:not(.cta) {
+      font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 9vw, 3rem);
+      line-height: 1.5; color: var(--text);
+      opacity: 0; transform: translateY(16px);
+      transition: color 300ms var(--ease), opacity 500ms var(--ease), transform 600ms var(--ease);
+    }
+    .capital .mobile-menu.open a:not(.cta) { opacity: 1; transform: none; }
+    .capital .mobile-menu.open a:nth-child(2) { transition-delay: 60ms; }
+    .capital .mobile-menu.open a:nth-child(3) { transition-delay: 120ms; }
+    .capital .mobile-menu.open a:nth-child(4) { transition-delay: 180ms; }
+    .capital .mobile-menu.open a:nth-child(5) { transition-delay: 240ms; }
+    .capital .mobile-menu a:hover { color: var(--gold); }
+    .capital .mobile-menu .cta { align-self: flex-start; margin-top: 2rem; opacity: 0; transition: opacity 500ms var(--ease) 320ms, color 450ms var(--ease), background-size 450ms var(--ease); }
+    .capital .mobile-menu.open .cta { opacity: 1; }
+    .capital .mobile-menu__meta { position: absolute; bottom: calc(var(--gutter) + 8px); left: var(--gutter); font-size: var(--fs-small); color: var(--muted-2); }
+    .capital .mobile-menu__meta a { font-family: var(--sans) !important; font-size: var(--fs-small) !important; opacity: 1 !important; transform: none !important; color: var(--muted); display: inline; line-height: inherit !important; }
+    .capital .mobile-menu__close { position: absolute; top: 18px; right: var(--gutter); width: 44px; height: 44px; display: grid; place-items: center; color: var(--text); }
+    .capital .mobile-menu__close svg { width: 24px; height: 24px; }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .capital .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .capital .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    .capital .hero-glow {
+      position: absolute; inset: -20%;
+      background: radial-gradient(ellipse 58% 46% at 72% 36%, rgba(197, 165, 114, 0.09), transparent 62%);
+    }
+    .capital .hero-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 130% 110% at 50% 42%, transparent 55%, rgba(5, 4, 3, 0.45) 100%);
+    }
+    html.js:not(.reduced) .capital .hero-glow { animation: cap-breathe 14s ease-in-out infinite alternate; }
+    @keyframes cap-breathe {
+      from { opacity: 0.65; transform: scale(1); }
+      to   { opacity: 1; transform: scale(1.06); }
+    }
+
+    /* hero mark: see STAUNCH MARK below */
+
+    .capital .hero-content {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 1400px; margin-inline: auto;
+      padding: 110px var(--gutter) clamp(40px, 7.5vh, 96px);
+    }
+    .capital .hero-meta { margin-bottom: 20px; }
+    .capital .hero-meta .label { margin-bottom: 8px; }
+    .capital .hero-meta .hero-meta__sub {
+      display: block; font-family: var(--sans); font-weight: 400; font-size: var(--fs-label);
+      text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-2);
+    }
+
+    .capital .hero-headline {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: var(--fs-hero);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      max-width: 15ch;
+    }
+
+    .capital .hero-body {
+      font-family: var(--sans); font-size: var(--fs-body-lg); line-height: 1.65; color: var(--muted);
+      max-width: 50ch; margin-top: clamp(22px, 3.5vh, 40px);
+    }
+    .capital .hero-cta-row { display: flex; align-items: center; gap: clamp(20px, 3vw, 40px); flex-wrap: wrap; margin-top: clamp(26px, 4vh, 46px); }
+
+    .capital .hero-scroll {
+      position: absolute; z-index: 2;
+      right: var(--gutter); bottom: clamp(40px, 7.5vh, 96px);
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      padding: 0;
+    }
+    .capital .hero-scroll .hero-scroll__label {
+      font-family: var(--sans); font-size: 0.625rem; text-transform: uppercase;
+      letter-spacing: 0.22em; color: var(--muted-2);
+      writing-mode: vertical-rl;
+      transition: color 300ms var(--ease);
+    }
+    .capital .hero-scroll:hover .hero-scroll__label { color: var(--text); }
+    .capital .hero-scroll__line { width: 1px; height: 56px; background: var(--divider); position: relative; overflow: hidden; }
+    .capital .hero-scroll__line::after {
+      content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      background: var(--gold);
+    }
+    html.js:not(.reduced) .capital .hero-scroll__line::after { animation: cap-scroll-pulse 2.6s var(--ease) infinite; }
+    @keyframes cap-scroll-pulse {
+      0%   { transform: translateY(-100%); }
+      55%  { transform: translateY(0); }
+      100% { transform: translateY(100%); }
+    }
+
+    /* ============================================================
+       MARQUEE
+       ============================================================ */
+    .capital .marquee {
+      overflow: hidden;
+      border-block: 1px solid var(--divider);
+      padding-block: clamp(22px, 3vw, 34px);
+    }
+    .capital .marquee__track { display: flex; width: max-content; }
+    html.js:not(.reduced) .capital .marquee__track { animation: cap-marquee 56s linear infinite; }
+    .capital .marquee:hover .marquee__track { animation-play-state: paused; }
+    @keyframes cap-marquee { to { transform: translateX(-50%); } }
+    .capital .marquee__group { display: flex; align-items: center; flex: none; }
+    .capital .marquee__item {
+      font-family: var(--serif); font-style: italic; font-weight: 300;
+      font-size: clamp(1.375rem, 1vw + 1.05rem, 1.875rem);
+      color: var(--muted-2); white-space: nowrap;
+      padding-inline: clamp(1.75rem, 3vw, 3rem);
+    }
+    .capital .marquee__dot { color: var(--gold); font-size: 0.625rem; }
+    .capital .marquee__jp {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+      font-style: normal; font-size: 0.58em;
+      color: var(--gold); opacity: 0.75;
+      margin-left: 0.5em;
+    }
+
+    /* ============================================================
+       NUMBERED ROWS
+       ============================================================ */
+    /* Two lists, deliberately different creatures. 01 is a tight run of symptoms
+       with small tabular numerals; 04 is an editorial spread with large serif
+       folios and a two-column split. Same data shape, different reading speed. */
+    .capital .rows { border: 0; }
+    .capital .row { position: relative; transition: background-color 400ms var(--ease); }
+    .capital .row__num { transition: color 400ms var(--ease); }
+    .capital .row__line { font-family: var(--sans); font-weight: 400; font-size: var(--fs-body-lg); line-height: 1.45; color: var(--muted); }
+    .capital .row__title { font-family: var(--serif); font-weight: 400; font-size: var(--fs-step); line-height: 1.1; color: var(--text); letter-spacing: -0.01em; }
+    .capital .row__desc { font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted); }
+
+    /* 01 — symptom list */
+    .capital .rows--symptoms .row {
+      display: flex;
+      gap: clamp(24px, 5vw, 72px);
+      align-items: baseline;
+      padding: clamp(22px, 2.6vw, 30px) clamp(16px, 2vw, 28px);
+      margin-inline: clamp(-16px, -2vw, -28px);
+    }
+    .capital .rows--symptoms .row:last-child { border-bottom: 1px solid var(--divider); }
+    .capital .rows--symptoms .row:hover { background: var(--surface); }
+    .capital .rows--symptoms .row__num { flex: none; min-width: 2.75rem; padding-top: 0.35em; }
+    .capital .rows--symptoms .row:hover .row__num { color: var(--gold); }
+    .capital .rows--symptoms .row__main { flex: 1; transition: transform 500ms var(--ease); }
+    .capital .rows--symptoms .row:hover .row__main { transform: translateX(8px); }
+
+    /* 04 — editorial folios */
+    .capital .rows--folio .row {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: clamp(20px, 4vw, 64px);
+      align-items: start;
+      padding: clamp(38px, 5vw, 62px) 0 clamp(38px, 5vw, 62px) clamp(52px, 6.5vw, 104px);
+      border-top: 1px solid var(--divider);
+    }
+    .capital .rows--folio .row:last-child { border-bottom: 1px solid var(--divider); }
+    .capital .rows--folio .row__num {
+      position: absolute;
+      left: 0;
+      top: clamp(38px, 5vw, 62px);
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(2rem, 3.2vw, 3.25rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--faint);
+      opacity: 0.6;
+      transition: color 500ms var(--ease), opacity 500ms var(--ease);
+    }
+    .capital .rows--folio .row:first-child .row__num { top: 0; }
+    .capital .rows--folio .row:hover .row__num { color: var(--gold); opacity: 0.95; }
+    .capital .rows--folio .row:first-child { border-top: 0; padding-top: 0; }
+    .capital .rows--folio .row__title { padding-top: 0.1em; }
+    .capital .rows--folio .row__desc { max-width: 46ch; }
+
+    .capital .problem-outro { margin: clamp(36px, 5vw, 56px) 0 0; max-width: 62ch; font-size: var(--fs-body-lg); line-height: 1.65; }
+
+    /* ============================================================
+       MANIFESTO (scroll-scrubbed word reveal)
+       ============================================================ */
+    .capital .manifesto { text-align: center; }
+    .capital .manifesto .label { margin-bottom: clamp(32px, 5vw, 48px); }
+    .capital .manifesto__text {
+      font-family: var(--serif); font-weight: 300;
+      font-size: var(--fs-quote); line-height: 1.35;
+      letter-spacing: -0.01em; color: var(--text);
+      max-width: 26ch; margin-inline: auto;
+    }
+    .capital .manifesto__text em { font-style: italic; color: var(--gold); }
+    html.js:not(.reduced) .capital .manifesto__text .word { opacity: 0.12; }
+
+    /* ============================================================
+       PROCESS
+       ============================================================ */
+    .capital .process { --process-pad: clamp(28px, 4vw, 64px); position: relative; padding-left: var(--process-pad); }
+    .capital .process-line { position: absolute; left: 0; top: 12px; bottom: 12px; width: 1px; background: var(--divider); }
+    .capital .process-line__fill { position: absolute; inset: 0; background: var(--gold); transform: scaleY(0); transform-origin: top; }
+    .capital .pstep { position: relative; padding-block: clamp(40px, 5.5vw, 64px); border-top: 1px solid var(--divider); display: grid; grid-template-columns: minmax(150px, 240px) 1fr; gap: clamp(20px, 4vw, 64px); }
+    .capital .pstep:first-of-type { border-top: 0; padding-top: 0; }
+    .capital .pstep:last-of-type { padding-bottom: 0; }
+
+    /* A node on the rail per step. The drawn gold fill and these nodes are driven
+       from the same scroll span, so the line visibly lights each step as it passes. */
+    .capital .pstep::before {
+      content: "";
+      position: absolute;
+      left: calc(var(--process-pad) * -1 - 2.5px);
+      top: calc(clamp(40px, 5.5vw, 64px) + 6px);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--divider);
+      transition: background-color 550ms var(--ease), scale 550ms var(--ease);
+    }
+    .capital .pstep:first-of-type::before { top: 6px; }
+    .capital .pstep.is-lit::before { background: var(--gold); scale: 1.2; }
+
+    .capital .pstep__meta .num { display: block; color: var(--faint); margin-bottom: 12px; transition: color 550ms var(--ease); }
+    .capital .pstep.is-lit .pstep__meta .num { color: var(--gold); }
+    .capital .pstep__days { font-family: var(--sans); font-size: var(--fs-small); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); }
+    .capital .pstep__title { font-family: var(--serif); font-weight: 400; font-size: var(--fs-step); line-height: 1.1; color: var(--text); margin-bottom: 16px; letter-spacing: -0.01em; }
+    .capital .pstep__body { font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted); max-width: 56ch; }
+    .capital .pstep__deliverable {
+      margin-top: 22px;
+      font-family: var(--serif); font-style: italic; font-size: clamp(0.9375rem, 0.3vw + 0.86rem, 1.0625rem);
+      color: var(--gold);
+    }
+    .capital .pstep__deliverable::before { content: "\2014\00a0"; color: var(--faint); }
+
+    /* ============================================================
+       WHO THIS IS FOR
+       ============================================================ */
+    .capital .who-intro { margin: 0 0 clamp(48px, 6vw, 80px); max-width: 60ch; font-size: var(--fs-body-lg); line-height: 1.6; }
+    /* Deliberately lopsided. The qualifying column carries weight; the
+       disqualifying one recedes. Two equal columns read as a comparison table —
+       this is not a comparison, it is a filter. */
+    .capital .who-grid { display: grid; grid-template-columns: 1.18fr 0.82fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
+    .capital .who-col__label { font-family: var(--sans); font-weight: 500; font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-2); margin-bottom: 30px; }
+
+    .capital .who-col--primary .who-col__label { color: var(--gold); }
+    .capital .who-col--primary .dash-list li { font-size: var(--fs-body-lg); line-height: 1.5; margin-bottom: 24px; }
+    .capital .who-col--primary .dash-list li::before { color: var(--gold-soft); }
+
+    .capital .who-col--secondary { padding-top: clamp(6px, 1.4vw, 18px); }
+    .capital .who-col--secondary .who-col__label { color: var(--faint); }
+    .capital .who-col--secondary .dash-list li { font-size: var(--fs-card); color: var(--muted-2); margin-bottom: 16px; }
+    .capital .dash-list li {
+      position: relative; padding-left: 2rem;
+      font-family: var(--sans); font-size: var(--fs-body); line-height: 1.6; color: var(--muted);
+      margin-bottom: 20px;
+      transition: color 300ms var(--ease);
+    }
+    .capital .dash-list li:last-child { margin-bottom: 0; }
+    .capital .dash-list li::before { content: "\2014"; position: absolute; left: 0; top: 0; color: var(--faint); transition: color 300ms var(--ease); }
+    .capital .dash-list li:hover { color: var(--text); }
+    .capital .dash-list li:hover::before { color: var(--gold); }
+
+    /* ============================================================
+       THE CONSULTATION
+       ============================================================ */
+    .capital .consult .container { text-align: center; }
+    .capital .consult .head { margin-bottom: clamp(40px, 5vw, 64px); }
+    .capital .consult .head .display { margin-inline: auto; }
+    .capital .consult__body { max-width: 58ch; margin-inline: auto; font-size: var(--fs-body-lg); line-height: 1.65; }
+    .capital .consult-points {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-block: 1px solid var(--divider);
+      margin-block: clamp(48px, 7vw, 88px);
+      text-align: left;
+    }
+    /* Dividers are drawn elements, not borders — they scale down before the point
+       content arrives, so the block assembles rather than appearing. */
+    .capital .point { position: relative; padding: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 44px); }
+    .capital .point:first-child { padding-left: 0; }
+    .capital .point:last-child { padding-right: 0; }
+    .capital .point__title { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(1.25rem, 0.8vw + 1rem, 1.5rem); color: var(--gold); margin-bottom: 14px; }
+    .capital .point__body { font-family: var(--sans); font-size: var(--fs-card); line-height: 1.7; color: var(--muted); }
+    .capital .consult__note { font-family: var(--sans); font-size: var(--fs-small); color: var(--muted-2); margin-top: 28px; }
+
+    /* ============================================================
+       ABOUT
+       ============================================================ */
+    /* The rest beat. Book measure, a static manuscript rule, and the calmest
+       motion on the page — this section earns its quiet by contrast. */
+
+    /* ============================================================
+       FAQ
+       ============================================================ */
+    .capital .faq-item { position: relative; }
+    .capital .faq-item:last-child { border-bottom: 1px solid var(--divider); }
+    .capital .faq-q {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 2rem;
+      width: 100%; text-align: left;
+      padding: clamp(22px, 3vw, 30px) 4px;
+    }
+    .capital .faq-q__text {
+      font-family: var(--serif); font-weight: 400; font-size: clamp(1.25rem, 1vw + 1rem, 1.625rem);
+      line-height: 1.25; color: var(--text); letter-spacing: -0.01em;
+      transition: color 300ms var(--ease);
+    }
+    .capital .faq-q:hover .faq-q__text { color: var(--gold); }
+    .capital .faq-icon { position: relative; flex: none; width: 14px; height: 14px; align-self: center; transition: transform 500ms var(--ease); }
+    .capital .faq-icon::before,
+.capital .faq-icon::after {
+      content: ""; position: absolute; background: var(--gold);
+      transition: background 300ms var(--ease);
+    }
+    .capital .faq-icon::before { left: 0; top: 50%; width: 100%; height: 1px; margin-top: -0.5px; }
+    .capital .faq-icon::after { top: 0; left: 50%; height: 100%; width: 1px; margin-left: -0.5px; }
+    .capital .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .capital .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 550ms var(--ease); }
+    .capital .faq-item.open .faq-a { grid-template-rows: 1fr; }
+    .capital .faq-a__inner { overflow: hidden; }
+    .capital .faq-a__inner p {
+      font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted);
+      max-width: 62ch; padding: 0 4px clamp(26px, 3vw, 34px);
+    }
+
+    /* ============================================================
+       FINAL CTA
+       ============================================================ */
+    .capital .final .display { max-width: 16ch; }
+    .capital .final-body { margin: clamp(28px, 4vw, 44px) 0 clamp(36px, 4vw, 52px); max-width: 46ch; font-size: var(--fs-body-lg); line-height: 1.65; }
+    .capital .final-contact { font-family: var(--sans); font-size: var(--fs-small); color: var(--muted-2); margin-top: clamp(32px, 4vw, 48px); }
+    .capital .final-contact a { color: var(--muted); transition: color 300ms var(--ease); }
+    .capital .final-contact a:hover { color: var(--text); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .capital .footer { border-top: 1px solid var(--divider); padding: clamp(32px, 4vw, 44px) var(--gutter); }
+    .capital .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; max-width: 1400px; margin-inline: auto; }
+    .capital .footer__meta { font-family: var(--sans); font-size: var(--fs-nav); color: var(--faint); }
+    .capital .footer__meta .footer__time { color: var(--muted-2); font-variant-numeric: tabular-nums; }
+    .capital .footer__links { display: flex; gap: clamp(1.25rem, 2.5vw, 2rem); flex-wrap: wrap; }
+    .capital .footer__links a { font-family: var(--sans); font-size: var(--fs-nav); color: var(--faint); transition: color 300ms var(--ease); }
+    .capital .footer__links a:hover { color: var(--text); }
+
+    /* ============================================================
+       MOTION (JS drives reveals; these prevent FOUC)
+       ============================================================ */
+    html.js:not(.reduced) .capital [data-reveal],
+html.js:not(.reduced) .capital [data-hero],
+html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
+    html.js:not(.reduced) .capital .hero-headline { opacity: 0; }
+    /* Fade the inner svg, not .enso — the wrapper keeps its designed opacity per breakpoint */
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .capital .consult-points { grid-template-columns: 1fr; border-block: 0; }
+      /* Stacked: the vertical dividers make no sense, so fall back to borders. */
+      .capital .point > .rule--y { display: none; }
+      .capital .point { border-top: 1px solid var(--divider); padding-inline: 0; }
+      .capital .point:first-child { border-top: 1px solid var(--divider); }
+      .capital .point:last-child { border-bottom: 1px solid var(--divider); }
+    }
+
+    @media (max-width: 860px) {
+      /* Folios move inline above the title; there is no margin to hang into. */
+      .capital .rows--folio .row { grid-template-columns: 1fr; gap: 14px; padding-left: 0; }
+      .capital .rows--folio .row__num { position: static; display: block; margin-bottom: 10px; font-size: clamp(1.75rem, 7vw, 2.25rem); }
+      .capital .rows--folio .row:first-child .row__num { top: auto; }
+      .capital .rows--folio .row__desc { max-width: none; }
+    }
+
+    @media (max-width: 768px) {
+      .capital {
+        --pad-section: clamp(72px, 14vw, 112px);
+        /* Track the section tier down so the pause beats stay ~1.45×, not 2×.
+           Vertical space is scarcest exactly where it was most expensive. */
+        --pad-vast: clamp(104px, 20vw, 168px);
+
+        /* Legibility floors. The 11px tracked label is a deliberate editorial
+           device and stays; incidental copy should not sit under 13px on a phone. */
+        --fs-small: 0.8125rem;
+        --fs-card:  0.875rem;
+        --fs-nav:   0.75rem;
+      }
+      .capital .nav__links { display: none; }
+      .capital .burger { display: grid; }
+      .capital .hero { align-items: flex-end; }
+      .capital .hero-scroll { display: none; }
+      .capital .hero-mark { right: -38vw; top: 30%; width: 118vw; opacity: 0.45; }
+
+      /* Soft frosted scrim so the ring never clashes with the hero text.
+         Top edge is feathered by the mask; gradient tint doubles as a
+         no-backdrop-filter fallback. */
+      .capital .hero-content::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: 56px 0 0;
+        pointer-events: none;
+        background: linear-gradient(to bottom, rgba(15, 14, 12, 0) 0%, rgba(15, 14, 12, 0.42) 32%, rgba(15, 14, 12, 0.5) 100%);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 140px);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 140px);
+      }
+      .capital .pstep { grid-template-columns: 1fr; gap: 18px; }
+      .capital .who-grid { grid-template-columns: 1fr; gap: clamp(40px, 9vw, 60px); }
+      /* Stacked, so the lopsided weighting no longer reads as hierarchy — pull the
+         two lists back toward each other. */
+      .capital .who-col--primary .dash-list li { font-size: var(--fs-body); }
+      .capital .who-col--secondary { padding-top: 0; }
+      .capital .who-col--secondary .dash-list li { font-size: var(--fs-body); }
+      /* Room for the closing seal to sit in its own space, clear of the copy. */
+      .capital .final { padding-bottom: calc(var(--pad-vast) + 150px); }
+      .capital .footer__inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    }
+
+    /* ============================================================
+       TOUCH TARGETS — WCAG 2.5.8 wants 24×24 CSS px minimum. Padding grows the
+       hit area; the matching negative margin cancels it out, so the visual layout
+       is byte-for-byte unchanged. Both conditions are covered: coarse pointers
+       (phones, tablets, touch laptops) and narrow widths. Because it is visually
+       inert there is no cost to the wider net.
+       ============================================================ */
+    @media (pointer: coarse), (max-width: 768px) {
+      .capital .brand { padding-block: 12px; margin-block: -12px; }
+      .capital .textlink { padding-block: 9px; margin-block: -9px; }
+      .capital .footer__links a,
+.capital .final-contact a,
+.capital .mobile-menu__meta a {
+        display: inline-block;
+        padding: 7px 3px;
+        margin: -7px -3px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html:has(.capital) { scroll-behavior: auto; }
+      .capital *,
+.capital *::before,
+.capital *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
+      .capital .faq-a { transition: none; }
+    }
+
+/* ============================================================
+   STAUNCH MARK — Kanso's ensō, translated. The Staunch bars take its place
+   as the recurring ground: they draw on (CapitalFX), shimmer in a slow wave
+   left to right, drift with the pointer, and answer scroll.
+   ============================================================ */
+
+/* Nav lockup: symbol + wordmark, the nav-scale form of the logo. */
+.capital .lockup { display: inline-flex; align-items: center; gap: 12px; }
+.capital .lockup__mark { display: block; height: 22px; width: auto; }
+.capital .lockup__word {
+  font-family: var(--sans); font-weight: 700; font-size: 0.8125rem;
+  text-transform: uppercase; letter-spacing: 0.2em; color: var(--text);
+  line-height: 1;
+}
+
+/* Ground-scale bars: hairline outline over a whisper of fill. */
+.capital .bar {
+  fill: rgba(197, 165, 114, 0.035);
+  stroke: rgba(197, 165, 114, 0.42);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+}
+/* The wave. Each bar brightens in turn, a beat apart — the same slow, peripheral
+   motion as the turning ensō, never fast enough to pull the eye off the copy. */
+html.js:not(.reduced) .capital .bar {
+  animation: cap-bar-wave 9s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.42s);
+}
+@keyframes cap-bar-wave {
+  0%, 100% { fill: rgba(197, 165, 114, 0.035); }
+  18%      { fill: rgba(197, 165, 114, 0.16); }
+  40%      { fill: rgba(197, 165, 114, 0.035); }
+}
+
+.capital .hero-mark {
+  position: absolute;
+  right: clamp(24px, 6vw, 110px); top: 50%;
+  width: min(42vw, 520px); aspect-ratio: 199 / 189;
+  transform: translateY(-54%);
+  opacity: 0.9;
+}
+.capital .hero-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
+html.js:not(.reduced) .capital .hero-mark svg { opacity: 0; }
+
+/* Grounds. A ground-bearing section clips its own ghost, exactly as the hero
+   does, so it can never widen the document and push the burger off-screen. */
+.capital .bar-ghost {
+  position: absolute; z-index: 0;
+  pointer-events: none;
+  aspect-ratio: 199 / 189;
+}
+.capital .bar-ghost svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.capital .bar-ghost .bar { stroke: rgba(197, 165, 114, 0.26); }
+html.js:not(.reduced) .capital [data-bar-ghost] svg { opacity: 0; }
+
+.capital .bar-ghost--upper-right {
+  right: max(-180px, -13vw); top: max(-300px, -22vw);
+  width: min(62vw, 560px);
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, #000 60%, transparent 100%);
+}
+.capital .bar-ghost--left {
+  left: max(-300px, -24vw); top: 6%;
+  width: min(72vw, 660px);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 50%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 50%, transparent 100%);
+}
+/* The one you see whole: the page opens on cropped marks and closes on the
+   complete one. */
+.capital .bar-ghost--seal {
+  right: clamp(40px, 9vw, 150px); top: 50%;
+  translate: 0 -50%;
+  width: min(34vw, 240px);
+}
+.capital .bar-ghost--seal .bar { stroke: rgba(197, 165, 114, 0.4); }
+
+@media (max-width: 768px) {
+  .capital .bar-ghost .bar { stroke: rgba(197, 165, 114, 0.16); }
+  .capital .bar-ghost--upper-right { right: -40vw; top: -4%; width: 100vw; }
+  .capital .bar-ghost--left { left: -40vw; top: 3%; width: 104vw; }
+  .capital .section--scrim > .container::before {
+    content: "";
+    position: absolute; z-index: -1; inset: -20px 0;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
+  }
+  .capital .bar-ghost--seal {
+    right: auto; left: 50%; top: auto; bottom: 24px;
+    translate: -50% 0;
+    width: min(46vw, 170px);
+  }
+}
+
+/* ============================================================
+   TERMS — the symptom list from Kanso, re-cut as a term sheet.
+   Numeral, key in the tracked label voice, value in the display serif.
+   ============================================================ */
+.capital .rows--terms { margin: 0; }
+.capital .rows--terms .row {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(130px, 220px) 1fr;
+  gap: clamp(16px, 4vw, 56px);
+  align-items: baseline;
+  padding: clamp(24px, 2.8vw, 34px) clamp(16px, 2vw, 28px);
+  margin-inline: clamp(-16px, -2vw, -28px);
+}
+.capital .rows--terms .row:last-child { border-bottom: 1px solid var(--divider); }
+.capital .rows--terms .row:hover { background: var(--surface); }
+.capital .rows--terms .row:hover .row__num { color: var(--gold); }
+.capital .rows--terms .row__key {
+  font-family: var(--sans); font-weight: 500; font-size: var(--fs-label);
+  text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-2);
+}
+.capital .rows--terms .row__main { margin: 0; transition: transform 500ms var(--ease); }
+.capital .rows--terms .row:hover .row__main { transform: translateX(8px); }
+.capital .rows--terms .row__line {
+  display: inline-block;
+  font-family: var(--serif); font-weight: 300; font-size: var(--fs-step);
+  line-height: 1.15; letter-spacing: -0.01em; color: var(--text);
+}
+@media (max-width: 640px) {
+  .capital .rows--terms .row { grid-template-columns: 2.25rem 1fr; row-gap: 6px; }
+  .capital .rows--terms .row__main { grid-column: 2; }
+}
+
+/* Kanso's cursor ring was a miniature ensō; here it is a plain hairline ring. */
+.capital .cursor-ring { border: 1px solid currentColor; }
+
+/* Route back to the parent brand. Quieter than the section links, and fenced
+   off from them by a hairline. */
+.capital .nav__parent {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-family: var(--sans); font-size: var(--fs-nav);
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--faint);
+  padding-right: clamp(1.5rem, 2.5vw, 2.75rem);
+  border-right: 1px solid var(--divider);
+  transition: color 300ms var(--ease);
+}
+.capital .nav__parent:hover { color: var(--text); }
+.capital .mobile-menu a.mobile-menu__parent {
+  font-family: var(--sans); font-size: var(--fs-small); line-height: 1;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-2);
+  margin-top: 1.75rem; align-self: flex-start;
+}
+.capital .mobile-menu.open a.mobile-menu__parent { transition-delay: 380ms; }
