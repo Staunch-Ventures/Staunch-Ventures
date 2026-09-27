@@ -8,7 +8,6 @@ import {
   Compass,
   Network as NetworkIcon,
   Check,
-  MapPin,
 } from "lucide-react";
 import { usePointerFine } from "@/hooks/use-pointer-fine";
 
@@ -18,8 +17,6 @@ const services = [
   { icon: Compass, label: "Strategy frameworks" },
   { icon: NetworkIcon, label: "Network access" },
 ];
-
-const sectors = ["Fintech", "MedTech", "EdTech", "AgriTech", "Clean Energy"];
 
 export function HeroVisual() {
   const fine = usePointerFine();
@@ -92,41 +89,7 @@ export function HeroVisual() {
               </li>
             ))}
           </ul>
-
-          <div className="mt-5 pt-4 border-t border-border">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
-              Sectors
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {sectors.map((s) => (
-                <span
-                  key={s}
-                  className="rounded-full bg-primary/10 border border-primary/20 px-2.5 py-1 text-[11px] font-medium text-primary"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
-
-        {/* Floating chip — top right: featured venture */}
-        <motion.div
-          style={{ transform: "translateZ(60px)" }}
-          className="absolute -right-5 -top-5 border-lit rounded-xl bg-card/85 backdrop-blur-xl shadow-float px-3 py-2.5 flex items-center gap-2.5"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10">
-            <MapPin className="h-4 w-4 text-primary" strokeWidth={1.75} />
-          </div>
-          <div className="leading-tight">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              Now investing
-            </p>
-            <p className="text-sm font-semibold">Across Africa</p>
-          </div>
-        </motion.div>
       </motion.div>
     </motion.div>
   );

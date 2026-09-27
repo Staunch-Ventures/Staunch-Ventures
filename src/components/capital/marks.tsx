@@ -12,14 +12,10 @@ const MARK_W = 191;
 /** Top of the lower row. The gap between rows is where the wordmark sits. */
 const LOWER_Y = 125;
 
-/**
- * One row of bars. `grow` says which way the bars draw on (see CapitalFX):
- * the upper row grows up from its base, the lower row down from its top, so
- * both open outward from the wordmark between them.
- */
-function BarRow({ y, grow, className }: { y: number; grow: "up" | "down"; className: string }) {
+/** One row of the nine bars. */
+function BarRow({ y, className }: { y: number; className: string }) {
   return (
-    <g data-grow={grow}>
+    <g>
       {BAR_X.map((x, i) => (
         <rect
           key={x}
@@ -28,20 +24,19 @@ function BarRow({ y, grow, className }: { y: number; grow: "up" | "down"; classN
           y={y}
           width={BAR_W[i]}
           height={ROW_H}
-          style={{ "--i": i } as React.CSSProperties}
         />
       ))}
     </g>
   );
 }
 
-/** The full logo: bars, wordmark, bars. Used by the preloader and the seal. */
+/** The full logo: bars, wordmark, bars. Used by the preloader. */
 export function CapitalLogo({ className, title = "Staunch Capital" }: { className?: string; title?: string }) {
   return (
     <svg className={className} viewBox="0 0 584 181" role="img" aria-label={title}>
       <g transform={`translate(${(584 - MARK_W) / 2} 0)`} fill="var(--gold)">
-        <BarRow y={0} grow="up" className="logo-bar" />
-        <BarRow y={LOWER_Y} grow="down" className="logo-bar" />
+        <BarRow y={0} className="logo-bar" />
+        <BarRow y={LOWER_Y} className="logo-bar" />
       </g>
       {/* textLength pins the wordmark to the original's measure, so the lockup
           keeps its proportions whatever the fallback font does. */}
@@ -65,8 +60,8 @@ export function BarMark({ className, fill = "var(--gold)" }: { className?: strin
   return (
     <svg className={className} viewBox="0 0 191 181" aria-hidden="true">
       <g fill={fill}>
-        <BarRow y={0} grow="up" className="logo-bar" />
-        <BarRow y={LOWER_Y} grow="down" className="logo-bar" />
+        <BarRow y={0} className="logo-bar" />
+        <BarRow y={LOWER_Y} className="logo-bar" />
       </g>
     </svg>
   );
@@ -79,38 +74,5 @@ export function CapitalLockup() {
       <BarMark className="lockup__mark" />
       <span className="lockup__word">Staunch Capital</span>
     </span>
-  );
-}
-
-/**
- * The symbol at ground scale — the hero's mark and the faint recurring
- * grounds. Hairline bars that draw on, shimmer in a slow wave, and drift with
- * the pointer (all driven from CapitalFX / CSS).
- */
-export function BarSymbol({ id }: { id?: string }) {
-  return (
-    <svg id={id} viewBox="-4 -4 199 189" aria-hidden="true">
-      <BarRow y={0} grow="up" className="bar" />
-      <BarRow y={LOWER_Y} grow="down" className="bar" />
-    </svg>
-  );
-}
-
-export function BarGhost({
-  placement,
-  depth = 0.1,
-}: {
-  placement: "upper-right" | "left" | "seal";
-  depth?: number;
-}) {
-  return (
-    <div
-      className={`bar-ghost bar-ghost--${placement}`}
-      aria-hidden="true"
-      data-bar-ghost
-      data-depth={depth}
-    >
-      <BarSymbol />
-    </div>
   );
 }

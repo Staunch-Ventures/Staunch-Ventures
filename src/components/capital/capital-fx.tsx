@@ -92,24 +92,6 @@ function wrapWords(el: HTMLElement) {
 }
 
 /**
- * The bars draw on the way Kanso's ensō did: every bar grows out from the
- * wordmark gap, left to right, the upper row upward and the lower row down.
- */
-function drawBars(svg: SVGElement, opts: { duration: number; stagger: number }) {
-  const tl = gsap.timeline();
-  svg.querySelectorAll<SVGGElement>("[data-grow]").forEach((row) => {
-    const origin = row.dataset.grow === "up" ? "50% 100%" : "50% 0%";
-    tl.fromTo(
-      row.querySelectorAll("rect"),
-      { scaleY: 0, transformOrigin: origin },
-      { scaleY: 1, duration: opts.duration, ease: "power3.inOut", stagger: opts.stagger },
-      0,
-    );
-  });
-  return tl;
-}
-
-/**
  * Motion for the Staunch Capital page, ported from the Kanso site. Everything
  * it touches outside the .capital subtree (html flags, body classes) is
  * removed again on unmount, so client navigation back into the main site
@@ -314,10 +296,7 @@ export default function CapitalFX() {
             { opacity: 0, y: 26 },
             { opacity: 1, y: 0, duration: 1.1, ease: "power3.out", stagger: 0.14 },
             0.4,
-          )
-          .fromTo("#heroMark", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0.15);
-        const heroMark = document.querySelector<SVGElement>("#heroMark");
-        if (heroMark) tl.add(drawBars(heroMark, { duration: 1.6, stagger: 0.09 }), 0.2);
+          );
       }
 
       function releasePage() {
@@ -386,11 +365,6 @@ export default function CapitalFX() {
         gsap.to(".hero-content", {
           y: -64,
           opacity: 0.25,
-          ease: "none",
-          scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-        });
-        gsap.to(".hero-mark", {
-          y: 90,
           ease: "none",
           scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
         });
@@ -490,78 +464,6 @@ export default function CapitalFX() {
         });
       }
 
-      /* The recurring bar grounds. Each one is alive in the same four ways as the
-         hero's: it draws itself on, turns continuously (CSS, on the rotor group),
-         drifts with the pointer, and answers scroll. The three transforms are kept
-         on separate elements — scroll on the wrapper, pointer on the svg, rotation
-         on the rotor — so they never fight over the same matrix. */
-      const ghostDrift = matchMedia("(hover: hover) and (pointer: fine)").matches;
-      const ghostDrifters: Array<(nx: number, ny: number) => void> = [];
-
-      gsap.utils.toArray<HTMLElement>("[data-bar-ghost]").forEach((ghost) => {
-        /* Grounds the breakpoint has dropped get no triggers and no tweens. */
-        if (getComputedStyle(ghost).display === "none") return;
-
-        const span = ghost.closest<HTMLElement>("section") || ghost;
-        const svg = ghost.querySelector<SVGElement>("svg");
-        if (svg) {
-          gsap.fromTo(
-            svg,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 2,
-              ease: "power2.out",
-              scrollTrigger: { trigger: span, start: "top 85%", once: true },
-            },
-          );
-        }
-
-        /* Every ground draws itself on, exactly as the hero's does. */
-        if (svg) {
-          ScrollTrigger.create({
-            trigger: span,
-            start: "top 82%",
-            once: true,
-            onEnter: () => drawBars(svg, { duration: 1.8, stagger: 0.1 }),
-          });
-          gsap.set(svg.querySelectorAll("rect"), { scaleY: 0 });
-        }
-
-        /* Pointer lean, scaled by the ring's own depth factor so the further-back
-           grounds move least — the same cue the scroll parallax uses. */
-        if (ghostDrift && svg) {
-          const factor = (parseFloat(ghost.getAttribute("data-depth") || "0.1") || 0.1) / 0.1;
-          const dx = gsap.quickTo(svg, "x", { duration: 1.4, ease: "power3.out" });
-          const dy = gsap.quickTo(svg, "y", { duration: 1.4, ease: "power3.out" });
-          ghostDrifters.push((nx, ny) => {
-            dx(nx * 24 * factor);
-            dy(ny * 17 * factor);
-          });
-        }
-
-        /* Scroll drives scale only; the wave belongs to CSS. */
-        gsap.fromTo(
-          ghost,
-          { scale: 0.94 },
-          {
-            scale: 1.06,
-            ease: "none",
-            scrollTrigger: { trigger: span, start: "top bottom", end: "bottom top", scrub: true },
-          },
-        );
-      });
-
-      if (ghostDrifters.length) {
-        const onGhostMove = (e: MouseEvent) => {
-          const nx = e.clientX / window.innerWidth - 0.5;
-          const ny = e.clientY / window.innerHeight - 0.5;
-          ghostDrifters.forEach((fn) => fn(nx, ny));
-        };
-        window.addEventListener("mousemove", onGhostMove, { passive: true });
-        cleanups.push(() => window.removeEventListener("mousemove", onGhostMove));
-      }
-
       /* Process steps light as the drawn line reaches them, so the rail and the
          content read as one gesture. Reversible — it answers scrolling back up. */
       gsap.utils.toArray<HTMLElement>(".pstep").forEach((step) => {
@@ -595,60 +497,9 @@ export default function CapitalFX() {
         });
       }
 
-      /* Custom cursor + magnetic CTAs (fine pointers only) */
-      const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-      if (finePointer && document.querySelector(".cursor-dot") && document.querySelector(".cursor-ring")) {
-        root.classList.add("cursor-on");
-        const dot = document.querySelector<HTMLElement>(".cursor-dot")!;
-        const ring = document.querySelector<HTMLElement>(".cursor-ring")!;
-        const dotX = gsap.quickTo(dot, "x", { duration: 0.16, ease: "power3" });
-        const dotY = gsap.quickTo(dot, "y", { duration: 0.16, ease: "power3" });
-        const ringX = gsap.quickTo(ring, "x", { duration: 0.45, ease: "power3" });
-        const ringY = gsap.quickTo(ring, "y", { duration: 0.45, ease: "power3" });
-        let cursorShown = false;
-        function onMouseMove(e: MouseEvent) {
-          if (!cursorShown) {
-            cursorShown = true;
-            gsap.set([dot, ring], { x: e.clientX, y: e.clientY });
-            gsap.to([dot, ring], { opacity: 1, duration: 0.4 });
-          }
-          dotX(e.clientX);
-          dotY(e.clientY);
-          ringX(e.clientX);
-          ringY(e.clientY);
-        }
-        window.addEventListener("mousemove", onMouseMove, { passive: true });
-        function onMouseLeave() {
-          gsap.to([dot, ring], { opacity: 0, duration: 0.3 });
-          cursorShown = false;
-        }
-        document.documentElement.addEventListener("mouseleave", onMouseLeave);
-        function onMouseOver(e: MouseEvent) {
-          if ((e.target as HTMLElement)?.closest?.("a, button")) root.classList.add("cursor-hover");
-        }
-        function onMouseOut(e: MouseEvent) {
-          if ((e.target as HTMLElement)?.closest?.("a, button")) root.classList.remove("cursor-hover");
-        }
-        document.addEventListener("mouseover", onMouseOver);
-        document.addEventListener("mouseout", onMouseOut);
-
-        /* Hero: the mark drifts gently with the pointer */
-        const hero = document.querySelector<HTMLElement>(".hero");
-        const markSvg = document.getElementById("heroMark");
-        let onHeroMouseMove: ((e: MouseEvent) => void) | null = null;
-        if (hero && markSvg) {
-          const markX = gsap.quickTo(markSvg, "x", { duration: 1.2, ease: "power3.out" });
-          const markY = gsap.quickTo(markSvg, "y", { duration: 1.2, ease: "power3.out" });
-          onHeroMouseMove = (e: MouseEvent) => {
-            const nx = e.clientX / window.innerWidth - 0.5;
-            const ny = e.clientY / window.innerHeight - 0.5;
-            markX(nx * 34);
-            markY(ny * 24);
-          };
-          hero.addEventListener("mousemove", onHeroMouseMove, { passive: true });
-        }
-
-        /* Magnetic CTAs */
+      /* Magnetic CTAs (fine pointers only). The cursor itself stays native:
+         the light on the pattern (PatternLight) is the page's pointer response. */
+      if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
         const magneticEls = gsap.utils.toArray<HTMLElement>("[data-magnetic]");
         const magneticHandlers: Array<() => void> = [];
         magneticEls.forEach((el) => {
@@ -669,14 +520,7 @@ export default function CapitalFX() {
           });
         });
 
-        cleanups.push(() => {
-          window.removeEventListener("mousemove", onMouseMove);
-          document.documentElement.removeEventListener("mouseleave", onMouseLeave);
-          document.removeEventListener("mouseover", onMouseOver);
-          document.removeEventListener("mouseout", onMouseOut);
-          if (hero && onHeroMouseMove) hero.removeEventListener("mousemove", onHeroMouseMove);
-          magneticHandlers.forEach((fn) => fn());
-        });
+        cleanups.push(() => magneticHandlers.forEach((fn) => fn()));
       }
 
       /* Re-split headings on real width changes */
@@ -708,7 +552,7 @@ export default function CapitalFX() {
 
     return () => {
       cleanups.forEach((fn) => fn());
-      root.classList.remove("lenis-on", "cursor-on", "cursor-hover", "is-loading");
+      root.classList.remove("lenis-on", "is-loading");
       document.body.classList.remove("menu-open");
       ctx.revert();
       gsap.ticker.remove(raf);

@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { BarGhost, BarSymbol } from "./marks";
 import { BRIEF_MAILTO, INVEST_EMAIL, PITCH_URL } from "./chrome";
 import { mainUrl } from "@/lib/sites";
 
@@ -123,9 +122,6 @@ export function Hero() {
       <div className="hero-bg" aria-hidden="true">
         <div className="hero-glow"></div>
         <div className="hero-vignette"></div>
-        <div className="hero-mark">
-          <BarSymbol id="heroMark" />
-        </div>
       </div>
       <div className="hero-content">
         <div className="hero-meta" data-hero>
@@ -274,8 +270,7 @@ export function HowSection() {
 
 export function PlatformSection() {
   return (
-    <section className="section section--ground section--scrim" id="platform">
-      <BarGhost placement="upper-right" depth={0.11} />
+    <section className="section" id="platform">
       <div className="container">
         <div className="head head--rail">
           <span className="label" data-reveal="up">
@@ -351,8 +346,7 @@ export function MandateSection() {
 
 export function InvestSection() {
   return (
-    <section className="section section--vast section--ground section--scrim consult plate" id="invest">
-      <BarGhost placement="left" depth={0.12} />
+    <section className="section section--vast consult plate" id="invest">
       <div className="container">
         <div className="head">
           <span className="label" data-reveal="up">
@@ -439,10 +433,7 @@ export function FaqSection() {
 
 export function FinalSection() {
   return (
-    /* The page closes on the only mark you see whole. Every ground above it is
-       cropped by an edge; this one is contained and complete. */
-    <section className="section section--vast section--ground final" id="contact">
-      <BarGhost placement="seal" depth={0.05} />
+    <section className="section section--vast final" id="contact">
       <div className="container">
         <span className="label" data-reveal="up">
           <span className="label__num">08</span>Get in Touch

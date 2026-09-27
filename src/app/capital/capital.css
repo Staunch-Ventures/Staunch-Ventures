@@ -144,24 +144,6 @@ html.is-loading body { overflow: hidden; }
     }
     .capital .preloader__line { display: block; width: min(240px, 40vw); height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; }
 
-    /* ============================================================
-       CUSTOM CURSOR
-       ============================================================ */
-    html.cursor-on:has(.capital),
-html.cursor-on .capital * { cursor: none !important; }
-    .capital .cursor-dot,
-.capital .cursor-ring {
-      position: fixed; top: 0; left: 0; z-index: 400;
-      pointer-events: none; border-radius: 50%; opacity: 0;
-      display: none;
-    }
-    html.cursor-on .capital .cursor-dot,
-html.cursor-on .capital .cursor-ring { display: block; }
-    .capital .cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--gold); scale: 1; transition: scale 300ms var(--ease); }
-    .capital .cursor-ring { width: 38px; height: 38px; margin: -19px 0 0 -19px; color: var(--gold-soft); scale: 1; transition: scale 400ms var(--ease), color 400ms var(--ease); }
-
-    html.cursor-hover .capital .cursor-ring { scale: 1.6; color: rgba(197, 165, 114, 0.25); }
-    html.cursor-hover .capital .cursor-dot { scale: 0.5; }
 
     /* ============================================================
        SHARED TYPOGRAPHY
@@ -221,9 +203,11 @@ html.cursor-on .capital .cursor-ring { display: block; }
     .capital .container--prose { max-width: var(--maxw-prose); }
 
     /* Grounds. A full-bleed hairline at the boundary so the tonal shift reads as
-       a deliberate plate and not a rendering artifact. */
-    .capital .plate { background: var(--surface); }
-    .capital .plate--deep { background: var(--deep); }
+       a deliberate plate and not a rendering artifact. Translucent rather than
+       solid, landing on the same tones as --surface and --deep over --bg, so the
+       pattern light still reaches through them, just dimmer. */
+    .capital .plate { background: rgba(255, 236, 205, 0.022); }
+    .capital .plate--deep { background: rgba(0, 0, 0, 0.28); }
     .capital .plate,
 .capital .plate--deep { border-block: 1px solid var(--divider); }
 
@@ -288,80 +272,7 @@ html.cursor-on .capital .cursor-ring { display: block; }
       .capital .head--offset .label__num { display: inline; margin-right: 1em; margin-bottom: 0; }
     }
 
-    /* Section content sits above any ensō ground. */
     .capital .section > .container { position: relative; z-index: 1; }
-
-    /* ============================================================
-       ENSŌ GROUND — the mark recurs, cropped differently each time.
-       Its own ring/dot classes so it never collides with the hero's
-       GSAP targets, and so the ground can be far fainter.
-       ============================================================ */
-    /* A ground-bearing section must clip its own ghost, exactly as .hero clips its
-       ensō. Without this the ghost extends the document's scrollable width, which
-       widens the containing block of the fixed nav and pushes the burger button
-       off-screen on phones — the nav becomes unreachable.
-       The explicit class is the guarantee (universally supported); the :has() is a
-       safety net so a future ghost added without the class still clips. */
-    .capital .section--ground { overflow: clip; }
-
-    /* Continuous rotation, as in the hero. Lives on the rotor group so it never
-       competes with the wrapper transforms driven by scroll, or the svg transform
-       driven by the pointer. Period comes from --spin, set per instance. */
-
-    /* Must outrank the shorthand above, which otherwise resets direction to normal. */
-
-    /* The cropped grounds dissolve before they reach the reading column. Measured:
-       text over the ring is 6.03:1 against 7.04:1 clear of it — never a contrast
-       failure, so this is a figure-ground fix, not a legibility one. A mask costs
-       one static composite; backdrop-filter would re-read and re-blur the backdrop
-       every scroll frame over a large area, for a 1.7px hairline. Wrong tool.
-       Gradient runs from the anchored edge inward, so each ring emerges from the
-       bezel and fades out before the copy. */
-    /* Pulled back off the bezel and lifted, so most of the circle reads rather
-       than a corner sliver. Sitting high keeps the visible arc above the heading —
-       the section's rail head insets the heading, leaving this corner clear. */
-
-    /* The rings stay crisp. Softening is applied where it is actually needed —
-       behind the copy, on mobile only — by the scrim below, exactly as the hero
-       does it. Blurring the whole ring dulled it everywhere to solve a problem
-       that exists in one place. */
-
-    /* The one you see whole. Contained, unmasked, and small enough to sit in clear
-       space — the page opens on partial rings and closes on the complete mark.
-       Stroke and dot are scaled up because the svg renders ~3× smaller here. */
-
-    @media (max-width: 768px) {
-      /* The ring must never compete with text at small measures. */
-      
-      /* Restored on mobile. A phone has no margin to keep the ring clear of the
-         copy, so instead the ring is soft enough that crossing text reads as
-         atmosphere rather than a line ruled through it — see the blur above. */
-
-      /* Heavier and brighter than desktop on purpose: the scrim below diffuses
-         whatever passes under the copy, and a thin faint line does not survive a
-         blur — it disappears. This is sized so the diffused remnant still reads as
-         a soft arc, while the parts outside the scrim stay crisp. */
-
-      /* Localised softening, the hero's approach. Rather than blurring the whole
-         ring, blur the backdrop behind the copy — so the arc is diffused only
-         where it actually passes under text, and stays crisp everywhere else.
-         Masked top and bottom so the panel has no edge of its own. */
-      .capital .section--scrim > .container::before {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        inset: -20px 0;
-        pointer-events: none;
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
-        mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
-      }
-      /* The seal centres under the closing copy, in space made for it below. */
-
-    }
-
-    /* Hanko seal (簡素 artist’s stamp) */
 
     /* ============================================================
        CTA — italic, gold hairline, fill on hover
@@ -491,7 +402,6 @@ html.cursor-on .capital .cursor-ring { display: block; }
       to   { opacity: 1; transform: scale(1.06); }
     }
 
-    /* hero mark: see STAUNCH MARK below */
 
     .capital .hero-content {
       position: relative; z-index: 2;
@@ -798,7 +708,6 @@ html.cursor-on .capital .cursor-ring { display: block; }
 html.js:not(.reduced) .capital [data-hero],
 html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
     html.js:not(.reduced) .capital .hero-headline { opacity: 0; }
-    /* Fade the inner svg, not .enso — the wrapper keeps its designed opacity per breakpoint */
 
     /* ============================================================
        RESPONSIVE
@@ -837,7 +746,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
       .capital .burger { display: grid; }
       .capital .hero { align-items: flex-end; }
       .capital .hero-scroll { display: none; }
-      .capital .hero-mark { right: -38vw; top: 30%; width: 118vw; opacity: 0.45; }
 
       /* Soft frosted scrim so the ring never clashes with the hero text.
          Top edge is feathered by the mask; gradient tint doubles as a
@@ -861,8 +769,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
       .capital .who-col--primary .dash-list li { font-size: var(--fs-body); }
       .capital .who-col--secondary { padding-top: 0; }
       .capital .who-col--secondary .dash-list li { font-size: var(--fs-body); }
-      /* Room for the closing seal to sit in its own space, clear of the copy. */
-      .capital .final { padding-bottom: calc(var(--pad-vast) + 150px); }
       .capital .footer__inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
     }
 
@@ -893,12 +799,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
       .capital .faq-a { transition: none; }
     }
 
-/* ============================================================
-   STAUNCH MARK — Kanso's ensō, translated. The Staunch bars take its place
-   as the recurring ground: they draw on (CapitalFX), shimmer in a slow wave
-   left to right, drift with the pointer, and answer scroll.
-   ============================================================ */
-
 /* Nav lockup: symbol + wordmark, the nav-scale form of the logo. */
 .capital .lockup { display: inline-flex; align-items: center; gap: 12px; }
 .capital .lockup__mark { display: block; height: 22px; width: auto; }
@@ -906,86 +806,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
   font-family: var(--sans); font-weight: 700; font-size: 0.8125rem;
   text-transform: uppercase; letter-spacing: 0.2em; color: var(--text);
   line-height: 1;
-}
-
-/* Ground-scale bars: hairline outline over a whisper of fill. */
-.capital .bar {
-  fill: rgba(197, 165, 114, 0.035);
-  stroke: rgba(197, 165, 114, 0.42);
-  stroke-width: 1.1;
-  vector-effect: non-scaling-stroke;
-}
-/* The wave. Each bar brightens in turn, a beat apart — the same slow, peripheral
-   motion as the turning ensō, never fast enough to pull the eye off the copy. */
-html.js:not(.reduced) .capital .bar {
-  animation: cap-bar-wave 9s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.42s);
-}
-@keyframes cap-bar-wave {
-  0%, 100% { fill: rgba(197, 165, 114, 0.035); }
-  18%      { fill: rgba(197, 165, 114, 0.16); }
-  40%      { fill: rgba(197, 165, 114, 0.035); }
-}
-
-.capital .hero-mark {
-  position: absolute;
-  right: clamp(24px, 6vw, 110px); top: 50%;
-  width: min(42vw, 520px); aspect-ratio: 199 / 189;
-  transform: translateY(-54%);
-  opacity: 0.9;
-}
-.capital .hero-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
-html.js:not(.reduced) .capital .hero-mark svg { opacity: 0; }
-
-/* Grounds. A ground-bearing section clips its own ghost, exactly as the hero
-   does, so it can never widen the document and push the burger off-screen. */
-.capital .bar-ghost {
-  position: absolute; z-index: 0;
-  pointer-events: none;
-  aspect-ratio: 199 / 189;
-}
-.capital .bar-ghost svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.capital .bar-ghost .bar { stroke: rgba(197, 165, 114, 0.26); }
-html.js:not(.reduced) .capital [data-bar-ghost] svg { opacity: 0; }
-
-.capital .bar-ghost--upper-right {
-  right: max(-180px, -13vw); top: max(-300px, -22vw);
-  width: min(62vw, 560px);
-  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 60%, transparent 100%);
-  mask-image: linear-gradient(to left, #000 0%, #000 60%, transparent 100%);
-}
-.capital .bar-ghost--left {
-  left: max(-300px, -24vw); top: 6%;
-  width: min(72vw, 660px);
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 50%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 0%, #000 50%, transparent 100%);
-}
-/* The one you see whole: the page opens on cropped marks and closes on the
-   complete one. */
-.capital .bar-ghost--seal {
-  right: clamp(40px, 9vw, 150px); top: 50%;
-  translate: 0 -50%;
-  width: min(34vw, 240px);
-}
-.capital .bar-ghost--seal .bar { stroke: rgba(197, 165, 114, 0.4); }
-
-@media (max-width: 768px) {
-  .capital .bar-ghost .bar { stroke: rgba(197, 165, 114, 0.16); }
-  .capital .bar-ghost--upper-right { right: -40vw; top: -4%; width: 100vw; }
-  .capital .bar-ghost--left { left: -40vw; top: 3%; width: 104vw; }
-  .capital .section--scrim > .container::before {
-    content: "";
-    position: absolute; z-index: -1; inset: -20px 0;
-    pointer-events: none;
-    -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
-  }
-  .capital .bar-ghost--seal {
-    right: auto; left: 50%; top: auto; bottom: 24px;
-    translate: -50% 0;
-    width: min(46vw, 170px);
-  }
 }
 
 /* ============================================================
@@ -1020,8 +840,6 @@ html.js:not(.reduced) .capital [data-bar-ghost] svg { opacity: 0; }
   .capital .rows--terms .row__main { grid-column: 2; }
 }
 
-/* Kanso's cursor ring was a miniature ensō; here it is a plain hairline ring. */
-.capital .cursor-ring { border: 1px solid currentColor; }
 
 /* Route back to the parent brand. Quieter than the section links, and fenced
    off from them by a hairline. */
@@ -1042,3 +860,37 @@ html.js:not(.reduced) .capital [data-bar-ghost] svg { opacity: 0; }
 .capital .mobile-menu.open a.mobile-menu__parent { transition-delay: 380ms; }
 
 .capital .consult__team { margin-top: 28px; }
+
+/* ============================================================
+   PATTERN LIGHT — the Staunch linework, in gold, lying under the whole page
+   and invisible except where the pointer is. A soft pool of light follows
+   the cursor (or a finger while it scrolls on touch screens) and reveals the
+   weave beneath it. This is the page's only ambient motion and its only
+   pointer response; the cursor itself stays native.
+
+   Cheap by construction: one fixed 720px element moved with transform, its
+   radial mask static. Only background-position changes per frame, which keeps
+   the weave pinned to the page as the light moves and as the page scrolls.
+   ============================================================ */
+.capital .pattern-light {
+  --size: 720px;
+  position: fixed; top: 0; left: 0; z-index: 0;
+  width: var(--size); height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  pointer-events: none;
+  background-image: url("/patterns/staunch-linework-gold.png");
+  background-size: 560px 560px;
+  -webkit-mask-image: radial-gradient(circle closest-side, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.06) 72%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.06) 72%, transparent 100%);
+  opacity: 0;
+  transition: opacity 900ms var(--ease-soft);
+  will-change: transform, background-position;
+}
+.capital .pattern-light.is-lit { opacity: 1; }
+@media (max-width: 768px) {
+  .capital .pattern-light { --size: 520px; }
+}
+
+/* Everything the page renders sits above the light. */
+.capital > main,
+.capital > .footer { position: relative; z-index: 1; }

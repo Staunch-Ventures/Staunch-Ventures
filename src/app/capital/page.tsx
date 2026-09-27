@@ -12,11 +12,13 @@ import {
   PlatformSection,
 } from "@/components/capital/sections";
 import CapitalFX from "@/components/capital/capital-fx";
+import PatternLight from "@/components/capital/pattern-light";
 
 export default function CapitalPage() {
   return (
     <>
       <Overlays />
+      <PatternLight />
       <Nav />
       <MobileMenu />
       <main id="main">
