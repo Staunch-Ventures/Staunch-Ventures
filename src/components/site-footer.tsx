@@ -55,7 +55,7 @@ export function SiteFooter() {
             </Link>
             {/* Plain <a>, not Link: the fund page has its own fonts, motion and
                 intro, and a full load is what plays them. */}
-            <a href="/capital" className="text-foreground/80 hover:text-foreground transition-colors">
+            <a href="https://capital.staunchventures.com" className="text-foreground/80 hover:text-foreground transition-colors">
               Staunch Capital
             </a>
           </div>

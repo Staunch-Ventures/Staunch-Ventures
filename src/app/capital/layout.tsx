@@ -33,9 +33,18 @@ const description =
   "A permanent capital vehicle investing $100k–$400k into African technology startups from Pre-Seed through Series A. The first fund from Staunch.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://capital.staunchventures.com"),
+  alternates: { canonical: "/" },
   title: { absolute: title },
   description,
   applicationName: "Staunch Capital",
+  // Explicit, because the root layout's `icons` would otherwise win over a
+  // file-convention icon in this segment and show the orange Staunch mark.
+  icons: {
+    icon: "/capital-icon.svg",
+    shortcut: "/capital-icon.svg",
+    apple: "/capital-apple-icon.png",
+  },
   openGraph: {
     type: "website",
     siteName: "Staunch Capital",

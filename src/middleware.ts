@@ -4,12 +4,18 @@ import { adminCookieValue, ADMIN_COOKIE } from "@/lib/admin-auth";
 /** Staunch Capital's own host. Its root serves /capital; nothing else lives there. */
 const CAPITAL_HOST = "capital.staunchventures.com";
 const MAIN_ORIGIN = "https://www.staunchventures.com";
+const MAIN_HOSTS = new Set(["staunchventures.com", "www.staunchventures.com"]);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const host = request.headers.get("host")?.split(":")[0];
 
   if (host === CAPITAL_HOST) return capitalHost(request);
+  // On the production main site the fund has one address: its own host.
+  // Localhost and preview deployments keep serving /capital directly.
+  if (pathname === "/capital" && MAIN_HOSTS.has(host ?? "")) {
+    return NextResponse.redirect(`https://${CAPITAL_HOST}/`, 308);
+  }
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return adminGate(request);
   return NextResponse.next();
 }
