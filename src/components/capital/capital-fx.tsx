@@ -224,7 +224,7 @@ export default function CapitalFX() {
     /* Scroll cue → glide to the first section */
     const scrollCue = document.getElementById("scrollCue");
     function onScrollCue() {
-      const target = document.getElementById("fund");
+      const target = document.getElementById("thesis");
       if (!target) return;
       if (lenis) lenis.scrollTo(target, { offset: -40, duration: 1.4 });
       else target.scrollIntoView({ behavior: "smooth" });

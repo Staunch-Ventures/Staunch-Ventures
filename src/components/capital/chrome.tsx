@@ -1,16 +1,20 @@
 import { INVEST_EMAIL, PITCH_URL } from "@/lib/intake";
+import { mainUrl } from "@/lib/sites";
 import { CapitalLockup, CapitalLogo } from "./marks";
 
-/** Absolute, because on capital.staunchventures.com "/" is this page. */
-export const MAIN_SITE = "https://www.staunchventures.com";
+/** The parent site's home. Absolute on production, where "/" is this page. */
+const MAIN_SITE = mainUrl("/");
+/* Team, mission and the rest of the shared context live on the parent site
+   only; the fund links there rather than repeating them. */
+const TEAM_URL = mainUrl("/about#team");
 export const BRIEF_MAILTO = `mailto:${INVEST_EMAIL}?subject=${encodeURIComponent(
   "Staunch Capital: investor brief",
 )}`;
 export { INVEST_EMAIL, PITCH_URL };
 
 const LINKS = [
+  { href: "#thesis", label: "Thesis" },
   { href: "#fund", label: "The Fund" },
-  { href: "#platform", label: "Platform" },
   { href: "#mandate", label: "Mandate" },
   { href: "#faq", label: "FAQ" },
 ];
@@ -59,6 +63,9 @@ export function Nav() {
               {l.label}
             </a>
           ))}
+          <a className="nav__link" href={TEAM_URL}>
+            Team
+          </a>
           <a className="nav__cta" href="#invest">
             Investor brief
           </a>
@@ -106,6 +113,7 @@ export function MobileMenu() {
           {l.label}
         </a>
       ))}
+      <a href={TEAM_URL}>Team</a>
       <a className="cta" href="#invest" data-menu-link>
         Request the investor brief
       </a>
@@ -130,7 +138,8 @@ export function Footer() {
         </p>
         <nav className="footer__links" aria-label="Footer">
           <a href={MAIN_SITE}>Staunch Ventures</a>
-          <a href={PITCH_URL}>Pitch</a>
+          <a href={TEAM_URL}>Team</a>
+          <a href={mainUrl(PITCH_URL)}>Pitch</a>
           <a href={BRIEF_MAILTO}>Investor brief</a>
           <a href="https://www.linkedin.com/company/staunchventures" target="_blank" rel="noopener noreferrer">
             LinkedIn

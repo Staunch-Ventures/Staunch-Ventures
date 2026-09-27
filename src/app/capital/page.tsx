@@ -4,12 +4,12 @@ import {
   FinalSection,
   FundSection,
   Hero,
+  HowSection,
   InvestSection,
   MandateSection,
   ManifestoSection,
   Marquee,
   PlatformSection,
-  WhySection,
 } from "@/components/capital/sections";
 import CapitalFX from "@/components/capital/capital-fx";
 
@@ -22,9 +22,9 @@ export default function CapitalPage() {
       <main id="main">
         <Hero />
         <Marquee />
-        <FundSection />
         <ManifestoSection />
-        <WhySection />
+        <HowSection />
+        <FundSection />
         <PlatformSection />
         <MandateSection />
         <InvestSection />

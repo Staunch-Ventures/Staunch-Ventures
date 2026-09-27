@@ -19,11 +19,10 @@ type InvestorType = (typeof INVESTOR_TYPES)[number];
  * PITCH_URL (the banner sends them there), while investors should feel like
  * they're leaving a card, not filing an application.
  *
- * Note: /invest is no longer linked from the site (see PITCH_URL/INVEST_MAILTO
- * in lib/intake.ts) — startup pitches now route to a third-party CRM intake
- * tool, and investor inquiries route to Oliver's inbox directly. This page
- * and its backing DB/blob infra stay live, unlinked, in case either process
- * comes back in-house.
+ * Note: not currently rendered. /invest is now the fork between Staunch
+ * Capital and the co-investment network, and both doors email Oliver
+ * directly. This form and its backing DB/blob infra stay in the codebase in
+ * case investor intake comes back in-house.
  */
 export function InvestForm() {
   const [name, setName] = React.useState("");

@@ -8,18 +8,22 @@ import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
-import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
+import { PITCH_URL } from "@/lib/intake";
+import { CAPITAL_URL } from "@/lib/sites";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+/**
+ * Three destinations, one per question a visitor arrives with: the fund
+ * (Capital), the studio and co-investment network (Ventures), and who we are
+ * (About). Everything else is an action — Pitch or Invest — not a page to
+ * browse. Capital is its own site, so it's a plain <a>: a full load is what
+ * plays its intro, and on production it's another host anyway.
+ */
+const navItems: { href: string; label: string; external?: boolean }[] = [
+  { href: CAPITAL_URL, label: "Capital", external: true },
   { href: "/ventures", label: "Ventures" },
-  { href: "/team", label: "Team" },
-  { href: "/ecosystem", label: "Ecosystem" },
-  { href: "/media", label: "Media" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
 ];
 
 export function MainNav() {
@@ -104,6 +108,17 @@ export function MainNav() {
             />
             {navItems.map((item) => {
               const isActive = pathname === item.href;
+              if (item.external) {
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="relative z-10 px-4 py-1.5 text-sm font-medium transition-colors rounded-full outline-none text-muted-foreground hover:text-foreground"
+                  >
+                    {item.label}
+                  </a>
+                );
+              }
               return (
                 <Link
                   key={item.href}
@@ -128,7 +143,7 @@ export function MainNav() {
               <Link href={PITCH_URL}>Pitch</Link>
             </Button>
             <Button asChild variant="brand" size="pill">
-              <Link href={INVEST_MAILTO}>Invest</Link>
+              <Link href="/invest">Invest</Link>
             </Button>
           </div>
         </div>
@@ -156,28 +171,31 @@ export function MainNav() {
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-1 p-6">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "px-4 py-3 text-base font-medium transition-colors rounded-lg",
-                        pathname === item.href
-                          ? "bg-muted text-foreground"
-                          : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-                      )}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+                  {navItems.map((item) => {
+                    const Tag = item.external ? "a" : Link;
+                    return (
+                      <Tag
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          "px-4 py-3 text-base font-medium transition-colors rounded-lg",
+                          pathname === item.href
+                            ? "bg-muted text-foreground"
+                            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                        )}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Tag>
+                    );
+                  })}
                 </nav>
                 <div className="mt-auto p-6 space-y-3">
                   <Button asChild variant="outline" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
                     <Link href={PITCH_URL}>Pitch Your Startup</Link>
                   </Button>
                   <Button asChild variant="brand" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href={INVEST_MAILTO}>Invest</Link>
+                    <Link href="/invest">Invest</Link>
                   </Button>
                 </div>
               </div>

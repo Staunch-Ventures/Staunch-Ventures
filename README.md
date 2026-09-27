@@ -9,6 +9,25 @@ Marketing site and product demos for [Staunch Ventures](https://staunchventures.
 - shadcn/ui + Radix primitives, Framer Motion for interaction
 - Deployed on Vercel; pushes to `main` go straight to production
 
+## Site architecture
+
+Staunch is the parent brand; each arm of the platform has exactly one home,
+and the parent site only summarises it and links there.
+
+| Where | What lives there |
+| --- | --- |
+| `/` | The switchboard: what Staunch is, then one door per arm (`platformArms` in `site-data.ts`) |
+| `/about` | Everything shared across arms: mission, markets, team, ecosystem, media, contact. Sub-sites link here instead of repeating it |
+| `/ventures` | Staunch Ventures: the studio and the co-investment network (SPVs) |
+| capital.staunchventures.com | Staunch Capital, the fund |
+| `/invest` | Every Invest button lands here: fund vs. deal-by-deal |
+| `/pitch` | One door for all founders, whichever arm ends up backing them |
+
+A new fund or service is a new `platformArms` entry, not a new nav item.
+Links between the main site and Capital go through `src/lib/sites.ts`, which
+resolves to the real hosts on production and to same-deployment paths on
+previews and localhost.
+
 ## Development
 
 ```bash
@@ -22,7 +41,8 @@ npm run build      # production build
 
 | Path | What it is |
 | --- | --- |
-| `src/app/(main)/` | Marketing site: home, about, ventures, team, ecosystem, media, contact |
+| `src/app/(main)/` | Main Staunch site: home, about (mission, team, ecosystem, media, contact), ventures, invest, pitch |
+| `src/app/capital/` | Staunch Capital, the fund's own site in its own design language. Served at capital.staunchventures.com (see `src/middleware.ts`) |
 | `src/app/investor/`, `src/app/startup/` | Product demo dashboards |
 | `src/lib/site-data.ts` | **Single source of content**: ventures, growth partners, initiatives, team field photos, videos |
 | `src/components/marketing/` | Marketing-specific components (`HeroVisual`, `FieldImage`, `VideoCard`) |

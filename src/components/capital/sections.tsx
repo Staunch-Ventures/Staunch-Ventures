@@ -1,44 +1,47 @@
 import { Fragment } from "react";
 import { BarGhost, BarSymbol } from "./marks";
-import { BRIEF_MAILTO, INVEST_EMAIL, MAIN_SITE, PITCH_URL } from "./chrome";
+import { BRIEF_MAILTO, INVEST_EMAIL, PITCH_URL } from "./chrome";
+import { mainUrl } from "@/lib/sites";
 
 /* ------------------------------------------------------------------ copy -- */
 
 const TERMS = [
-  { key: "Vehicle", value: "Permanent capital vehicle" },
-  { key: "Cheque size", value: "$100k – $400k" },
+  { key: "Focus", value: "Disruptive African technology" },
   { key: "Stage", value: "Pre-Seed through Series A" },
-  { key: "Focus", value: "African technology companies" },
-  { key: "Reach", value: "Africa, the United States and Europe" },
+  { key: "Cheque size", value: "$100k – $400k" },
+  { key: "Reach", value: "Africa, the US, Europe and Asia" },
+  { key: "Vehicle", value: "Permanent capital vehicle" },
 ];
 
 const MARQUEE = [
+  "Bold founders",
+  "Disruptive technology",
   "Pre-Seed",
   "Seed",
   "Series A",
-  "Permanent capital",
   "Africa",
   "United States",
   "Europe",
-  "Patient by design",
+  "Asia",
 ];
 
-const WHY = [
+/* The fund's structure is one reason among four, not the headline. */
+const HOW = [
   {
-    title: "No forced exits",
-    desc: "A closed-end fund has to sell when its term runs out, whatever a company is worth that year. We have no term, so we can hold our best companies for as long as holding is the right call.",
+    title: "Early, and with conviction",
+    desc: "We come in from Pre-Seed to Series A, when a $100k–$400k cheque and a clear yes change what a company can do next.",
   },
   {
-    title: "Returns go back to work",
-    desc: "Proceeds from exits can be recycled into new investments instead of wound down, so the capacity to back founders builds with the track record rather than resetting every vintage.",
+    title: "Cross-border from the first cheque",
+    desc: "Portfolio companies get routes to customers, partners and follow-on capital in the United States, Europe and Asia through the wider Staunch platform.",
   },
   {
-    title: "A horizon that fits the market",
-    desc: "African technology rewards patience. Exits take longer, and the best companies often compound quietly for years before anyone notices them. Permanent capital is built for that timeline.",
+    title: "Operators alongside the capital",
+    desc: "The team behind the fund builds companies through Staunch Ventures. Founders get people who have scaled before, not just a name on the cap table.",
   },
   {
-    title: "One investor, for the life of the company",
-    desc: "No Fund I, Fund II, Fund III, each with its own clock and its own agenda. Founders deal with the same vehicle from the first cheque onward.",
+    title: "Capital that stays",
+    desc: "Staunch Capital is a permanent capital vehicle. No fund clock forces an exit, so we can keep backing founders for as long as they're building something worth backing.",
   },
 ];
 
@@ -54,49 +57,53 @@ const PLATFORM = [
     num: "02",
     meta: "Staunch Capital",
     title: "Invest",
-    body: "The fund writes $100k–$400k cheques from Pre-Seed through Series A into the technology companies that clear our mandate, and then holds.",
-    deliverable: "Early ownership, held patiently",
+    body: "The fund writes $100k–$400k cheques from Pre-Seed through Series A into the disruptive technology companies that clear our mandate.",
+    deliverable: "Early ownership in Africa's boldest founders",
   },
   {
     num: "03",
-    meta: "Africa · US · Europe",
+    meta: "Africa · US · Europe · Asia",
     title: "Scale",
-    body: "As companies grow, the Staunch network syndicates follow-on rounds from Seed through Pre-IPO and opens routes to customers and capital in the United States and Europe.",
+    body: "As companies grow, the Staunch network syndicates follow-on rounds from Seed through Pre-IPO and opens routes to customers and capital in the United States, Europe and Asia.",
     deliverable: "Global market access from the first cheque",
   },
 ];
 
 const POINTS = [
   {
-    title: "Evergreen by design",
-    body: "No fixed term and no forced exits. Capital stays invested while the portfolio compounds.",
+    title: "Africa's boldest founders",
+    body: "Early ownership in disruptive technology companies, from Pre-Seed to Series A.",
   },
   {
-    title: "Early entry",
-    body: "Ownership from Pre-Seed to Series A, the stages where the Staunch platform has its deepest access.",
+    title: "Access you can't buy",
+    body: "Deal flow from the Staunch studio and network, which work with founders from day zero.",
   },
   {
     title: "Cross-border upside",
-    body: "Portfolio companies get routes into US and European markets through the wider Staunch network.",
+    body: "Portfolio companies get routes into the US, Europe and Asia through the wider Staunch platform.",
   },
 ];
 
 const FAQS = [
   {
-    q: "What is a permanent capital vehicle?",
-    a: "An investment vehicle with no fixed end date. A traditional venture fund raises money, invests it, and has to hand it back within roughly ten years, which forces sales on a timetable. A permanent capital vehicle can hold investments for as long as it makes sense and reinvest what it earns, so decisions follow the company's trajectory rather than the fund's calendar.",
+    q: "What does Staunch Capital invest in?",
+    a: "Disruptive technology companies with an African nexus, from Pre-Seed through Series A, with cheques of $100k to $400k.",
   },
   {
-    q: "How large are your cheques?",
-    a: "Between $100k and $400k, from Pre-Seed through Series A.",
+    q: "Who is behind the fund?",
+    a: "The Staunch team, who also run the Staunch Ventures studio and co-investment network. You can meet them on the main Staunch site.",
   },
   {
     q: "How does Staunch Capital relate to Staunch Ventures?",
-    a: "Both are part of Staunch, a cross-border venture platform connecting Africa, the United States and Europe. Staunch Ventures is the 0-to-1 venture studio and co-investment network, sourcing and syndicating deals from Seed through Pre-IPO. Staunch Capital is the platform's first fund.",
+    a: "Both are part of Staunch, a cross-border venture platform connecting Africa with the United States, Europe and Asia. Staunch Ventures is the 0-to-1 venture studio and co-investment network, sourcing and syndicating deals from Seed through Pre-IPO. Staunch Capital is the platform's fund.",
   },
   {
     q: "Do you invest outside Africa?",
-    a: "The mandate requires an African nexus: operating in Africa, or based in or actively expanding into South Africa. Companies can, and often should, sell into the US and Europe. That's where the rest of the platform comes in.",
+    a: "The mandate requires an African nexus: operating in Africa, or based in or actively expanding into South Africa. Companies can, and often should, sell into the US, Europe and Asia. That's where the rest of the platform comes in.",
+  },
+  {
+    q: "What is a permanent capital vehicle?",
+    a: "An investment vehicle with no fixed end date. A traditional venture fund raises money, invests it, and has to hand it back within roughly ten years, which forces sales on a timetable. A permanent capital vehicle can hold investments for as long as it makes sense and reinvest what it earns, so decisions follow the company's trajectory rather than the fund's calendar.",
   },
   {
     q: "How do founders apply?",
@@ -124,23 +131,24 @@ export function Hero() {
         <div className="hero-meta" data-hero>
           <span className="label">Staunch Capital</span>
           <span className="hero-meta__sub">
-            Permanent Capital Vehicle &middot; Pre-Seed to Series A &middot; South Africa{" "}
+            Pre-Seed to Series A &middot; Disruptive African technology &middot; South Africa{" "}
             <span data-time></span>
           </span>
         </div>
         <h1 className="hero-headline" data-lines>
-          Permanent capital for Africa&rsquo;s technology founders.
+          Backing Africa&rsquo;s boldest founders.
         </h1>
         <p className="hero-body" data-hero>
-          $100k&ndash;$400k cheques into African technology startups, from Pre-Seed through
-          Series A, from a fund that never has to sell.
+          Staunch Capital invests $100k&ndash;$400k in disruptive technology companies from
+          Pre-Seed through Series A, bringing foreign and domestic capital to the founders
+          building Africa&rsquo;s next category leaders.
         </p>
         <div className="hero-cta-row" data-hero>
           <a className="cta" href="#invest" data-magnetic>
             Request the investor brief
           </a>
-          <a className="textlink" href="#fund">
-            or read the terms &darr;
+          <a className="textlink" href="#thesis">
+            or read the thesis &darr;
           </a>
         </div>
       </div>
@@ -182,10 +190,10 @@ export function FundSection() {
       <div className="container container--wide">
         <div className="head" data-depth="0.05">
           <span className="label" data-reveal="up">
-            <span className="label__num">01</span>The Fund
+            <span className="label__num">03</span>The Fund
           </span>
           <h2 className="display h-section" data-lines>
-            A venture fund with no end date.
+            The fund at a glance.
           </h2>
         </div>
         {/* A term sheet, written in: hairline draws, numeral lands, terms follow. */}
@@ -204,9 +212,9 @@ export function FundSection() {
           ))}
         </dl>
         <p className="body problem-outro" data-reveal="up">
-          Staunch Capital is the first fund from Staunch, a cross-border venture platform connecting
-          Africa, the United States and Europe to give high-growth founders and investors capital,
-          execution and global market access.
+          Staunch Capital is the fund of Staunch, a cross-border venture platform connecting Africa
+          with the United States, Europe and Asia to give high-growth founders and investors
+          capital, execution and global market access.
         </p>
       </div>
     </section>
@@ -218,33 +226,34 @@ export function ManifestoSection() {
     <section className="section section--vast manifesto plate--deep" id="thesis">
       <div className="container container--narrow">
         <span className="label" data-reveal="up">
-          <span className="label__num">02</span>The Thesis
+          <span className="label__num">01</span>The Thesis
         </span>
         <p className="manifesto__text" data-scrub-words>
-          Most venture funds are built to leave. A ten-year clock starts the day the money arrives,
-          and every decision after that bends toward the exit. Staunch Capital is a{" "}
-          <em>permanent capital vehicle</em>. There is no clock. We back African founders early
-          and stay while the value compounds.
+          The technology companies that will define Africa&rsquo;s next decade are being started
+          now, by founders rebuilding education, health, finance and energy for more than a billion
+          people. We exist to back <em>Africa&rsquo;s boldest founders</em> early, bring foreign
+          and domestic capital to them, and connect them to the United States, Europe and Asia from
+          day one.
         </p>
       </div>
     </section>
   );
 }
 
-export function WhySection() {
+export function HowSection() {
   return (
-    <section className="section" id="why">
+    <section className="section" id="how">
       <div className="container container--wide">
         <div className="head head--offset">
           <h2 className="display h-section" data-lines>
-            Built for how African companies actually grow.
+            How we back founders.
           </h2>
           <span className="label" data-reveal="right">
-            <span className="label__num">03</span>Why Permanent
+            <span className="label__num">02</span>Our Approach
           </span>
         </div>
         <div className="rows rows--folio" data-reveal-group=".row">
-          {WHY.map((row, i) => (
+          {HOW.map((row, i) => (
             <div className="row" key={row.title}>
               <span
                 className="row__num"
@@ -319,7 +328,7 @@ export function MandateSection() {
           <div className="who-col who-col--primary" data-reveal="left">
             <p className="who-col__label">We invest in</p>
             <ul className="dash-list">
-              <li>For-profit technology and tech-enabled companies.</li>
+              <li>Disruptive, for-profit technology and tech-enabled companies.</li>
               <li>Pre-Seed, Seed and Series A rounds.</li>
               <li>Companies operating in Africa, or based in or expanding into South Africa.</li>
               <li>Businesses that sell to consumers and companies: B2C, B2B and B2B2C.</li>
@@ -354,9 +363,9 @@ export function InvestSection() {
           </h2>
         </div>
         <p className="body consult__body" data-reveal="up">
-          Staunch Capital gives investors direct, long-term exposure to early-stage African
-          technology, sourced and supported by a platform that works across three continents. We
-          share fund documentation privately with prospective investors.
+          Staunch Capital brings foreign and domestic capital into South African and African
+          technology, sourced and supported by a platform working across four markets. We share
+          fund documentation privately with prospective investors.
         </p>
         <div className="consult-points" data-reveal-group=".point" data-rules=".rule--y">
           {POINTS.map((p, i) => (
@@ -372,6 +381,11 @@ export function InvestSection() {
             Request the investor brief
           </a>
         </div>
+        <p className="consult__team" data-reveal="fade">
+          <a className="textlink" href={mainUrl("/about#team")}>
+            Meet the team behind the fund &rarr;
+          </a>
+        </p>
         <p className="consult__note" data-reveal="fade">
           Conversations with prospective investors are private. Nothing on this page is an offer to
           sell, or a solicitation of an offer to buy, any security.
@@ -444,13 +458,13 @@ export function FinalSection() {
           <a className="cta" href={BRIEF_MAILTO} data-magnetic>
             Request the investor brief
           </a>
-          <a className="textlink" href={PITCH_URL}>
+          <a className="textlink" href={mainUrl(PITCH_URL)}>
             Founders: pitch Staunch Capital &rarr;
           </a>
         </div>
         <p className="final-contact" data-reveal="fade">
           Prefer email? <a href={`mailto:${INVEST_EMAIL}`}>{INVEST_EMAIL}</a> &middot; Part of{" "}
-          <a href={MAIN_SITE}>Staunch</a>
+          <a href={mainUrl("/")}>Staunch</a>
         </p>
       </div>
     </section>

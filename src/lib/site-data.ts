@@ -1,3 +1,6 @@
+import { CAPITAL_URL } from "./sites";
+
+
 
 /**
  * A photograph of the team on the ground, rendered via <FieldImage>. Leave
@@ -72,6 +75,82 @@ export type Venture = {
  * `ventures` portfolio), used to prove operator credibility in the hero.
  */
 export const startupsCofounded = 11;
+
+/**
+ * The four markets the platform connects. Order matters: Africa first, as the
+ * market everything else routes into and out of.
+ */
+export const markets = ["Africa", "United States", "Europe", "Asia"] as const;
+
+/**
+ * The arms of the platform. Each has exactly one home; the main site only
+ * ever summarises them and links there. A new fund or service is a new entry
+ * here, and the home page, /about and the footer pick it up.
+ */
+export type PlatformArm = {
+  name: string;
+  /** What it is, in the fewest words. */
+  kind: string;
+  summary: string;
+  facts: string[];
+  href: string;
+  cta: string;
+  /** Capital lives on its own subdomain, in its own design language. */
+  external?: boolean;
+};
+
+export const platformArms: PlatformArm[] = [
+  {
+    name: "Staunch Capital",
+    kind: "The fund",
+    summary:
+      "Backing Africa's boldest founders building disruptive technology, with $100k–$400k cheques from Pre-Seed through Series A.",
+    facts: ["$100k–$400k", "Pre-Seed to Series A", "African technology"],
+    href: CAPITAL_URL,
+    cta: "Visit Staunch Capital",
+    external: true,
+  },
+  {
+    name: "Staunch Ventures",
+    kind: "Studio & co-investment network",
+    summary:
+      "A 0-to-1 venture studio and co-investment network, opening routes to international markets and syndicating global deals from Seed through Pre-IPO.",
+    facts: ["0-to-1 studio", "Co-investment through SPVs", "Seed to Pre-IPO"],
+    href: "/ventures",
+    cta: "Explore Staunch Ventures",
+  },
+];
+
+export const team = [
+  {
+    name: "Oliver Christodoulou",
+    role: "Founder & Managing Partner",
+    image: "/oliver-headshot.jpg",
+    quote:
+      "African startups are uniquely positioned to solve local challenges with global applications. My vision is to create an ecosystem where innovation thrives and impact scales.",
+  },
+  {
+    name: "Adam Lamprecht",
+    role: "Venture Associate",
+    image: "/adam-headshot.jpg",
+    quote:
+      "You cannot simply throw money at founders and expect thriving businesses. I want to provide African startups with the resource they actually need: hands-on operational support, working inside companies to help founders achieve their vision.",
+  },
+  {
+    name: "William Raw",
+    role: "Venture Associate",
+    image: "/will-headshot.jpg",
+    quote:
+      "Innovation in Africa is a marathon, not a sprint. The finish line is a transformed continent with infinite potential and infinite scalability. To pioneer this change with leading innovators is what it's about for me.",
+  },
+  {
+    name: "Timo van de Koevering",
+    role: "Executive Partner",
+    image: "/Timo.jpeg",
+    quote:
+      "While good ideas and talent is everywhere, the capacity for execution is what drives change. I am committed to build systemic innovation designed to tackle the world's most critical problems.",
+  },
+];
 
 export const ventures: Venture[] = [
   {
@@ -187,7 +266,7 @@ export const initiatives: Initiative[] = [
     title: "Founder House Cape Town",
     tag: "Founder Immersion",
     description: "Fifteen international founders, one city, one month. Each cohort embeds inside Cape Town's startup ecosystem — connecting with local founders, operators and investors to build a genuine network of networks across borders.",
-    href: "/contact",
+    href: "/about#contact",
     ctaLabel: "Express interest",
     meta: ["15 founders", "Cape Town", "Cross-border"],
     photo: {
@@ -198,7 +277,7 @@ export const initiatives: Initiative[] = [
 ];
 
 /**
- * "In the field" filmstrip on the /team page — candid shots of the team on
+ * "In the field" filmstrip in the team section of /about — candid shots of the team on
  * the ground at events, inside ventures, and with partners. Captions follow
  * the documentary format: place + event (+ date once known). Keep this
  * curated — rotate photos in and out rather than appending forever; five or
@@ -280,7 +359,7 @@ export const fieldPhotos: FieldPhoto[] = [
 ];
 
 /**
- * Videos featured on the /media page. To add one, grab the YouTube video ID
+ * Videos featured in the media section of /about. To add one, grab the YouTube video ID
  * (the part after `watch?v=` or `youtu.be/`) and append an entry — no layout
  * changes needed. The page renders them in order, so newest on top.
  */

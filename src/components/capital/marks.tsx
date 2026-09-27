@@ -60,16 +60,23 @@ export function CapitalLogo({ className, title = "Staunch Capital" }: { classNam
   );
 }
 
+/** The bar symbol alone, solid. Also used by the main site's Capital card. */
+export function BarMark({ className, fill = "var(--gold)" }: { className?: string; fill?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 191 181" aria-hidden="true">
+      <g fill={fill}>
+        <BarRow y={0} grow="up" className="logo-bar" />
+        <BarRow y={LOWER_Y} grow="down" className="logo-bar" />
+      </g>
+    </svg>
+  );
+}
+
 /** Nav-scale lockup: the symbol beside the wordmark, readable at 20px. */
 export function CapitalLockup() {
   return (
     <span className="lockup">
-      <svg className="lockup__mark" viewBox="0 0 191 181" aria-hidden="true">
-        <g fill="var(--gold)">
-          <BarRow y={0} grow="up" className="logo-bar" />
-          <BarRow y={LOWER_Y} grow="down" className="logo-bar" />
-        </g>
-      </svg>
+      <BarMark className="lockup__mark" />
       <span className="lockup__word">Staunch Capital</span>
     </span>
   );

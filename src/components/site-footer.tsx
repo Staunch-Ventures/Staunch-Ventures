@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin } from "lucide-react";
-import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
+import { PITCH_URL } from "@/lib/intake";
+import { CAPITAL_URL } from "@/lib/sites";
 
 export function SiteFooter() {
   return (
@@ -16,7 +17,7 @@ export function SiteFooter() {
               <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={140} height={35} />
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs text-pretty">
-              A cross-border network for Africa&apos;s tech startups. Backing bold founders with capital, expertise, and operators who&apos;ve scaled before.
+              A cross-border venture platform connecting Africa with the US, Europe and Asia. Capital, execution and global market access for high-growth founders and investors.
             </p>
             <div className="flex gap-4 mt-1">
               <Link
@@ -30,34 +31,25 @@ export function SiteFooter() {
               </Link>
             </div>
           </div>
-          <div className="col-span-1 md:col-span-3 md:col-start-7 flex flex-col gap-3 text-sm">
-            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Company</h4>
-            <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
-            <Link href="/ventures" className="text-foreground/80 hover:text-foreground transition-colors">Ventures</Link>
-            <Link href="/team" className="text-foreground/80 hover:text-foreground transition-colors">Team</Link>
-            <Link href="/ecosystem" className="text-foreground/80 hover:text-foreground transition-colors">Ecosystem</Link>
-            <Link href="/media" className="text-foreground/80 hover:text-foreground transition-colors">Media</Link>
-            <Link href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
-          </div>
-          <div className="col-span-1 md:col-span-3 flex flex-col gap-3 text-sm">
-            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Get involved</h4>
-            <Link
-              href={INVEST_MAILTO}
-              className="text-foreground/80 hover:text-foreground transition-colors"
-            >
-              Invest
-            </Link>
-            <Link
-              href={PITCH_URL}
-              className="text-foreground/80 hover:text-foreground transition-colors"
-            >
-              Pitch Your Startup
-            </Link>
-            {/* Plain <a>, not Link: the fund page has its own fonts, motion and
-                intro, and a full load is what plays them. */}
-            <a href="https://capital.staunchventures.com" className="text-foreground/80 hover:text-foreground transition-colors">
+          <div className="col-span-1 md:col-span-2 md:col-start-7 flex flex-col gap-3 text-sm">
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Platform</h4>
+            {/* Plain <a>: Staunch Capital is its own site with its own intro. */}
+            <a href={CAPITAL_URL} className="text-foreground/80 hover:text-foreground transition-colors">
               Staunch Capital
             </a>
+            <Link href="/ventures" className="text-foreground/80 hover:text-foreground transition-colors">Staunch Ventures</Link>
+          </div>
+          <div className="col-span-1 md:col-span-2 flex flex-col gap-3 text-sm">
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Company</h4>
+            <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
+            <Link href="/about#team" className="text-foreground/80 hover:text-foreground transition-colors">Team</Link>
+            <Link href="/about#ecosystem" className="text-foreground/80 hover:text-foreground transition-colors">Ecosystem</Link>
+            <Link href="/about#contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
+          </div>
+          <div className="col-span-2 md:col-span-2 flex flex-col gap-3 text-sm">
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Get involved</h4>
+            <Link href="/invest" className="text-foreground/80 hover:text-foreground transition-colors">Invest</Link>
+            <Link href={PITCH_URL} className="text-foreground/80 hover:text-foreground transition-colors">Pitch Your Startup</Link>
           </div>
         </div>
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs text-muted-foreground">

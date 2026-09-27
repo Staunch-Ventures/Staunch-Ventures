@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, Network, Rocket, Coins, Users2 } from "lucide-react";
+import { ArrowRight, Network, Coins, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { growthPartners, initiatives, startupsCofounded, ventures } from "@/lib/site-data";
-import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
+import { growthPartners, markets, startupsCofounded, team } from "@/lib/site-data";
+import { PITCH_URL } from "@/lib/intake";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { HeroVisual } from "@/components/marketing/hero-visual";
-import { FieldImage } from "@/components/marketing/field-image";
+import { PlatformArms } from "@/components/marketing/platform-arms";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Marquee } from "@/components/ui/marquee";
@@ -25,17 +25,19 @@ export default function HomePage() {
           <div className="grid gap-16 lg:grid-cols-12 lg:gap-12 items-center">
             <ScrollReveal className="lg:col-span-6 flex flex-col justify-center space-y-7">
               <h1 className="text-balance text-5xl font-serif font-normal tracking-heading sm:text-6xl lg:text-[5.25rem] lg:leading-[1.0]">
-                <span className="text-gradient-brand">Backing Africa&apos;s</span>
+                <span className="text-gradient-brand">Africa&apos;s boldest founders,</span>
                 <br />
-                <span className="text-gradient-ember">Boldest Founders</span>
+                <span className="text-gradient-ember">connected to the world</span>
               </h1>
-              <p className="max-w-[560px] text-muted-foreground text-lg md:text-xl">
-                A cross-border network for Africa&apos;s tech startups.<br />Capital, expertise, and the operators who&apos;ve scaled before.
+              <p className="max-w-[580px] text-muted-foreground text-lg md:text-xl text-pretty">
+                Staunch is a cross-border venture platform linking Africa with the US, Europe and
+                Asia. Capital, execution and global market access for high-growth founders and
+                investors.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Magnetic>
                   <Button asChild variant="brand" size="pill-lg">
-                    <Link href={INVEST_MAILTO}>
+                    <Link href="/invest">
                       Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
@@ -49,12 +51,12 @@ export default function HomePage() {
               {/* Proof strip */}
               <dl className="mt-2 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
                 <div>
-                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Cofounded</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{startupsCofounded}</dd>
+                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Markets</dt>
+                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{markets.length}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Initiatives</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{initiatives.length}</dd>
+                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Cofounded</dt>
+                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{startupsCofounded}</dd>
                 </div>
                 <div>
                   <dt className="text-xs uppercase tracking-wider text-muted-foreground">Partners</dt>
@@ -63,96 +65,33 @@ export default function HomePage() {
               </dl>
             </ScrollReveal>
 
-            <div className="lg:col-span-6 relative flex items-center justify-center lg:pl-8">
+            {/* Desktop only: on a phone it costs a full screen between the hero
+                and the platform's two doors. */}
+            <div className="hidden lg:col-span-6 relative lg:flex items-center justify-center lg:pl-8">
               <HeroVisual />
             </div>
           </div>
         </div>
       </section>
 
-      {/* What we do */}
-      <section className="w-full py-20 lg:py-28">
+      {/* The platform — the home page's main job is routing. Each arm gets a
+          summary and a door; its detail lives at its own home. */}
+      <section id="platform" className="w-full py-20 lg:py-28 scroll-mt-24">
         <div className="mx-auto max-w-9xl px-4 lg:px-8">
           <ScrollReveal>
             <div className="mb-12 max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">What we do</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The platform</p>
               <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
-                Backing founders. Building the ecosystem.
+                One platform. Two ways we put capital to work.
               </h2>
+              <p className="text-muted-foreground text-lg text-pretty mt-4 max-w-prose">
+                Staunch Capital invests in Africa&apos;s boldest founders. Staunch Ventures builds
+                companies and opens global deals to our investor network. Both run on the same
+                team, network and four-market reach.
+              </p>
             </div>
           </ScrollReveal>
-
-          {/* Two rows, each a wide text card paired with a portrait photo.
-              The card takes 1fr; the photo column is `auto` so it's sized to
-              the photo's natural width — leaving only gap-4 between them
-              instead of the dead space a fixed 1/3 column would reserve. */}
-          <Stagger className="flex flex-col gap-4">
-            {/* Row 1: card + photo */}
-            <StaggerItem className="grid gap-4 lg:grid-cols-[1fr_auto]">
-              <Link href="/ventures" className="flex group w-full min-h-[320px]">
-                <SpotlightCard className="w-full flex">
-                  <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
-                    <div className="flex items-center gap-3 mb-6">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20">
-                        <Rocket className="h-5 w-5 text-primary" />
-                      </span>
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">Capital + Operators</p>
-                    </div>
-                    <h3 className="text-3xl font-semibold tracking-tight text-foreground mb-4">
-                      Supporting startups
-                    </h3>
-                    <p className="text-muted-foreground text-base flex-grow text-pretty">
-                      Investing time, expertise, and capital in early-stage startups, with a focus on EdTech and HealthTech, and emerging plays in Clean Energy and AgriTech.
-                    </p>
-                    <div className="mt-8 font-medium text-foreground flex items-center text-sm transition-colors group-hover:text-primary">
-                      Explore ventures
-                      <ArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </div>
-                  </Card>
-                </SpotlightCard>
-              </Link>
-              <FieldImage
-                src="/bag-on-campus.jpg"
-                alt="The Staunch team on campus with Bag Learning"
-                width={1200}
-                height={1600}
-                className="h-72 lg:h-[420px] justify-self-center lg:justify-self-stretch lg:self-center"
-              />
-            </StaggerItem>
-
-            {/* Row 2: photo + card */}
-            <StaggerItem className="grid gap-4 lg:grid-cols-[auto_1fr]">
-              <FieldImage
-                src="/y-combinator.jpg"
-                alt="The Staunch team at Y Combinator"
-                width={1200}
-                height={1600}
-                className="order-last h-72 lg:order-first lg:h-[420px] justify-self-center lg:justify-self-stretch lg:self-center"
-              />
-              <Link href="/ecosystem#initiatives" className="flex group w-full min-h-[320px]">
-                <SpotlightCard className="w-full flex">
-                  <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
-                    <div className="flex items-center gap-3 mb-6">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20">
-                        <Network className="h-5 w-5 text-primary" />
-                      </span>
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">Ecosystem</p>
-                    </div>
-                    <h3 className="text-3xl font-semibold tracking-tight text-foreground mb-4">
-                      Building networks
-                    </h3>
-                    <p className="text-muted-foreground text-base flex-grow text-pretty">
-                      Going beyond funding: pitch competitions, collaborative think tanks, mentor circles. The connective tissue founders actually need.
-                    </p>
-                    <div className="mt-8 font-medium text-foreground flex items-center text-sm transition-colors group-hover:text-primary">
-                      See initiatives
-                      <ArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </div>
-                  </Card>
-                </SpotlightCard>
-              </Link>
-            </StaggerItem>
-          </Stagger>
+          <PlatformArms />
         </div>
       </section>
 
@@ -187,7 +126,7 @@ export default function HomePage() {
                 icon: Network,
                 eyebrow: "Network",
                 title: "Cross-border by design.",
-                body: "A web of investors, advisors, founders and partners spanning the continent and beyond.",
+                body: "Routes to customers and capital in the US, Europe and Asia, through investors, advisors and partners in all four markets.",
               },
             ].map((p) => (
               <StaggerItem key={p.eyebrow} className="flex">
@@ -209,6 +148,46 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Team — the context every arm shares. Kept on the parent site only; the
+          sub-sites link here rather than repeating it. */}
+      <section className="w-full pb-20 lg:pb-28">
+        <div className="mx-auto max-w-9xl px-4 lg:px-8">
+          <ScrollReveal className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="max-w-2xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The team</p>
+              <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
+                Operators behind every arm.
+              </h2>
+            </div>
+            <Button asChild variant="ghost" size="pill" className="self-start sm:self-auto">
+              <Link href="/about#team">
+                Meet the team
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </ScrollReveal>
+          <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {team.map((member) => (
+              <StaggerItem key={member.name}>
+                <Link href="/about#team" className="group block">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius)] border border-border bg-muted">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <p className="mt-4 font-semibold tracking-tight text-foreground">{member.name}</p>
+                  <p className="text-sm text-muted-foreground">{member.role}</p>
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
       {/* Partners */}
       <section className="relative w-full pb-28 pt-8 overflow-hidden">
         {/* Top hairline + ambient glow */}
@@ -223,7 +202,7 @@ export default function HomePage() {
                 </h2>
               </div>
               <Button asChild variant="ghost" size="pill" className="self-start sm:self-auto">
-                <Link href="/ecosystem">
+                <Link href="/about#ecosystem">
                   View ecosystem
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
@@ -281,7 +260,7 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <Button asChild variant="brand" size="pill-lg">
-                    <Link href={INVEST_MAILTO}>
+                    <Link href="/invest">
                       Invest
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>

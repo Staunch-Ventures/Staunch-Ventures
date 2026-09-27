@@ -24,9 +24,9 @@ export default function GetInTheRingPage() {
         <h1 className="text-4xl font-bold">Initiative not found</h1>
         <p className="text-muted-foreground mt-4">This initiative could not be found.</p>
         <Button asChild variant="outline" className="mt-8">
-          <Link href="/ecosystem">
+          <Link href="/about#ecosystem">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Ecosystem
+            Back to ecosystem
           </Link>
         </Button>
       </div>
@@ -37,9 +37,9 @@ export default function GetInTheRingPage() {
     <div className="mx-auto max-w-9xl py-12 md:py-20 px-4 lg:px-8 space-y-12">
       <div>
         <Button asChild variant="ghost" size="sm" className="pl-2 text-muted-foreground hover:text-foreground">
-          <Link href="/ecosystem">
+          <Link href="/about#ecosystem">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Ecosystem
+            Back to ecosystem
           </Link>
         </Button>
       </div>
@@ -129,7 +129,7 @@ export default function GetInTheRingPage() {
 
       <section className="flex justify-center pt-2">
         <Button asChild variant="brand" size="pill-lg">
-          <Link href="/contact">
+          <Link href="/about#contact">
             Apply to pitch
             <ArrowUpRight className="ml-1 h-4 w-4" />
           </Link>

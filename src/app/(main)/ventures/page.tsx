@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowRight, ArrowUpRight, Globe2, Layers, Lock, Briefcase } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,39 @@ import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-revea
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { FieldImage } from "@/components/marketing/field-image";
 import { ventures, startupsCofounded } from "@/lib/site-data";
-import { PITCH_URL, INVEST_MAILTO } from "@/lib/intake";
+import { PITCH_URL } from "@/lib/intake";
+import { CAPITAL_URL } from "@/lib/sites";
+
+export const metadata: Metadata = {
+  // Absolute: the root template would otherwise append "· Staunch Ventures".
+  title: { absolute: "Staunch Ventures: venture studio & co-investment network" },
+  description:
+    "A 0-to-1 venture studio and co-investment network, opening routes to international markets and syndicating global deals from Seed through Pre-IPO.",
+};
+
+/*
+ * Staunch Ventures, one of the platform's two arms (Staunch Capital is the
+ * other, on its own subdomain). Two halves: the studio, which builds
+ * companies, and the co-investment network, which opens deals to investors
+ * one SPV at a time.
+ */
+const networkPoints = [
+  {
+    icon: Globe2,
+    title: "Sourced across four markets",
+    body: "African companies we build and back, and international opportunities we source in the US, Europe and Asia, from Seed through Pre-IPO.",
+  },
+  {
+    icon: Layers,
+    title: "One SPV per deal",
+    body: "Each opportunity gets its own vehicle, so you choose exactly what you back. Onboard once; documents and reporting sit in one place.",
+  },
+  {
+    icon: Lock,
+    title: "By invitation",
+    body: "Opportunities are shared privately with network members, never listed publicly.",
+  },
+];
 
 const focusAreas = [
   { label: "EdTech", state: "Core focus" },
@@ -23,15 +56,48 @@ export default function VenturesPage() {
   return (
     <div className="mx-auto max-w-9xl py-24 md:py-32 px-4 lg:px-8 space-y-20 md:space-y-24">
       <ScrollReveal className="text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Ventures</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">Staunch Ventures</p>
         <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
-          <span className="text-foreground">Companies we</span>{" "}
-          <span className="text-primary">build</span>
+          <span className="text-foreground">We build companies.</span>{" "}
+          <span className="text-primary">We open deals.</span>
         </h1>
         <p className="text-pretty text-xl text-muted-foreground max-w-2xl mx-auto mt-7">
-          As an institutional cofounder, we don&apos;t just write cheques. We build alongside founders, investing time, expertise, and capital from day one.
+          A 0-to-1 venture studio and co-investment network, opening routes to international
+          markets and syndicating global deals from Seed through Pre-IPO.
         </p>
+        <nav aria-label="On this page" className="mt-10 flex flex-wrap justify-center gap-2">
+          {[
+            { id: "studio", label: "The studio" },
+            { id: "network", label: "The co-investment network" },
+          ].map((s) => (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="rounded-full border border-border bg-card/40 px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
+            >
+              {s.label}
+            </a>
+          ))}
+        </nav>
       </ScrollReveal>
+
+      {/* The studio */}
+      <section id="studio" className="scroll-mt-24 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
+        <ScrollReveal>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The studio</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance">
+            Cofounding as a service.
+          </h2>
+        </ScrollReveal>
+        <ScrollReveal delay={0.05} className="flex gap-4">
+          <Briefcase className="h-6 w-6 shrink-0 text-primary mt-1" strokeWidth={1.5} />
+          <p className="text-muted-foreground text-lg text-pretty">
+            Staunch acts as an institutional cofounder: an execution partner helping founders build
+            and scale faster. Tech-stack architecture, MVP planning, go-to-market, business
+            development, core strategy frameworks, and more.
+          </p>
+        </ScrollReveal>
+      </section>
 
       {/* Featured venture — full-width case study */}
       <section>
@@ -150,25 +216,55 @@ export default function VenturesPage() {
         </SpotlightCard>
       </ScrollReveal>
 
-      {/* CTA */}
-      <ScrollReveal className="text-center">
-        <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">
-          Back Africa&apos;s boldest founders
-        </h2>
-        <p className="text-muted-foreground text-lg text-pretty max-w-xl mx-auto mb-8">
-          We partner early and build hands-on. Join us in backing the startups shaping Africa&apos;s next chapter.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
+      {/* The co-investment network */}
+      <section id="network" className="scroll-mt-24">
+        <ScrollReveal className="mb-10 max-w-2xl">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The co-investment network</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance mb-4">
+            Global deals, Seed to Pre-IPO.
+          </h2>
+          <p className="text-muted-foreground text-lg text-pretty">
+            Members co-invest deal by deal alongside us. You see the opportunities we source and
+            back, and invest only in the ones you choose.
+          </p>
+        </ScrollReveal>
+        <Stagger className="grid md:grid-cols-3 gap-4">
+          {networkPoints.map((p) => (
+            <StaggerItem key={p.title} className="flex">
+              <SpotlightCard className="w-full flex">
+                <Card className="w-full p-8 flex flex-col">
+                  <p.icon className="h-5 w-5 text-primary mb-6" strokeWidth={1.75} />
+                  <h3 className="text-xl font-semibold tracking-tight text-foreground mb-2">{p.title}</h3>
+                  <p className="text-muted-foreground text-pretty">{p.body}</p>
+                </Card>
+              </SpotlightCard>
+            </StaggerItem>
+          ))}
+        </Stagger>
+        <ScrollReveal className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
           <Button asChild variant="brand" size="pill-lg">
-            <Link href={INVEST_MAILTO}>
-              Invest
+            <Link href="/invest#network">
+              Join the network
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
-          <Button asChild variant="outline" size="pill-lg">
-            <Link href={PITCH_URL}>Pitch Your Startup</Link>
-          </Button>
-        </div>
+          <a href={CAPITAL_URL} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Prefer diversified fund exposure? Staunch Capital &rarr;
+          </a>
+        </ScrollReveal>
+      </section>
+
+      {/* Founders */}
+      <ScrollReveal className="text-center">
+        <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">
+          Building something bold?
+        </h2>
+        <p className="text-muted-foreground text-lg text-pretty max-w-xl mx-auto mb-8">
+          We partner early and build hands-on. Tell us what you&apos;re working on.
+        </p>
+        <Button asChild variant="outline" size="pill-lg">
+          <Link href={PITCH_URL}>Pitch Your Startup</Link>
+        </Button>
       </ScrollReveal>
     </div>
   );
