@@ -28,9 +28,9 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const title = "Staunch Capital: Permanent capital for African technology";
+const title = "Staunch Capital: Backing Africa's boldest founders";
 const description =
-  "A permanent capital vehicle investing $100k–$400k into African technology startups from Pre-Seed through Series A. The first fund from Staunch.";
+  "Staunch Capital invests $100k–$400k in disruptive African technology companies from Pre-Seed through Series A, bringing foreign and domestic capital to Africa's boldest founders.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://capital.staunchventures.com"),
