@@ -880,8 +880,8 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
   pointer-events: none;
   background-image: url("/patterns/staunch-linework-gold.png");
   background-size: 560px 560px;
-  -webkit-mask-image: radial-gradient(circle closest-side, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.06) 72%, transparent 100%);
-  mask-image: radial-gradient(circle closest-side, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.06) 72%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle closest-side, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.19) 42%, rgba(0,0,0,0.05) 72%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.19) 42%, rgba(0,0,0,0.05) 72%, transparent 100%);
   opacity: 0;
   transition: opacity 900ms var(--ease-soft);
   will-change: transform, background-position;
@@ -894,3 +894,23 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 /* Everything the page renders sits above the light. */
 .capital > main,
 .capital > .footer { position: relative; z-index: 1; }
+
+/* Legibility over the light: a halo, the cartographer's trick for labels on
+   busy maps. Every glyph carries a soft shadow in the exact colour of the
+   ground it sits on, so the weave fades out just before it reaches a letter
+   and reads as passing behind the words. Invisible when the light is off
+   (it's the ground colour on the ground), and painted once with the text, so
+   it costs nothing per frame, unlike a backdrop blur.
+   text-shadow inherits, so each ground restates it in its own colour. */
+.capital main,
+.capital .footer {
+  text-shadow: 0 0 1px #0f0e0c, 0 0 3px #0f0e0c, 0 0 3px #0f0e0c, 0 0 7px #0f0e0c, 0 0 14px #0f0e0c, 0 0 26px rgba(15, 14, 12, 0.8);
+}
+.capital .plate {
+  text-shadow: 0 0 1px #151310, 0 0 3px #151310, 0 0 3px #151310, 0 0 7px #151310, 0 0 14px #151310, 0 0 26px rgba(21, 19, 16, 0.8);
+}
+.capital .plate--deep {
+  text-shadow: 0 0 1px #0b0a08, 0 0 3px #0b0a08, 0 0 3px #0b0a08, 0 0 7px #0b0a08, 0 0 14px #0b0a08, 0 0 26px rgba(11, 10, 8, 0.8);
+}
+/* Filled on hover, the CTA's text sits on gold: a dark halo there would smear. */
+.capital .cta:hover { text-shadow: none; }
