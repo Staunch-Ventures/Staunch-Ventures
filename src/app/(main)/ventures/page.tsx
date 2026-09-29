@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 /*
  * Staunch Ventures, one of the platform's two arms (Staunch Capital is the
  * other, on its own subdomain). Two halves: the studio, which builds
- * companies, and the co-investment network, which opens deals to investors
- * one SPV at a time.
+ * companies, and the co-investment network, which brings investors deal flow
+ * they choose from one opportunity at a time.
  */
 const networkPoints = [
   {
@@ -33,8 +33,8 @@ const networkPoints = [
   },
   {
     icon: Layers,
-    title: "One SPV per deal",
-    body: "Each opportunity gets its own vehicle, so you choose exactly what you back. Onboard once; documents and reporting sit in one place.",
+    title: "Deal by deal",
+    body: "We facilitate the deal flow; you choose exactly what you back, one opportunity at a time. Onboard once and every future deal reaches you.",
   },
   {
     icon: Lock,

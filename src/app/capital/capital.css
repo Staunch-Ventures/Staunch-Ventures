@@ -102,12 +102,6 @@ html.is-loading body { overflow: hidden; }
     .capital .skip-link:focus { top: 16px; }
 
     /* ============================================================
-       READING PROGRESS (hairline, top of viewport)
-       ============================================================ */
-    .capital .progress { position: fixed; top: 0; left: 0; right: 0; height: 1px; z-index: 120; pointer-events: none; }
-    .capital .progress__fill { height: 100%; background: var(--gold); opacity: 0.7; transform: scaleX(0); transform-origin: left; }
-
-    /* ============================================================
        FILM GRAIN
        ============================================================ */
     .capital .grain {
@@ -181,8 +175,7 @@ html.is-loading body { overflow: hidden; }
     .capital .line-inner { display: block; will-change: transform; }
 
     /* Hairline primitive. A real element rather than a border so it can be drawn
-       on scroll — GSAP cannot target pseudo-elements. Shared by the problem rows,
-       the FAQ list, and the consultation dividers. */
+       on scroll; GSAP cannot target pseudo-elements. */
     .capital .rule { position: absolute; background: var(--divider); }
     .capital .rule--x { left: 0; right: 0; top: 0; height: 1px; transform-origin: left; }
     .capital .rule--y { left: 0; top: 0; bottom: 0; width: 1px; transform-origin: top; }
@@ -204,73 +197,13 @@ html.is-loading body { overflow: hidden; }
 
     /* Grounds. A full-bleed hairline at the boundary so the tonal shift reads as
        a deliberate plate and not a rendering artifact. Translucent rather than
-       solid, landing on the same tones as --surface and --deep over --bg, so the
-       pattern light still reaches through them, just dimmer. */
-    .capital .plate { background: rgba(255, 236, 205, 0.022); }
+       solid, landing on the same tone as --deep over --bg, so the pattern light
+       still reaches through it, just dimmer. */
     .capital .plate--deep { background: rgba(0, 0, 0, 0.28); }
-    .capital .plate,
-.capital .plate--deep { border-block: 1px solid var(--divider); }
+    .capital .plate--deep { border-block: 1px solid var(--divider); }
 
     .capital .head { margin-bottom: clamp(56px, 8vw, 104px); }
     .capital .head .display { max-width: 20ch; }
-
-    /* Head form B — label sits in its own rail, heading in the main column. */
-    .capital .head--rail {
-      display: grid;
-      grid-template-columns: minmax(140px, 200px) 1fr;
-      gap: clamp(20px, 3vw, 40px) clamp(20px, 4vw, 64px);
-      align-items: start;
-    }
-    .capital .head--rail .label { margin-bottom: 0; padding-top: 0.5em; }
-    .capital .head--rail .display { max-width: 24ch; }
-
-    /* Head form C — heading leads, label sits out in the right margin like a
-       running head. Source order stays heading-then-label; the label is lifted
-       to the first row so it aligns with the top of the heading. */
-    .capital .head--offset {
-      display: grid;
-      grid-template-columns: 1fr minmax(160px, 240px);
-      gap: clamp(20px, 3vw, 40px) clamp(24px, 5vw, 72px);
-      align-items: start;
-    }
-    /* Both children need an explicit column. A definite row with an auto column
-       is placed before fully-auto items, which silently swaps the two. */
-    .capital .head--offset .display { grid-area: 1 / 1; max-width: 20ch; }
-    .capital .head--offset .label {
-      grid-area: 1 / 2;
-      text-align: right;
-      margin-bottom: 0;
-      padding-top: 0.5em;
-    }
-    .capital .head--offset .label__num { display: block; margin-right: 0; margin-bottom: 0.5em; }
-
-    /* Head form D — heading left, intro right, sharing a baseline. */
-    .capital .head--split {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: clamp(24px, 3.5vw, 48px) clamp(24px, 5vw, 80px);
-      align-items: end;
-    }
-    .capital .head--split .display { max-width: 18ch; }
-    .capital .head--split .label { margin-bottom: 0; }
-    .capital .head--split .head__aside {
-      font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7;
-      color: var(--muted); max-width: 42ch;
-      padding-bottom: 0.4em;
-    }
-    .capital .head--split .label { grid-column: 1 / -1; }
-
-    @media (max-width: 860px) {
-      .capital .head--rail,
-.capital .head--split,
-.capital .head--offset { grid-template-columns: 1fr; gap: 20px; }
-      .capital .head--rail .label { position: static; margin-bottom: 20px; }
-      .capital .head--split .head__aside { padding-bottom: 0; }
-      /* Label returns above the heading when the margin disappears. */
-      .capital .head--offset .label { grid-area: 1 / 1; text-align: left; padding-top: 0; margin-bottom: 0; }
-      .capital .head--offset .display { grid-area: 2 / 1; }
-      .capital .head--offset .label__num { display: inline; margin-right: 1em; margin-bottom: 0; }
-    }
 
     .capital .section > .container { position: relative; z-index: 1; }
 
@@ -457,89 +390,10 @@ html.is-loading body { overflow: hidden; }
     }
 
     /* ============================================================
-       MARQUEE
+       ROWS — base for the term sheet (see TERMS below)
        ============================================================ */
-    .capital .marquee {
-      overflow: hidden;
-      border-block: 1px solid var(--divider);
-      padding-block: clamp(22px, 3vw, 34px);
-    }
-    .capital .marquee__track { display: flex; width: max-content; }
-    html.js:not(.reduced) .capital .marquee__track { animation: cap-marquee 56s linear infinite; }
-    .capital .marquee:hover .marquee__track { animation-play-state: paused; }
-    @keyframes cap-marquee { to { transform: translateX(-50%); } }
-    .capital .marquee__group { display: flex; align-items: center; flex: none; }
-    .capital .marquee__item {
-      font-family: var(--serif); font-style: italic; font-weight: 300;
-      font-size: clamp(1.375rem, 1vw + 1.05rem, 1.875rem);
-      color: var(--muted-2); white-space: nowrap;
-      padding-inline: clamp(1.75rem, 3vw, 3rem);
-    }
-    .capital .marquee__dot { color: var(--gold); font-size: 0.625rem; }
-    .capital .marquee__jp {
-      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
-      font-style: normal; font-size: 0.58em;
-      color: var(--gold); opacity: 0.75;
-      margin-left: 0.5em;
-    }
-
-    /* ============================================================
-       NUMBERED ROWS
-       ============================================================ */
-    /* Two lists, deliberately different creatures. 01 is a tight run of symptoms
-       with small tabular numerals; 04 is an editorial spread with large serif
-       folios and a two-column split. Same data shape, different reading speed. */
     .capital .rows { border: 0; }
     .capital .row { position: relative; transition: background-color 400ms var(--ease); }
-    .capital .row__num { transition: color 400ms var(--ease); }
-    .capital .row__line { font-family: var(--sans); font-weight: 400; font-size: var(--fs-body-lg); line-height: 1.45; color: var(--muted); }
-    .capital .row__title { font-family: var(--serif); font-weight: 400; font-size: var(--fs-step); line-height: 1.1; color: var(--text); letter-spacing: -0.01em; }
-    .capital .row__desc { font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted); }
-
-    /* 01 — symptom list */
-    .capital .rows--symptoms .row {
-      display: flex;
-      gap: clamp(24px, 5vw, 72px);
-      align-items: baseline;
-      padding: clamp(22px, 2.6vw, 30px) clamp(16px, 2vw, 28px);
-      margin-inline: clamp(-16px, -2vw, -28px);
-    }
-    .capital .rows--symptoms .row:last-child { border-bottom: 1px solid var(--divider); }
-    .capital .rows--symptoms .row:hover { background: var(--surface); }
-    .capital .rows--symptoms .row__num { flex: none; min-width: 2.75rem; padding-top: 0.35em; }
-    .capital .rows--symptoms .row:hover .row__num { color: var(--gold); }
-    .capital .rows--symptoms .row__main { flex: 1; transition: transform 500ms var(--ease); }
-    .capital .rows--symptoms .row:hover .row__main { transform: translateX(8px); }
-
-    /* 04 — editorial folios */
-    .capital .rows--folio .row {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: clamp(20px, 4vw, 64px);
-      align-items: start;
-      padding: clamp(38px, 5vw, 62px) 0 clamp(38px, 5vw, 62px) clamp(52px, 6.5vw, 104px);
-      border-top: 1px solid var(--divider);
-    }
-    .capital .rows--folio .row:last-child { border-bottom: 1px solid var(--divider); }
-    .capital .rows--folio .row__num {
-      position: absolute;
-      left: 0;
-      top: clamp(38px, 5vw, 62px);
-      font-family: var(--serif); font-weight: 300;
-      font-size: clamp(2rem, 3.2vw, 3.25rem);
-      line-height: 1;
-      letter-spacing: -0.03em;
-      color: var(--faint);
-      opacity: 0.6;
-      transition: color 500ms var(--ease), opacity 500ms var(--ease);
-    }
-    .capital .rows--folio .row:first-child .row__num { top: 0; }
-    .capital .rows--folio .row:hover .row__num { color: var(--gold); opacity: 0.95; }
-    .capital .rows--folio .row:first-child { border-top: 0; padding-top: 0; }
-    .capital .rows--folio .row__title { padding-top: 0.1em; }
-    .capital .rows--folio .row__desc { max-width: 46ch; }
-
-    .capital .problem-outro { margin: clamp(36px, 5vw, 56px) 0 0; max-width: 62ch; font-size: var(--fs-body-lg); line-height: 1.65; }
 
     /* ============================================================
        MANIFESTO (scroll-scrubbed word reveal)
@@ -556,134 +410,9 @@ html.is-loading body { overflow: hidden; }
     html.js:not(.reduced) .capital .manifesto__text .word { opacity: 0.12; }
 
     /* ============================================================
-       PROCESS
-       ============================================================ */
-    .capital .process { --process-pad: clamp(28px, 4vw, 64px); position: relative; padding-left: var(--process-pad); }
-    .capital .process-line { position: absolute; left: 0; top: 12px; bottom: 12px; width: 1px; background: var(--divider); }
-    .capital .process-line__fill { position: absolute; inset: 0; background: var(--gold); transform: scaleY(0); transform-origin: top; }
-    .capital .pstep { position: relative; padding-block: clamp(40px, 5.5vw, 64px); border-top: 1px solid var(--divider); display: grid; grid-template-columns: minmax(150px, 240px) 1fr; gap: clamp(20px, 4vw, 64px); }
-    .capital .pstep:first-of-type { border-top: 0; padding-top: 0; }
-    .capital .pstep:last-of-type { padding-bottom: 0; }
-
-    /* A node on the rail per step. The drawn gold fill and these nodes are driven
-       from the same scroll span, so the line visibly lights each step as it passes. */
-    .capital .pstep::before {
-      content: "";
-      position: absolute;
-      left: calc(var(--process-pad) * -1 - 2.5px);
-      top: calc(clamp(40px, 5.5vw, 64px) + 6px);
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--divider);
-      transition: background-color 550ms var(--ease), scale 550ms var(--ease);
-    }
-    .capital .pstep:first-of-type::before { top: 6px; }
-    .capital .pstep.is-lit::before { background: var(--gold); scale: 1.2; }
-
-    .capital .pstep__meta .num { display: block; color: var(--faint); margin-bottom: 12px; transition: color 550ms var(--ease); }
-    .capital .pstep.is-lit .pstep__meta .num { color: var(--gold); }
-    .capital .pstep__days { font-family: var(--sans); font-size: var(--fs-small); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); }
-    .capital .pstep__title { font-family: var(--serif); font-weight: 400; font-size: var(--fs-step); line-height: 1.1; color: var(--text); margin-bottom: 16px; letter-spacing: -0.01em; }
-    .capital .pstep__body { font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted); max-width: 56ch; }
-    .capital .pstep__deliverable {
-      margin-top: 22px;
-      font-family: var(--serif); font-style: italic; font-size: clamp(0.9375rem, 0.3vw + 0.86rem, 1.0625rem);
-      color: var(--gold);
-    }
-    .capital .pstep__deliverable::before { content: "\2014\00a0"; color: var(--faint); }
-
-    /* ============================================================
-       WHO THIS IS FOR
-       ============================================================ */
-    .capital .who-intro { margin: 0 0 clamp(48px, 6vw, 80px); max-width: 60ch; font-size: var(--fs-body-lg); line-height: 1.6; }
-    /* Deliberately lopsided. The qualifying column carries weight; the
-       disqualifying one recedes. Two equal columns read as a comparison table —
-       this is not a comparison, it is a filter. */
-    .capital .who-grid { display: grid; grid-template-columns: 1.18fr 0.82fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
-    .capital .who-col__label { font-family: var(--sans); font-weight: 500; font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-2); margin-bottom: 30px; }
-
-    .capital .who-col--primary .who-col__label { color: var(--gold); }
-    .capital .who-col--primary .dash-list li { font-size: var(--fs-body-lg); line-height: 1.5; margin-bottom: 24px; }
-    .capital .who-col--primary .dash-list li::before { color: var(--gold-soft); }
-
-    .capital .who-col--secondary { padding-top: clamp(6px, 1.4vw, 18px); }
-    .capital .who-col--secondary .who-col__label { color: var(--faint); }
-    .capital .who-col--secondary .dash-list li { font-size: var(--fs-card); color: var(--muted-2); margin-bottom: 16px; }
-    .capital .dash-list li {
-      position: relative; padding-left: 2rem;
-      font-family: var(--sans); font-size: var(--fs-body); line-height: 1.6; color: var(--muted);
-      margin-bottom: 20px;
-      transition: color 300ms var(--ease);
-    }
-    .capital .dash-list li:last-child { margin-bottom: 0; }
-    .capital .dash-list li::before { content: "\2014"; position: absolute; left: 0; top: 0; color: var(--faint); transition: color 300ms var(--ease); }
-    .capital .dash-list li:hover { color: var(--text); }
-    .capital .dash-list li:hover::before { color: var(--gold); }
-
-    /* ============================================================
-       THE CONSULTATION
-       ============================================================ */
-    .capital .consult .container { text-align: center; }
-    .capital .consult .head { margin-bottom: clamp(40px, 5vw, 64px); }
-    .capital .consult .head .display { margin-inline: auto; }
-    .capital .consult__body { max-width: 58ch; margin-inline: auto; font-size: var(--fs-body-lg); line-height: 1.65; }
-    .capital .consult-points {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      border-block: 1px solid var(--divider);
-      margin-block: clamp(48px, 7vw, 88px);
-      text-align: left;
-    }
-    /* Dividers are drawn elements, not borders — they scale down before the point
-       content arrives, so the block assembles rather than appearing. */
-    .capital .point { position: relative; padding: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 44px); }
-    .capital .point:first-child { padding-left: 0; }
-    .capital .point:last-child { padding-right: 0; }
-    .capital .point__title { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(1.25rem, 0.8vw + 1rem, 1.5rem); color: var(--gold); margin-bottom: 14px; }
-    .capital .point__body { font-family: var(--sans); font-size: var(--fs-card); line-height: 1.7; color: var(--muted); }
-    .capital .consult__note { font-family: var(--sans); font-size: var(--fs-small); color: var(--muted-2); margin-top: 28px; }
-
-    /* ============================================================
-       ABOUT
-       ============================================================ */
-    /* The rest beat. Book measure, a static manuscript rule, and the calmest
-       motion on the page — this section earns its quiet by contrast. */
-
-    /* ============================================================
-       FAQ
-       ============================================================ */
-    .capital .faq-item { position: relative; }
-    .capital .faq-item:last-child { border-bottom: 1px solid var(--divider); }
-    .capital .faq-q {
-      display: flex; align-items: baseline; justify-content: space-between; gap: 2rem;
-      width: 100%; text-align: left;
-      padding: clamp(22px, 3vw, 30px) 4px;
-    }
-    .capital .faq-q__text {
-      font-family: var(--serif); font-weight: 400; font-size: clamp(1.25rem, 1vw + 1rem, 1.625rem);
-      line-height: 1.25; color: var(--text); letter-spacing: -0.01em;
-      transition: color 300ms var(--ease);
-    }
-    .capital .faq-q:hover .faq-q__text { color: var(--gold); }
-    .capital .faq-icon { position: relative; flex: none; width: 14px; height: 14px; align-self: center; transition: transform 500ms var(--ease); }
-    .capital .faq-icon::before,
-.capital .faq-icon::after {
-      content: ""; position: absolute; background: var(--gold);
-      transition: background 300ms var(--ease);
-    }
-    .capital .faq-icon::before { left: 0; top: 50%; width: 100%; height: 1px; margin-top: -0.5px; }
-    .capital .faq-icon::after { top: 0; left: 50%; height: 100%; width: 1px; margin-left: -0.5px; }
-    .capital .faq-item.open .faq-icon { transform: rotate(45deg); }
-    .capital .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 550ms var(--ease); }
-    .capital .faq-item.open .faq-a { grid-template-rows: 1fr; }
-    .capital .faq-a__inner { overflow: hidden; }
-    .capital .faq-a__inner p {
-      font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted);
-      max-width: 62ch; padding: 0 4px clamp(26px, 3vw, 34px);
-    }
-
-    /* ============================================================
        FINAL CTA
        ============================================================ */
+    .capital .final { border-top: 1px solid var(--divider); }
     .capital .final .display { max-width: 16ch; }
     .capital .final-body { margin: clamp(28px, 4vw, 44px) 0 clamp(36px, 4vw, 52px); max-width: 46ch; font-size: var(--fs-body-lg); line-height: 1.65; }
     .capital .final-contact { font-family: var(--sans); font-size: var(--fs-small); color: var(--muted-2); margin-top: clamp(32px, 4vw, 48px); }
@@ -712,23 +441,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
     /* ============================================================
        RESPONSIVE
        ============================================================ */
-    @media (max-width: 900px) {
-      .capital .consult-points { grid-template-columns: 1fr; border-block: 0; }
-      /* Stacked: the vertical dividers make no sense, so fall back to borders. */
-      .capital .point > .rule--y { display: none; }
-      .capital .point { border-top: 1px solid var(--divider); padding-inline: 0; }
-      .capital .point:first-child { border-top: 1px solid var(--divider); }
-      .capital .point:last-child { border-bottom: 1px solid var(--divider); }
-    }
-
-    @media (max-width: 860px) {
-      /* Folios move inline above the title; there is no margin to hang into. */
-      .capital .rows--folio .row { grid-template-columns: 1fr; gap: 14px; padding-left: 0; }
-      .capital .rows--folio .row__num { position: static; display: block; margin-bottom: 10px; font-size: clamp(1.75rem, 7vw, 2.25rem); }
-      .capital .rows--folio .row:first-child .row__num { top: auto; }
-      .capital .rows--folio .row__desc { max-width: none; }
-    }
-
     @media (max-width: 768px) {
       .capital {
         --pad-section: clamp(72px, 14vw, 112px);
@@ -747,7 +459,7 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
       .capital .hero { align-items: flex-end; }
       .capital .hero-scroll { display: none; }
 
-      /* Soft frosted scrim so the ring never clashes with the hero text.
+      /* Soft frosted scrim so the pattern light never crowds the hero text.
          Top edge is feathered by the mask; gradient tint doubles as a
          no-backdrop-filter fallback. */
       .capital .hero-content::before {
@@ -762,13 +474,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
         -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 140px);
         mask-image: linear-gradient(to bottom, transparent 0, #000 140px);
       }
-      .capital .pstep { grid-template-columns: 1fr; gap: 18px; }
-      .capital .who-grid { grid-template-columns: 1fr; gap: clamp(40px, 9vw, 60px); }
-      /* Stacked, so the lopsided weighting no longer reads as hierarchy — pull the
-         two lists back toward each other. */
-      .capital .who-col--primary .dash-list li { font-size: var(--fs-body); }
-      .capital .who-col--secondary { padding-top: 0; }
-      .capital .who-col--secondary .dash-list li { font-size: var(--fs-body); }
       .capital .footer__inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
     }
 
@@ -796,7 +501,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
       .capital *,
 .capital *::before,
 .capital *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
-      .capital .faq-a { transition: none; }
     }
 
 /* Nav lockup: symbol + wordmark, the nav-scale form of the logo. */
@@ -809,13 +513,13 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 }
 
 /* ============================================================
-   TERMS — the symptom list from Kanso, re-cut as a term sheet.
-   Numeral, key in the tracked label voice, value in the display serif.
+   TERMS — the fund as a term sheet. Key in the tracked label voice, value in
+   the display serif; hairlines draw in before the rows land.
    ============================================================ */
 .capital .rows--terms { margin: 0; }
 .capital .rows--terms .row {
   display: grid;
-  grid-template-columns: 2.75rem minmax(130px, 220px) 1fr;
+  grid-template-columns: minmax(130px, 260px) 1fr;
   gap: clamp(16px, 4vw, 56px);
   align-items: baseline;
   padding: clamp(24px, 2.8vw, 34px) clamp(16px, 2vw, 28px);
@@ -823,7 +527,7 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 }
 .capital .rows--terms .row:last-child { border-bottom: 1px solid var(--divider); }
 .capital .rows--terms .row:hover { background: var(--surface); }
-.capital .rows--terms .row:hover .row__num { color: var(--gold); }
+.capital .rows--terms .row:hover .row__key { color: var(--gold); }
 .capital .rows--terms .row__key {
   font-family: var(--sans); font-weight: 500; font-size: var(--fs-label);
   text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-2);
@@ -836,8 +540,7 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
   line-height: 1.15; letter-spacing: -0.01em; color: var(--text);
 }
 @media (max-width: 640px) {
-  .capital .rows--terms .row { grid-template-columns: 2.25rem 1fr; row-gap: 6px; }
-  .capital .rows--terms .row__main { grid-column: 2; }
+  .capital .rows--terms .row { grid-template-columns: 1fr; row-gap: 6px; }
 }
 
 
@@ -859,7 +562,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 }
 .capital .mobile-menu.open a.mobile-menu__parent { transition-delay: 380ms; }
 
-.capital .consult__team { margin-top: 28px; }
 
 /* ============================================================
    PATTERN LIGHT — the Staunch linework, in gold, lying under the whole page
@@ -906,9 +608,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 .capital .footer {
   text-shadow: 0 0 1px #0f0e0c, 0 0 3px #0f0e0c, 0 0 4px #0f0e0c, 0 0 8px #0f0e0c, 0 0 12px #0f0e0c, 0 0 20px #0f0e0c, 0 0 36px rgba(15, 14, 12, 0.85);
 }
-.capital .plate {
-  text-shadow: 0 0 1px #151310, 0 0 3px #151310, 0 0 4px #151310, 0 0 8px #151310, 0 0 12px #151310, 0 0 20px #151310, 0 0 36px rgba(21, 19, 16, 0.85);
-}
 .capital .plate--deep {
   text-shadow: 0 0 1px #0b0a08, 0 0 3px #0b0a08, 0 0 4px #0b0a08, 0 0 8px #0b0a08, 0 0 12px #0b0a08, 0 0 20px #0b0a08, 0 0 36px rgba(11, 10, 8, 0.85);
 }
@@ -919,3 +618,11 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 }
 /* Filled on hover, the CTA's text sits on gold: a dark halo there would smear. */
 .capital .cta:hover { text-shadow: none; }
+
+/* The fund's one line of context, and the fine print under the close. */
+.capital .fund-note { margin-top: clamp(32px, 4vw, 48px); max-width: 62ch; }
+.capital .fund-note a,
+.capital .final-contact a { color: var(--muted); border-bottom: 1px solid var(--divider); transition: color 300ms var(--ease), border-color 300ms var(--ease); }
+.capital .fund-note a:hover,
+.capital .final-contact a:hover { color: var(--text); border-color: var(--gold-soft); }
+.capital .final-legal { margin-top: clamp(40px, 5vw, 64px); font-size: var(--fs-small); color: var(--faint); max-width: 60ch; }

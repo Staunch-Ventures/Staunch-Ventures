@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 /*
  * Every "Invest" button on the main site lands here. It's a fork, not a
  * form: there are two investor products, and sending a deal-by-deal angel to
- * a fund page (or a family office to an SPV list) loses both. A fund investor
+ * a fund page (or a family office to a deal list) loses both. A fund investor
  * is still one click from Staunch Capital, and anyone with the subdomain link
  * skips this page entirely.
  *
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 const mail = (subject: string) => `mailto:${INVEST_EMAIL}?subject=${encodeURIComponent(subject)}`;
 
 const fund = ["Pre-Seed to Series A", "$100k–$400k per company", "Permanent capital vehicle"];
-const network = ["One SPV per deal", "Seed to Pre-IPO", "Shared privately with members"];
+const network = ["Choose deal by deal", "Seed to Pre-IPO", "Shared privately with members"];
 
 export default function InvestPage() {
   return (

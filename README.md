@@ -18,7 +18,7 @@ and the parent site only summarises it and links there.
 | --- | --- |
 | `/` | The switchboard: what Staunch is, then one door per arm (`platformArms` in `site-data.ts`) |
 | `/about` | Everything shared across arms: mission, markets, team, ecosystem, media, contact. Sub-sites link here instead of repeating it |
-| `/ventures` | Staunch Ventures: the studio and the co-investment network (SPVs) |
+| `/ventures` | Staunch Ventures: the studio and the co-investment network |
 | capital.staunchventures.com | Staunch Capital, the fund |
 | `/invest` | Every Invest button lands here: fund vs. deal-by-deal |
 | `/pitch` | One door for all founders, whichever arm ends up backing them |

@@ -104,35 +104,12 @@ export default function CapitalFX() {
     const cleanups: Array<() => void> = [];
     let lenis: Lenis | null = null;
 
-    /* Local time (Cape Town, SAST) */
-    const timeEls = document.querySelectorAll<HTMLElement>("[data-time]");
-    function tickClock() {
-      try {
-        const t = new Intl.DateTimeFormat("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-          timeZone: "Africa/Johannesburg",
-        }).format(new Date());
-        timeEls.forEach((el) => (el.textContent = t + " SAST"));
-      } catch {
-        /* leave blank */
-      }
-    }
-    if (timeEls.length) tickClock();
-    const clockInterval = timeEls.length ? setInterval(tickClock, 30000) : null;
-    if (clockInterval) cleanups.push(() => clearInterval(clockInterval));
-
     /* Nav: frost on scroll, hide on scroll down / show on scroll up */
     const nav = document.getElementById("nav");
-    const progressFillEl = document.getElementById("scrollProgress");
     let lastY = window.scrollY;
     function onScroll() {
       const y = window.scrollY;
       nav?.classList.toggle("scrolled", y > 24);
-      if (progressFillEl) {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        progressFillEl.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
-      }
       if (y > 560 && y > lastY + 4 && !document.body.classList.contains("menu-open")) {
         nav?.classList.add("nav-hidden");
       } else if (y < lastY - 4 || y <= 560) {
@@ -179,29 +156,6 @@ export default function CapitalFX() {
       menuClose?.removeEventListener("click", closeMenu);
       document.removeEventListener("keydown", onKeydown);
     });
-
-    /* FAQ accordion (no GSAP needed) */
-    const faqItems = Array.from(document.querySelectorAll<HTMLElement>(".faq-item"));
-    const faqHandlers: Array<() => void> = [];
-    faqItems.forEach((item) => {
-      const btn = item.querySelector<HTMLButtonElement>(".faq-q");
-      if (!btn) return;
-      const handler = () => {
-        const isOpen = item.classList.contains("open");
-        faqItems.forEach((other) => {
-          other.classList.remove("open");
-          other.querySelector(".faq-q")?.setAttribute("aria-expanded", "false");
-        });
-        if (!isOpen) {
-          item.classList.add("open");
-          btn.setAttribute("aria-expanded", "true");
-        }
-        if (!reduced) setTimeout(() => ScrollTrigger.refresh(), 600);
-      };
-      btn.addEventListener("click", handler);
-      faqHandlers.push(() => btn.removeEventListener("click", handler));
-    });
-    cleanups.push(() => faqHandlers.forEach((fn) => fn()));
 
     /* Scroll cue → glide to the first section */
     const scrollCue = document.getElementById("scrollCue");
@@ -424,55 +378,6 @@ export default function CapitalFX() {
           { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 },
           rules && rules.length ? 0.18 : 0,
         );
-
-        /* Symptom rows are written rather than faded: the numeral lands, then the
-           line follows out from behind it. Targets .row__line, not .row__main —
-           the latter owns a CSS hover transform an inline one would clobber. */
-        if (group.classList.contains("rows--symptoms")) {
-          tl.fromTo(
-            group.querySelectorAll(".row__line"),
-            { x: -16 },
-            { x: 0, duration: 1.15, ease: "power3.out", stagger: 0.08, clearProps: "x" },
-            0.26,
-          );
-        }
-      });
-
-      /* Differential depth. Motion parallax is a genuine monocular depth cue, but
-         only in small doses — these factors stay inside 3–12%. Never applied to
-         body copy: text parallax is where this technique gives itself away. */
-      if (!matchMedia("(pointer: coarse)").matches) {
-        gsap.utils.toArray<HTMLElement>("[data-depth]").forEach((el) => {
-          const factor = parseFloat(el.getAttribute("data-depth") || "0");
-          if (!factor) return;
-          const span = el.closest<HTMLElement>("section") || el;
-          gsap.fromTo(
-            el,
-            { y: () => window.innerHeight * factor * 0.5 },
-            {
-              y: () => -window.innerHeight * factor * 0.5,
-              ease: "none",
-              scrollTrigger: {
-                trigger: span,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            },
-          );
-        });
-      }
-
-      /* Process steps light as the drawn line reaches them, so the rail and the
-         content read as one gesture. Reversible — it answers scrolling back up. */
-      gsap.utils.toArray<HTMLElement>(".pstep").forEach((step) => {
-        ScrollTrigger.create({
-          trigger: step,
-          start: "top 62%",
-          onEnter: () => step.classList.add("is-lit"),
-          onLeaveBack: () => step.classList.remove("is-lit"),
-        });
       });
 
       /* Manifesto: scrubbed word-by-word reveal */
@@ -484,16 +389,6 @@ export default function CapitalFX() {
           stagger: 0.05,
           ease: "none",
           scrollTrigger: { trigger: manifesto, start: "top 80%", end: "top 30%", scrub: 0.5 },
-        });
-      }
-
-      /* Process: gold line draws down as you scroll */
-      const processFill = document.getElementById("processFill");
-      if (processFill) {
-        gsap.to(processFill, {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: { trigger: ".process", start: "top 72%", end: "bottom 78%", scrub: 0.4 },
         });
       }
 

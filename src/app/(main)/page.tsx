@@ -25,9 +25,9 @@ export default function HomePage() {
           <div className="grid gap-16 lg:grid-cols-12 lg:gap-12 items-center">
             <ScrollReveal className="lg:col-span-6 flex flex-col justify-center space-y-7">
               <h1 className="text-balance text-5xl font-serif font-normal tracking-heading sm:text-6xl lg:text-[5.25rem] lg:leading-[1.0]">
-                <span className="text-gradient-brand">Africa&apos;s boldest founders,</span>
+                <span className="text-gradient-brand">Backing the</span>
                 <br />
-                <span className="text-gradient-ember">connected to the world</span>
+                <span className="text-gradient-ember">boldest founders</span>
               </h1>
               <p className="max-w-[580px] text-muted-foreground text-lg md:text-xl text-pretty">
                 Staunch is a cross-border venture platform linking Africa with the US, Europe and

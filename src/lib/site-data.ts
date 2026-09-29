@@ -115,7 +115,7 @@ export const platformArms: PlatformArm[] = [
     kind: "Studio & co-investment network",
     summary:
       "A 0-to-1 venture studio and co-investment network, opening routes to international markets and syndicating global deals from Seed through Pre-IPO.",
-    facts: ["0-to-1 studio", "Co-investment through SPVs", "Seed to Pre-IPO"],
+    facts: ["0-to-1 studio", "Co-investment network", "Seed to Pre-IPO"],
     href: "/ventures",
     cta: "Explore Staunch Ventures",
   },

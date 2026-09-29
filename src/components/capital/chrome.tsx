@@ -6,18 +6,13 @@ import { CapitalLockup, CapitalLogo } from "./marks";
 const MAIN_SITE = mainUrl("/");
 /* Team, mission and the rest of the shared context live on the parent site
    only; the fund links there rather than repeating them. */
-const TEAM_URL = mainUrl("/about#team");
+export const TEAM_URL = mainUrl("/about#team");
 export const BRIEF_MAILTO = `mailto:${INVEST_EMAIL}?subject=${encodeURIComponent(
   "Staunch Capital: investor brief",
 )}`;
 export { INVEST_EMAIL, PITCH_URL };
 
-const LINKS = [
-  { href: "#thesis", label: "Thesis" },
-  { href: "#fund", label: "The Fund" },
-  { href: "#mandate", label: "Mandate" },
-  { href: "#faq", label: "FAQ" },
-];
+const LINKS = [{ href: "#fund", label: "The Fund" }];
 
 export function Overlays() {
   return (
@@ -34,10 +29,6 @@ export function Overlays() {
       </div>
 
       <div className="grain" aria-hidden="true"></div>
-
-      <div className="progress" aria-hidden="true">
-        <div className="progress__fill" id="scrollProgress"></div>
-      </div>
 
     </>
   );
@@ -119,8 +110,7 @@ export function MobileMenu() {
         &larr; Back to Staunch Ventures
       </a>
       <p className="mobile-menu__meta">
-        <a href={`mailto:${INVEST_EMAIL}`}>{INVEST_EMAIL}</a> &middot; South Africa{" "}
-        <span data-time></span>
+        <a href={`mailto:${INVEST_EMAIL}`}>{INVEST_EMAIL}</a>
       </p>
     </div>
   );
@@ -131,8 +121,7 @@ export function Footer() {
     <footer className="footer">
       <div className="footer__inner">
         <p className="footer__meta">
-          &copy; {new Date().getFullYear()} Staunch Capital &middot; A Staunch fund &middot;{" "}
-          <span className="footer__time" data-time></span>
+          &copy; {new Date().getFullYear()} Staunch Capital &middot; A Staunch fund
         </p>
         <nav className="footer__links" aria-label="Footer">
           <a href={MAIN_SITE}>Staunch Ventures</a>
