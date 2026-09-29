@@ -473,23 +473,21 @@ body,
 }
 
 /* ============================================================
-   HERO MAP — the home hero's floating card (hero-map.tsx). Pulses travel
-   along the arcs (pathLength=100, so one keyframe fits every arc), market
-   nodes ping, labels bob at their own tempo, and the card drifts when idle.
+   HERO MAP — the home hero's floating card (hero-map.tsx). One soft light
+   travels slowly along each arc (pathLength=100, so one keyframe fits every
+   arc), labels bob at their own tempo, and the card drifts when idle.
    ============================================================ */
-.hero-map__pulse { stroke-dasharray: 7 93; stroke-dashoffset: 100; animation: hero-map-out 4.2s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
-.hero-map__pulse--in { animation-name: hero-map-in; animation-duration: 4.8s; }
-@keyframes hero-map-out { 0% { stroke-dashoffset: 100; opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { stroke-dashoffset: 7; opacity: 0; } }
-@keyframes hero-map-in { 0% { stroke-dashoffset: 7; opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { stroke-dashoffset: 100; opacity: 0; } }
-
-.hero-map__ping { transform-box: fill-box; transform-origin: center; animation: hero-map-ping 2.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
-@keyframes hero-map-ping { 0% { transform: scale(0.4); opacity: 0.9; } 100% { transform: scale(2.2); opacity: 0; } }
+.hero-map__light { stroke-dasharray: 5 95; stroke-dashoffset: 100; animation: hero-map-light 7s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+@keyframes hero-map-light { 0% { stroke-dashoffset: 100; opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { stroke-dashoffset: 5; opacity: 0; } }
 
 .hero-map__float { animation: float-soft 6s ease-in-out infinite; }
 .hero-map__drift { animation: hero-map-drift 14s ease-in-out infinite; }
 @keyframes hero-map-drift { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-map__pulse, .hero-map__ping, .hero-map__float, .hero-map__drift { animation: none; }
-  .hero-map__pulse { opacity: 0; }
+  .hero-map__light, .hero-map__float, .hero-map__drift { animation: none; }
+  .hero-map__light { opacity: 0; }
 }
+
+/* The brand weave follows the theme: gold linework in Capital. */
+[data-site="capital"] .bg-linework { background-image: url("/patterns/staunch-linework-gold.png"); }

@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -11,7 +10,7 @@ import { PITCH_URL } from "@/lib/intake";
 import { CAPITAL_URL } from "@/lib/sites";
 import { StaunchLockup } from "./brand-lockup";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { MobileMenu, MobileMenuToggle, type MenuItem } from "./mobile-menu";
 
 /**
  * Three pages, named for what's there rather than for Staunch's internal arm
@@ -21,15 +20,16 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui
  * clicking that shouldn't be the only way back. Fund sits last, beside the
  * Invest button. Visiting it re-themes the whole site (see SiteShell).
  */
-const navItems: { href: string; label: string }[] = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: CAPITAL_URL, label: "Fund" },
+const navItems: MenuItem[] = [
+  { href: "/", label: "Home", note: "Studio & co-investment" },
+  { href: "/about", label: "About", note: "Mission, team, contact" },
+  { href: CAPITAL_URL, label: "Fund", note: "Staunch Capital" },
 ]
 
 export function MainNav() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const closeMobileMenu = React.useCallback(() => setIsMobileMenuOpen(false), []);
   const [scrolled, setScrolled] = React.useState(false);
 
   const navRef = React.useRef<HTMLElement>(null);
@@ -78,7 +78,9 @@ export function MainNav() {
     <header
       className={cn(
         "sticky top-0 z-50 w-full transition-[background,border-color,backdrop-filter] duration-300",
-        scrolled
+        // While the mobile menu is open the bar goes clear: the menu is the
+        // surface, and the logo and toggle simply sit on top of it.
+        scrolled && !isMobileMenuOpen
           ? "divider-fade-b bg-background/85 backdrop-blur-md"
           : ""
       )}
@@ -140,58 +142,13 @@ export function MainNav() {
 
         {/* --- Mobile View --- */}
         <div className="flex w-full items-center justify-between min-[1140px]:hidden">
-          <Link href="/" aria-label="Staunch, home" className="flex items-center gap-2">
+          <Link href="/" aria-label="Staunch, home" className="-my-3 flex items-center gap-2 py-3">
             <StaunchLockup />
           </Link>
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Menu />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="surface-lit bg-background/90 backdrop-blur-xl p-0 border-0 divider-fade-r">
-              <SheetHeader className="sr-only">
-                <SheetTitle>Main Menu</SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between p-6 divider-fade-b">
-                  <Link href="/" aria-label="Staunch, home" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <StaunchLockup />
-                  </Link>
-                </div>
-                <nav className="flex flex-col gap-1 p-6">
-                  {navItems.map((item) => {
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={cn(
-                          "px-4 py-3 text-base font-medium transition-colors rounded-lg",
-                          pathname === item.href
-                            ? "bg-muted text-foreground"
-                            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-                        )}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-                </nav>
-                <div className="mt-auto p-6 space-y-3">
-                  <Button asChild variant="outline" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href={PITCH_URL}>Pitch Your Startup</Link>
-                  </Button>
-                  <Button asChild variant="brand" size="pill-lg" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Link href="/invest">Invest</Link>
-                  </Button>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <MobileMenuToggle open={isMobileMenuOpen} onToggle={() => setIsMobileMenuOpen((o) => !o)} />
         </div>
       </div>
+      <MobileMenu open={isMobileMenuOpen} onClose={closeMobileMenu} items={navItems} />
     </header>
   );
 }

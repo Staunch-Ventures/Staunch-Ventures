@@ -227,7 +227,7 @@ export default function HomePage() {
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
-          <Link href={CAPITAL_URL} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link href={CAPITAL_URL} className="-my-2 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
             Prefer a diversified portfolio? See the fund &rarr;
           </Link>
         </ScrollReveal>

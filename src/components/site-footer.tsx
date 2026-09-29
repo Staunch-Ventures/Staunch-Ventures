@@ -13,7 +13,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-9xl py-16 px-4 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10">
           <div className="col-span-2 md:col-span-5 flex flex-col gap-5">
-            <Link href="/" aria-label="Staunch, home" className="flex items-center gap-2">
+            <Link href="/" aria-label="Staunch, home" className="-my-3 flex w-fit items-center gap-2 py-3">
               <StaunchLockup />
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs text-pretty">
@@ -25,7 +25,7 @@ export function SiteFooter() {
                 aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="-m-2.5 p-2.5 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Linkedin className="h-5 w-5" />
               </Link>
@@ -33,21 +33,21 @@ export function SiteFooter() {
           </div>
           <div className="col-span-1 md:col-span-2 md:col-start-7 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Staunch</h4>
-            <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors">Home</Link>
-            <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
-            <Link href="/about#team" className="text-foreground/80 hover:text-foreground transition-colors">Team</Link>
-            <Link href="/about#contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
+            <Link href="/" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Home</Link>
+            <Link href="/about" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">About</Link>
+            <Link href="/about#team" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Team</Link>
+            <Link href="/about#contact" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
           </div>
           <div className="col-span-1 md:col-span-2 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Investors</h4>
-            <Link href={CAPITAL_URL} className="text-foreground/80 hover:text-foreground transition-colors">The fund</Link>
-            <Link href="/#network" className="text-foreground/80 hover:text-foreground transition-colors">Co-investment</Link>
-            <Link href="/invest" className="text-foreground/80 hover:text-foreground transition-colors">Ways to invest</Link>
+            <Link href={CAPITAL_URL} className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">The fund</Link>
+            <Link href="/#network" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Co-investment</Link>
+            <Link href="/invest" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Ways to invest</Link>
           </div>
           <div className="col-span-2 md:col-span-2 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Founders</h4>
-            <Link href="/#studio" className="text-foreground/80 hover:text-foreground transition-colors">Venture studio</Link>
-            <Link href={PITCH_URL} className="text-foreground/80 hover:text-foreground transition-colors">Pitch your startup</Link>
+            <Link href="/#studio" className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Venture studio</Link>
+            <Link href={PITCH_URL} className="-my-1.5 py-1.5 text-foreground/80 hover:text-foreground transition-colors">Pitch your startup</Link>
           </div>
         </div>
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs text-muted-foreground">

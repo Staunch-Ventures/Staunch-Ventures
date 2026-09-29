@@ -153,14 +153,14 @@ export default function AboutPage() {
         </ScrollReveal>
 
         {/* Four markets */}
-        <Stagger className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {markets.map((m) => (
             <StaggerItem key={m} className="flex">
-              <Card className="w-full p-6 md:p-8">
-                <p className="text-xs uppercase tracking-wider text-primary mb-3">
+              <Card className="w-full p-5 md:p-8">
+                <p className="text-[10px] sm:text-xs uppercase tracking-wider text-primary mb-2 sm:mb-3">
                   {m === "Africa" ? "Home market" : "Connected market"}
                 </p>
-                <h3 className="text-2xl font-serif font-normal tracking-heading mb-2">{m}</h3>
+                <h3 className="text-xl sm:text-2xl font-serif font-normal tracking-heading mb-2">{m}</h3>
                 <p className="text-sm text-muted-foreground text-pretty">{marketRoles[m]}</p>
               </Card>
             </StaggerItem>
@@ -208,7 +208,7 @@ export default function AboutPage() {
             title="The people behind Staunch"
             aside="One team across every arm of the platform."
           />
-          <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {team.map((member) => (
               <StaggerItem key={member.name} className="flex">
                 <SpotlightCard className="w-full flex group">
@@ -224,12 +224,13 @@ export default function AboutPage() {
                         />
                       </div>
                       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-card via-card/60 to-transparent pointer-events-none" />
-                      <div className="absolute inset-x-0 bottom-0 p-6">
-                        <h3 className="text-2xl font-semibold tracking-tight text-foreground">{member.name}</h3>
-                        <p className="text-sm font-medium text-primary mt-1">{member.role}</p>
+                      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+                        <h3 className="text-base sm:text-2xl font-semibold leading-tight tracking-tight text-foreground">{member.name}</h3>
+                        <p className="text-xs sm:text-sm font-medium text-primary mt-1">{member.role}</p>
                       </div>
                     </div>
-                    <div className="p-6 border-t border-border">
+                    {/* Quotes from sm up: on a phone they turn four cards into four screens. */}
+                    <div className="hidden sm:block p-6 border-t border-border">
                       <p className="text-sm text-muted-foreground italic leading-relaxed text-pretty">
                         &ldquo;{member.quote}&rdquo;
                       </p>
@@ -322,15 +323,15 @@ export default function AboutPage() {
 
         <div id="partners" className="scroll-mt-24">
           <SectionHead eyebrow="Ecosystem" title="Growth Partners" aside={`${growthPartners.length} partners`} />
-          <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Stagger className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {growthPartners.map((partner) => (
               <StaggerItem key={partner.name} className="flex">
                 <Link href={partner.website} target="_blank" rel="noopener noreferrer" className="flex group w-full">
                   <SpotlightCard className="w-full flex">
-                    <Card variant="interactive" className="w-full flex flex-col p-6">
+                    <Card variant="interactive" className="w-full flex flex-col p-4 sm:p-6">
                       <CardHeader className="p-0">
-                        <div className="flex items-start justify-between gap-3 mb-5">
-                          <div className="relative h-14 w-full max-w-[180px]">
+                        <div className="flex items-start justify-between gap-3 mb-4 sm:mb-5">
+                          <div className="relative h-10 sm:h-14 w-full max-w-[180px]">
                             <Image
                               src={partner.logo}
                               alt={`${partner.name} logo`}
@@ -342,14 +343,14 @@ export default function AboutPage() {
                           </div>
                           <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </div>
-                        <CardTitle className="text-xl">{partner.name}</CardTitle>
+                        <CardTitle className="text-sm sm:text-xl leading-snug">{partner.name}</CardTitle>
                         <div className="pt-2">
                           <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                             {partner.tag}
                           </Badge>
                         </div>
                       </CardHeader>
-                      <CardContent className="p-0 mt-4 flex-grow">
+                      <CardContent className="hidden sm:block p-0 mt-4 flex-grow">
                         <p className="text-muted-foreground text-sm text-pretty">{partner.description}</p>
                       </CardContent>
                     </Card>

@@ -85,7 +85,7 @@ export default function InvestPage() {
               </Link>
               <a
                 href={mail("Staunch Capital: investor brief")}
-                className="text-sm text-[#a49f96] transition-colors hover:text-[#f2efe9]"
+                className="-my-2 py-2 text-sm text-[#a49f96] transition-colors hover:text-[#f2efe9]"
               >
                 or request the investor brief
               </a>
@@ -125,7 +125,7 @@ export default function InvestPage() {
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </a>
                 </Button>
-                <Link href="/#network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/#network" className="-my-2 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                   How the network works
                 </Link>
               </div>
