@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
-  "relative rounded-2xl text-card-foreground transition-all duration-300",
+  "relative rounded-2xl text-card-foreground transition-[transform,box-shadow,background-color] duration-300",
   {
     variants: {
       variant: {
@@ -25,9 +25,12 @@ const cardVariants = cva(
         // Glass — heavier blur, for the few floating overlays that want it
         glass:
           "border-lit bg-card/50 backdrop-blur-2xl shadow-glass",
-        // Interactive — lifts and brightens on hover; for link cards
+        // Interactive — lifts and brightens on hover; for link cards. The hover
+        // is read from a non-moving ancestor (.group: SpotlightCard or the
+        // wrapping link), never from the card itself: a card that lifts out
+        // from under the pointer un-hovers, drops back and flickers.
         interactive:
-          "border-lit bg-card/90 shadow-elevated cursor-pointer hover:-translate-y-1 hover:shadow-float",
+          "border-lit bg-card/90 shadow-elevated cursor-pointer group-hover:-translate-y-1 group-hover:shadow-float",
         // Brand — terracotta-tinted depth for the one signature surface
         brand:
           "border-lit bg-[linear-gradient(160deg,hsl(var(--primary)/0.14),transparent_55%),hsl(var(--card)/0.92)] shadow-elevated",

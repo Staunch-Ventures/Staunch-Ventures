@@ -3,11 +3,13 @@
  * the whole site ambient depth and motion (Mercury/Stripe style). Pure CSS
  * animation so it renders on the server with zero JS.
  *
- * Mobile is tuned hard here: animating several 60–70vh surfaces each blurred by
- * 120–140px is the heaviest paint on the page and tanks scroll FPS / battery on
- * phone GPUs. So on small screens we drop to two blobs, halve the blur radius,
- * and `.aurora-blob` kills the drift animation entirely (see globals.css). The
- * static wash still reads as the same ambient backdrop.
+ * No CSS blur. Each blob's softness is built into its gradient: an eased
+ * falloff sized to the blob (closest-side, reaching transparent at the edge,
+ * on a blob enlarged around the old centre to cover the old blur spread), so
+ * it is painted once and the drift is a pure compositor transform. Blurring them with filter: blur(120px+) instead made
+ * the browser re-blur several huge surfaces every frame while they drifted:
+ * measured at ~70ms/frame when hovering cards over it, against ~17ms without.
+ * On small screens `.aurora-blob` still freezes the drift (see globals.css).
  */
 export function AuroraBackground() {
   return (
@@ -20,34 +22,34 @@ export function AuroraBackground() {
 
       {/* Drifting color blobs */}
       <div
-        className="aurora-blob absolute -top-1/4 right-[-10%] h-[70vh] w-[70vh] rounded-full blur-[70px] opacity-50 sm:blur-[120px]"
+        className="aurora-blob absolute [will-change:transform] top-[calc(-25%-12.5vh)] right-[calc(-10%-12.5vh)] h-[95vh] w-[95vh] opacity-50"
         style={{
           background:
-            "radial-gradient(circle, hsl(16 90% 55% / 0.45), transparent 60%)",
+            "radial-gradient(circle closest-side, hsl(16 90% 55% / 0.324) 0%, hsl(16 90% 55% / 0.243) 15%, hsl(16 90% 55% / 0.162) 30%, hsl(16 90% 55% / 0.091) 48%, hsl(16 90% 55% / 0.039) 65%, hsl(16 90% 55% / 0.013) 80%, transparent 100%)",
           animation: "aurora-drift-1 22s ease-in-out infinite",
         }}
       />
       <div
-        className="aurora-blob absolute top-[10%] left-[-15%] h-[60vh] w-[60vh] rounded-full blur-[80px] opacity-40 sm:blur-[130px]"
+        className="aurora-blob absolute [will-change:transform] top-[calc(10%-11vh)] left-[calc(-15%-11vh)] h-[82vh] w-[82vh] opacity-40"
         style={{
           background:
-            "radial-gradient(circle, hsl(38 92% 56% / 0.30), transparent 62%)",
+            "radial-gradient(circle closest-side, hsl(38 92% 56% / 0.216) 0%, hsl(38 92% 56% / 0.162) 15%, hsl(38 92% 56% / 0.108) 30%, hsl(38 92% 56% / 0.060) 48%, hsl(38 92% 56% / 0.026) 65%, hsl(38 92% 56% / 0.009) 80%, transparent 100%)",
           animation: "aurora-drift-2 28s ease-in-out infinite",
         }}
       />
       <div
-        className="aurora-blob absolute bottom-[-20%] left-[20%] hidden h-[65vh] w-[65vh] rounded-full blur-[140px] opacity-40 sm:block"
+        className="aurora-blob absolute [will-change:transform] bottom-[calc(-20%-11.5vh)] left-[calc(20%-11.5vh)] hidden h-[88vh] w-[88vh] opacity-40 sm:block"
         style={{
           background:
-            "radial-gradient(circle, hsl(250 70% 45% / 0.35), transparent 62%)",
+            "radial-gradient(circle closest-side, hsl(250 70% 45% / 0.252) 0%, hsl(250 70% 45% / 0.189) 15%, hsl(250 70% 45% / 0.126) 30%, hsl(250 70% 45% / 0.071) 48%, hsl(250 70% 45% / 0.030) 65%, hsl(250 70% 45% / 0.010) 80%, transparent 100%)",
           animation: "aurora-drift-3 32s ease-in-out infinite",
         }}
       />
       <div
-        className="aurora-blob absolute top-[40%] right-[10%] hidden h-[50vh] w-[50vh] rounded-full blur-[120px] opacity-30 sm:block"
+        className="aurora-blob absolute [will-change:transform] top-[calc(40%-9vh)] right-[calc(10%-9vh)] hidden h-[68vh] w-[68vh] opacity-30 sm:block"
         style={{
           background:
-            "radial-gradient(circle, hsl(210 90% 50% / 0.30), transparent 62%)",
+            "radial-gradient(circle closest-side, hsl(210 90% 50% / 0.216) 0%, hsl(210 90% 50% / 0.162) 15%, hsl(210 90% 50% / 0.108) 30%, hsl(210 90% 50% / 0.060) 48%, hsl(210 90% 50% / 0.026) 65%, hsl(210 90% 50% / 0.009) 80%, transparent 100%)",
           animation: "aurora-drift-1 26s ease-in-out infinite reverse",
         }}
       />

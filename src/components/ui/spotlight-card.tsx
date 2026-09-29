@@ -9,7 +9,8 @@ import { usePointerFine } from "@/hooks/use-pointer-fine";
  * (the Linear/Stripe card effect). Tracks pointer position into CSS vars.
  *
  * The highlight is `:hover`-only, so on touch devices it never shows — there
- * we skip the pointer listener entirely.
+ * we skip the pointer listener entirely. It's also a `group`: interactive
+ * cards inside lift on the wrapper's hover, which doesn't move with them.
  */
 export function SpotlightCard({
   className,
@@ -31,7 +32,7 @@ export function SpotlightCard({
     <div
       ref={ref}
       onMouseMove={fine ? handleMove : undefined}
-      className={cn("spotlight rounded-2xl", className)}
+      className={cn("spotlight group rounded-2xl", className)}
       {...props}
     >
       {children}
