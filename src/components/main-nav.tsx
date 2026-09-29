@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
@@ -10,6 +9,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { PITCH_URL } from "@/lib/intake";
 import { CAPITAL_URL } from "@/lib/sites";
+import { StaunchLockup } from "./brand-lockup";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 
@@ -17,11 +17,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui
  * Three destinations, one per question a visitor arrives with: the fund
  * (Capital), the studio and co-investment network (Ventures), and who we are
  * (About). Everything else is an action — Pitch or Invest — not a page to
- * browse. Capital is its own site, so it's a plain <a>: a full load is what
- * plays its intro, and on production it's another host anyway.
+ * browse. Capital is a page like the others; going there re-themes the whole
+ * site (see SiteShell) and the logo animates across.
  */
-const navItems: { href: string; label: string; external?: boolean }[] = [
-  { href: CAPITAL_URL, label: "Capital", external: true },
+const navItems: { href: string; label: string }[] = [
+  { href: CAPITAL_URL, label: "Capital" },
   { href: "/ventures", label: "Ventures" },
   { href: "/about", label: "About" },
 ];
@@ -87,8 +87,8 @@ export function MainNav() {
         <div className="hidden min-[1140px]:flex w-full items-center">
           {/* Logo */}
           <div className="flex-1 flex items-center justify-start">
-            <Link href="/" className="flex-shrink-0 transition-opacity hover:opacity-80">
-              <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={132} height={33} priority />
+            <Link href="/" aria-label="Staunch, home" className="flex-shrink-0 transition-opacity hover:opacity-80">
+              <StaunchLockup />
             </Link>
           </div>
 
@@ -108,17 +108,6 @@ export function MainNav() {
             />
             {navItems.map((item) => {
               const isActive = pathname === item.href;
-              if (item.external) {
-                return (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="relative z-10 px-4 py-1.5 text-sm font-medium transition-colors rounded-full outline-none text-muted-foreground hover:text-foreground"
-                  >
-                    {item.label}
-                  </a>
-                );
-              }
               return (
                 <Link
                   key={item.href}
@@ -150,8 +139,8 @@ export function MainNav() {
 
         {/* --- Mobile View --- */}
         <div className="flex w-full items-center justify-between min-[1140px]:hidden">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={132} height={33} priority />
+          <Link href="/" aria-label="Staunch, home" className="flex items-center gap-2">
+            <StaunchLockup />
           </Link>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -166,15 +155,14 @@ export function MainNav() {
               </SheetHeader>
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between p-6 divider-fade-b">
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={132} height={33} />
+                  <Link href="/" aria-label="Staunch, home" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                    <StaunchLockup />
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-1 p-6">
                   {navItems.map((item) => {
-                    const Tag = item.external ? "a" : Link;
                     return (
-                      <Tag
+                      <Link
                         key={item.href}
                         href={item.href}
                         className={cn(
@@ -186,7 +174,7 @@ export function MainNav() {
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         {item.label}
-                      </Tag>
+                      </Link>
                     );
                   })}
                 </nav>

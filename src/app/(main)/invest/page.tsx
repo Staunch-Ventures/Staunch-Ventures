@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Layers } from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
@@ -76,14 +76,13 @@ export default function InvestPage() {
               ))}
             </ul>
             <div className="relative mt-auto pt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-              {/* Plain <a>: its own site, its own intro. */}
-              <a
+              <Link
                 href={CAPITAL_URL}
                 className="inline-flex items-center gap-2 border border-[#c5a572] px-6 py-3 font-serif text-lg italic text-[#c5a572] transition-colors duration-500 hover:bg-[#c5a572] hover:text-[#0f0e0c]"
               >
                 Visit Staunch Capital
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
               <a
                 href={mail("Staunch Capital: investor brief")}
                 className="text-sm text-[#a49f96] transition-colors hover:text-[#f2efe9]"

@@ -7,8 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
-import { FieldImage } from "@/components/marketing/field-image";
-import { ventures, startupsCofounded } from "@/lib/site-data";
+import { ventures } from "@/lib/site-data";
 import { PITCH_URL } from "@/lib/intake";
 import { CAPITAL_URL } from "@/lib/sites";
 
@@ -41,13 +40,6 @@ const networkPoints = [
     title: "By invitation",
     body: "Opportunities are shared privately with network members, never listed publicly.",
   },
-];
-
-const focusAreas = [
-  { label: "EdTech", state: "Core focus" },
-  { label: "HealthTech / MedTech", state: "Core focus" },
-  { label: "Clean Energy", state: "Exploring" },
-  { label: "AgriTech", state: "Exploring" },
 ];
 
 export default function VenturesPage() {
@@ -164,58 +156,6 @@ export default function VenturesPage() {
         </ScrollReveal>
       </section>
 
-      {/* How we build */}
-      <section>
-        <ScrollReveal className="mb-10 max-w-2xl">
-          <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">How we build</h2>
-          <p className="text-muted-foreground text-lg text-pretty">
-            We back early-stage founders solving local challenges with global applications, leading with the sectors where Africa&apos;s next decade of growth is being written.
-          </p>
-        </ScrollReveal>
-        <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {focusAreas.map((area) => (
-            <StaggerItem key={area.label} className="flex">
-              <SpotlightCard className="w-full flex">
-                <Card className="w-full p-6 flex flex-col">
-                  <p className="text-xs uppercase tracking-wider text-primary mb-2">{area.state}</p>
-                  <p className="text-lg font-semibold tracking-tight text-foreground">{area.label}</p>
-                </Card>
-              </SpotlightCard>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      </section>
-
-      {/* Team track record */}
-      <ScrollReveal>
-        <SpotlightCard>
-          <Card variant="brand" className="overflow-hidden p-0">
-            <div className="grid md:grid-cols-2">
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                <p className="text-7xl md:text-8xl font-serif font-normal tracking-heading tabular-nums text-primary leading-none mb-6">
-                  {startupsCofounded}
-                </p>
-                <h2 className="text-2xl md:text-3xl font-serif font-normal tracking-heading mb-3">
-                  Startups cofounded across the team
-                </h2>
-                <p className="text-muted-foreground text-pretty">
-                  Our portfolio is young, but our team isn&apos;t. Between us we&apos;ve started and scaled revenue-generating companies before. The operator experience we bring inside every venture we build.
-                </p>
-              </div>
-              <div className="flex items-center justify-center p-8 pt-0 md:p-10 md:pl-0">
-                <FieldImage
-                  src="/cofound-workshop.jpg"
-                  alt="The Staunch team in a cofounding workshop session"
-                  width={1200}
-                  height={1600}
-                  className="h-80 md:h-[480px]"
-                />
-              </div>
-            </div>
-          </Card>
-        </SpotlightCard>
-      </ScrollReveal>
-
       {/* The co-investment network */}
       <section id="network" className="scroll-mt-24">
         <ScrollReveal className="mb-10 max-w-2xl">
@@ -248,9 +188,9 @@ export default function VenturesPage() {
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
-          <a href={CAPITAL_URL} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link href={CAPITAL_URL} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Prefer diversified fund exposure? Staunch Capital &rarr;
-          </a>
+          </Link>
         </ScrollReveal>
       </section>
 

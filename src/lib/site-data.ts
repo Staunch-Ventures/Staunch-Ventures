@@ -95,8 +95,8 @@ export type PlatformArm = {
   facts: string[];
   href: string;
   cta: string;
-  /** Capital lives on its own subdomain, in its own design language. */
-  external?: boolean;
+  /** Drawn in Staunch Capital's own palette (black and gold). */
+  capitalTheme?: boolean;
 };
 
 export const platformArms: PlatformArm[] = [
@@ -108,7 +108,7 @@ export const platformArms: PlatformArm[] = [
     facts: ["$100k–$400k", "Pre-Seed to Series A", "African technology"],
     href: CAPITAL_URL,
     cta: "Visit Staunch Capital",
-    external: true,
+    capitalTheme: true,
   },
   {
     name: "Staunch Ventures",

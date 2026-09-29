@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -25,6 +26,15 @@ const mono = JetBrains_Mono({
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-serif",
+  display: "swap",
+});
+
+// The logo lockup's wordmark (STAUNCH VENTURES / STAUNCH CAPITAL). One weight,
+// preloaded: it sits in the nav on every page.
+const lockup = localFont({
+  src: "./fonts/Satoshi-Bold.woff2",
+  weight: "700",
+  variable: "--font-lockup",
   display: "swap",
 });
 
@@ -95,9 +105,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${mono.variable} ${newsreader.variable}`}
+      className={`dark ${inter.variable} ${mono.variable} ${newsreader.variable} ${lockup.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Pre-paint flags for Staunch Capital's scroll reveals: its CSS hides
+            reveal targets only under html.js, so they stay visible without JS
+            and never flash before GSAP takes them. Set here, not on the page,
+            because the page is usually reached by client-side navigation. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var d=document.documentElement;d.classList.add("js");if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("reduced");})();`,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
         <a
           href="#main"

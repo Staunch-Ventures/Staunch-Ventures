@@ -19,14 +19,19 @@ and the parent site only summarises it and links there.
 | `/` | The switchboard: what Staunch is, then one door per arm (`platformArms` in `site-data.ts`) |
 | `/about` | Everything shared across arms: mission, markets, team, ecosystem, media, contact. Sub-sites link here instead of repeating it |
 | `/ventures` | Staunch Ventures: the studio and the co-investment network |
-| capital.staunchventures.com | Staunch Capital, the fund |
+| `/capital` | Staunch Capital, the fund. capital.staunchventures.com redirects here |
 | `/invest` | Every Invest button lands here: fund vs. deal-by-deal |
 | `/pitch` | One door for all founders, whichever arm ends up backing them |
 
 A new fund or service is a new `platformArms` entry, not a new nav item.
-Links between the main site and Capital go through `src/lib/sites.ts`, which
-resolves to the real hosts on production and to same-deployment paths on
-previews and localhost.
+
+**Themes.** `SiteShell` sets `data-site="capital"` on `/capital` and
+`"ventures"` everywhere else. Capital's palette overrides the same colour
+tokens every component reads (`globals.css`, SITE THEMES), and the shell
+transitions colour, so moving between arms is a crossfade inside one site.
+The nav lockup (`brand-lockup.tsx`) animates with it: bars turn gold left to
+right and VENTURES rolls over to CAPITAL. Capital's own type and styles live
+in `src/app/(main)/capital/` and are scoped under `.capital`.
 
 ## Development
 
@@ -42,7 +47,7 @@ npm run build      # production build
 | Path | What it is |
 | --- | --- |
 | `src/app/(main)/` | Main Staunch site: home, about (mission, team, ecosystem, media, contact), ventures, invest, pitch |
-| `src/app/capital/` | Staunch Capital, the fund's own site in its own design language. Served at capital.staunchventures.com (see `src/middleware.ts`) |
+| `src/app/(main)/capital/` | Staunch Capital, the fund's page. Same nav and footer as the rest of the site; the whole shell re-themes to black and gold here (see Site architecture) |
 | `src/app/investor/`, `src/app/startup/` | Product demo dashboards |
 | `src/lib/site-data.ts` | **Single source of content**: ventures, growth partners, initiatives, team field photos, videos |
 | `src/components/marketing/` | Marketing-specific components (`HeroVisual`, `FieldImage`, `VideoCard`) |

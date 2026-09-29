@@ -1,43 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminCookieValue, ADMIN_COOKIE } from "@/lib/admin-auth";
 
-/** Staunch Capital's own host. Its root serves /capital; nothing else lives there. */
+/**
+ * Staunch Capital's old subdomain. The fund is a page of the main site now;
+ * the subdomain stays alive only so links already in decks and emails land
+ * on it.
+ */
 const CAPITAL_HOST = "capital.staunchventures.com";
 const MAIN_ORIGIN = "https://www.staunchventures.com";
-const MAIN_HOSTS = new Set(["staunchventures.com", "www.staunchventures.com"]);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const host = request.headers.get("host")?.split(":")[0];
 
-  if (host === CAPITAL_HOST) return capitalHost(request);
-  // On the production main site the fund has one address: its own host.
-  // Localhost and preview deployments keep serving /capital directly.
-  if (pathname === "/capital" && MAIN_HOSTS.has(host ?? "")) {
-    return NextResponse.redirect(`https://${CAPITAL_HOST}/`, 308);
-  }
+  if (host === CAPITAL_HOST) return NextResponse.redirect(`${MAIN_ORIGIN}/capital`, 308);
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return adminGate(request);
   return NextResponse.next();
-}
-
-/**
- * capital.staunchventures.com/ renders /capital. /capital on that host folds
- * back to the root so the fund has one URL, and every other path (/pitch,
- * /about, ...) goes to the main site where it actually lives.
- */
-function capitalHost(request: NextRequest) {
-  const { pathname, search } = request.nextUrl;
-  if (pathname === "/") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/capital";
-    return NextResponse.rewrite(url);
-  }
-  if (pathname === "/capital") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
-  return NextResponse.redirect(`${MAIN_ORIGIN}${pathname}${search}`);
 }
 
 /**
@@ -76,6 +54,6 @@ async function adminGate(request: NextRequest) {
 
 export const config = {
   // Everything except Next internals and files with an extension (fonts,
-  // images, the capital icon), which both hosts serve as-is.
+  // images), which are served as-is.
   matcher: ["/((?!_next/|.*\\..*).*)"],
 };

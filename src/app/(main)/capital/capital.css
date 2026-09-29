@@ -57,12 +57,13 @@
 .capital *::before,
 .capital *::after { box-sizing: border-box; }
 
-    html:has(.capital) { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
-    html.lenis-on:has(.capital) { scroll-behavior: auto; }
+    html:has(.capital) { scroll-padding-top: 88px; }
 
+    /* Transparent: the shell's body colour crossfades to Capital's ground
+       when you arrive, and the page should reveal that, not cut over it. */
     .capital {
       margin: 0;
-      background: var(--bg);
+      background: transparent;
       color: var(--text);
       font-family: var(--sans);
       font-size: var(--fs-body);
@@ -72,15 +73,7 @@
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
       overflow-x: clip;
-      min-height: 100vh;
     }
-    /* The root layout paints the Staunch navy on <body>; overscroll and the
-       gaps around the fixed layers should show this ground instead. */
-    body:has(.capital) { background: #0f0e0c; }
-    /* is-loading sits on <html> (set pre-paint by the layout script), because
-       the root layout owns <body> and React would flag a class it didn't render. */
-    body.menu-open,
-html.is-loading body { overflow: hidden; }
 
     .capital h1,
 .capital h2,
@@ -93,13 +86,6 @@ html.is-loading body { overflow: hidden; }
     .capital ::selection { background: rgba(197, 165, 114, 0.22); color: var(--text); }
     .capital :focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
 
-    .capital .skip-link {
-      position: fixed; left: 16px; top: -120px; z-index: 500;
-      background: #000; color: var(--text); padding: 12px 18px;
-      border: 1px solid var(--gold); font-size: var(--fs-small);
-      transition: top 200ms var(--ease);
-    }
-    .capital .skip-link:focus { top: 16px; }
 
     /* ============================================================
        FILM GRAIN
@@ -117,27 +103,6 @@ html.is-loading body { overflow: hidden; }
       75%  { transform: translate(-18px, -30px); }
       100% { transform: translate(0, 0); }
     }
-
-    /* ============================================================
-       PRELOADER
-       ============================================================ */
-    .capital .preloader {
-      position: fixed; inset: 0; z-index: 300;
-      background: var(--bg);
-      display: none;
-      place-items: center;
-    }
-    html.js:not(.reduced) .capital .preloader { display: grid; }
-    .capital .preloader__mark { display: flex; flex-direction: column; align-items: center; gap: 22px; }
-    .capital .preloader__word {
-      display: block;
-      height: clamp(64px, 12vw, 104px);
-      width: auto;
-      overflow: visible;
-      opacity: 0;
-    }
-    .capital .preloader__line { display: block; width: min(240px, 40vw); height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; }
-
 
     /* ============================================================
        SHARED TYPOGRAPHY
@@ -235,87 +200,11 @@ html.is-loading body { overflow: hidden; }
     .capital .textlink:hover { color: var(--text); }
 
     /* ============================================================
-       NAV
-       ============================================================ */
-    .capital .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: clamp(18px, 2.4vw, 26px) var(--gutter);
-      background: transparent;
-      transition: background-color 500ms var(--ease), backdrop-filter 500ms var(--ease), transform 500ms var(--ease);
-    }
-    .capital .nav.scrolled {
-      background: rgba(15, 14, 12, 0.82);
-      -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
-    }
-    .capital .nav.nav-hidden { transform: translateY(-105%); }
-    .capital .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; max-width: 1400px; margin-inline: auto; }
-    .capital .brand { display: inline-flex; align-items: center; }
-    .capital .brand .lockup { transition: opacity 300ms var(--ease); }
-    .capital .brand:hover .lockup { opacity: 0.8; }
-    .capital .nav__links { display: flex; align-items: center; gap: clamp(1.5rem, 2.5vw, 2.75rem); }
-    .capital .nav__link {
-      position: relative;
-      font-family: var(--sans); font-weight: 400; font-size: var(--fs-nav);
-      text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted-2);
-      transition: color 300ms var(--ease);
-    }
-    .capital .nav__link::after {
-      content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px;
-      background: var(--gold);
-      transform: scaleX(0); transform-origin: right;
-      transition: transform 450ms var(--ease);
-    }
-    .capital .nav__link:hover { color: var(--text); }
-    .capital .nav__link:hover::after { transform: scaleX(1); transform-origin: left; }
-    .capital .nav__cta {
-      font-family: var(--serif); font-style: italic; font-weight: 400;
-      font-size: clamp(0.875rem, 0.3vw + 0.8rem, 0.9375rem);
-      color: var(--gold);
-      transition: color 300ms var(--ease);
-    }
-    .capital .nav__cta:hover { color: var(--text); }
-
-    .capital .burger { display: none; width: 44px; height: 44px; place-items: center; color: var(--text); transition: opacity 300ms var(--ease), visibility 300ms var(--ease); }
-    .capital .burger svg { width: 22px; height: 22px; }
-    body.menu-open .capital .burger { opacity: 0; visibility: hidden; pointer-events: none; }
-
-    /* ============================================================
-       MOBILE MENU
-       ============================================================ */
-    .capital .mobile-menu {
-      position: fixed; inset: 0; z-index: 130; /* above the nav so the close button is reachable */
-      background: var(--bg);
-      display: flex; flex-direction: column; justify-content: center; gap: 0.25rem;
-      padding: var(--gutter);
-      opacity: 0; visibility: hidden;
-      transition: opacity 400ms var(--ease), visibility 400ms var(--ease);
-    }
-    .capital .mobile-menu.open { opacity: 1; visibility: visible; }
-    .capital .mobile-menu a:not(.cta) {
-      font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 9vw, 3rem);
-      line-height: 1.5; color: var(--text);
-      opacity: 0; transform: translateY(16px);
-      transition: color 300ms var(--ease), opacity 500ms var(--ease), transform 600ms var(--ease);
-    }
-    .capital .mobile-menu.open a:not(.cta) { opacity: 1; transform: none; }
-    .capital .mobile-menu.open a:nth-child(2) { transition-delay: 60ms; }
-    .capital .mobile-menu.open a:nth-child(3) { transition-delay: 120ms; }
-    .capital .mobile-menu.open a:nth-child(4) { transition-delay: 180ms; }
-    .capital .mobile-menu.open a:nth-child(5) { transition-delay: 240ms; }
-    .capital .mobile-menu a:hover { color: var(--gold); }
-    .capital .mobile-menu .cta { align-self: flex-start; margin-top: 2rem; opacity: 0; transition: opacity 500ms var(--ease) 320ms, color 450ms var(--ease), background-size 450ms var(--ease); }
-    .capital .mobile-menu.open .cta { opacity: 1; }
-    .capital .mobile-menu__meta { position: absolute; bottom: calc(var(--gutter) + 8px); left: var(--gutter); font-size: var(--fs-small); color: var(--muted-2); }
-    .capital .mobile-menu__meta a { font-family: var(--sans) !important; font-size: var(--fs-small) !important; opacity: 1 !important; transform: none !important; color: var(--muted); display: inline; line-height: inherit !important; }
-    .capital .mobile-menu__close { position: absolute; top: 18px; right: var(--gutter); width: 44px; height: 44px; display: grid; place-items: center; color: var(--text); }
-    .capital .mobile-menu__close svg { width: 24px; height: 24px; }
-
-    /* ============================================================
        HERO
        ============================================================ */
     .capital .hero {
       position: relative;
-      min-height: 100svh;
+      min-height: calc(100svh - 4rem);
       display: flex;
       align-items: flex-end;
       overflow: hidden;
@@ -339,7 +228,7 @@ html.is-loading body { overflow: hidden; }
     .capital .hero-content {
       position: relative; z-index: 2;
       width: 100%; max-width: 1400px; margin-inline: auto;
-      padding: 110px var(--gutter) clamp(40px, 7.5vh, 96px);
+      padding: 48px var(--gutter) clamp(40px, 7.5vh, 96px);
     }
     .capital .hero-meta { margin-bottom: 20px; }
     .capital .hero-meta .label { margin-bottom: 8px; }
@@ -420,17 +309,6 @@ html.is-loading body { overflow: hidden; }
     .capital .final-contact a:hover { color: var(--text); }
 
     /* ============================================================
-       FOOTER
-       ============================================================ */
-    .capital .footer { border-top: 1px solid var(--divider); padding: clamp(32px, 4vw, 44px) var(--gutter); }
-    .capital .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; max-width: 1400px; margin-inline: auto; }
-    .capital .footer__meta { font-family: var(--sans); font-size: var(--fs-nav); color: var(--faint); }
-    .capital .footer__meta .footer__time { color: var(--muted-2); font-variant-numeric: tabular-nums; }
-    .capital .footer__links { display: flex; gap: clamp(1.25rem, 2.5vw, 2rem); flex-wrap: wrap; }
-    .capital .footer__links a { font-family: var(--sans); font-size: var(--fs-nav); color: var(--faint); transition: color 300ms var(--ease); }
-    .capital .footer__links a:hover { color: var(--text); }
-
-    /* ============================================================
        MOTION (JS drives reveals; these prevent FOUC)
        ============================================================ */
     html.js:not(.reduced) .capital [data-reveal],
@@ -454,8 +332,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
         --fs-card:  0.875rem;
         --fs-nav:   0.75rem;
       }
-      .capital .nav__links { display: none; }
-      .capital .burger { display: grid; }
       .capital .hero { align-items: flex-end; }
       .capital .hero-scroll { display: none; }
 
@@ -474,7 +350,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
         -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 140px);
         mask-image: linear-gradient(to bottom, transparent 0, #000 140px);
       }
-      .capital .footer__inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
     }
 
     /* ============================================================
@@ -485,11 +360,8 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
        inert there is no cost to the wider net.
        ============================================================ */
     @media (pointer: coarse), (max-width: 768px) {
-      .capital .brand { padding-block: 12px; margin-block: -12px; }
       .capital .textlink { padding-block: 9px; margin-block: -9px; }
-      .capital .footer__links a,
-.capital .final-contact a,
-.capital .mobile-menu__meta a {
+      .capital .final-contact a {
         display: inline-block;
         padding: 7px 3px;
         margin: -7px -3px;
@@ -502,15 +374,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 .capital *::before,
 .capital *::after { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
     }
-
-/* Nav lockup: symbol + wordmark, the nav-scale form of the logo. */
-.capital .lockup { display: inline-flex; align-items: center; gap: 12px; }
-.capital .lockup__mark { display: block; height: 22px; width: auto; }
-.capital .lockup__word {
-  font-family: var(--sans); font-weight: 700; font-size: 0.8125rem;
-  text-transform: uppercase; letter-spacing: 0.2em; color: var(--text);
-  line-height: 1;
-}
 
 /* ============================================================
    TERMS — the fund as a term sheet. Key in the tracked label voice, value in
@@ -544,23 +407,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 }
 
 
-/* Route back to the parent brand. Quieter than the section links, and fenced
-   off from them by a hairline. */
-.capital .nav__parent {
-  display: inline-flex; align-items: center; gap: 0.5em;
-  font-family: var(--sans); font-size: var(--fs-nav);
-  text-transform: uppercase; letter-spacing: 0.12em; color: var(--faint);
-  padding-right: clamp(1.5rem, 2.5vw, 2.75rem);
-  border-right: 1px solid var(--divider);
-  transition: color 300ms var(--ease);
-}
-.capital .nav__parent:hover { color: var(--text); }
-.capital .mobile-menu a.mobile-menu__parent {
-  font-family: var(--sans); font-size: var(--fs-small); line-height: 1;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-2);
-  margin-top: 1.75rem; align-self: flex-start;
-}
-.capital .mobile-menu.open a.mobile-menu__parent { transition-delay: 380ms; }
 
 
 /* ============================================================
@@ -594,8 +440,7 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 }
 
 /* Everything the page renders sits above the light. */
-.capital > main,
-.capital > .footer { position: relative; z-index: 1; }
+.capital > section { position: relative; z-index: 1; }
 
 /* Legibility over the light: a halo, the cartographer's trick for labels on
    busy maps. Every glyph carries a soft shadow in the exact colour of the
@@ -604,8 +449,7 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
    (it's the ground colour on the ground), and painted once with the text, so
    it costs nothing per frame, unlike a backdrop blur.
    text-shadow inherits, so each ground restates it in its own colour. */
-.capital main,
-.capital .footer {
+.capital {
   text-shadow: 0 0 1px #0f0e0c, 0 0 3px #0f0e0c, 0 0 4px #0f0e0c, 0 0 8px #0f0e0c, 0 0 12px #0f0e0c, 0 0 20px #0f0e0c, 0 0 36px rgba(15, 14, 12, 0.85);
 }
 .capital .plate--deep {
@@ -626,3 +470,73 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 .capital .fund-note a:hover,
 .capital .final-contact a:hover { color: var(--text); border-color: var(--gold-soft); }
 .capital .final-legal { margin-top: clamp(40px, 5vw, 64px); font-size: var(--fs-small); color: var(--faint); max-width: 60ch; }
+
+/* ============================================================
+   STRUCTURE — why permanent capital. Large serif folios hang in the margin,
+   hairlines draw in before each row lands.
+   ============================================================ */
+.capital .structure-intro { margin-top: clamp(24px, 3vw, 36px); max-width: 58ch; font-size: var(--fs-body-lg); line-height: 1.65; }
+.capital .rows--folio .row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(20px, 4vw, 64px);
+  align-items: start;
+  padding: clamp(34px, 4.5vw, 56px) 0 clamp(34px, 4.5vw, 56px) clamp(52px, 6.5vw, 104px);
+}
+.capital .rows--folio .row:last-child { border-bottom: 1px solid var(--divider); }
+.capital .rows--folio .row__num {
+  position: absolute; left: 0; top: clamp(34px, 4.5vw, 56px);
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(2rem, 3.2vw, 3.25rem); line-height: 1; letter-spacing: -0.03em;
+  color: var(--faint);
+  transition: color 500ms var(--ease);
+}
+.capital .rows--folio .row:hover .row__num { color: var(--gold); }
+.capital .row__title { font-family: var(--serif); font-weight: 400; font-size: var(--fs-step); line-height: 1.1; color: var(--text); letter-spacing: -0.01em; }
+.capital .row__desc { font-family: var(--sans); font-size: var(--fs-body); line-height: 1.7; color: var(--muted); max-width: 46ch; }
+
+/* ============================================================
+   PLATFORM — three pillars between drawn vertical hairlines.
+   ============================================================ */
+.capital .pillars { display: grid; grid-template-columns: repeat(3, 1fr); border-block: 1px solid var(--divider); }
+.capital .pillar { position: relative; padding: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 44px); }
+.capital .pillar:first-child { padding-left: 0; }
+.capital .pillar:last-child { padding-right: 0; }
+.capital .pillar__kicker {
+  font-family: var(--sans); font-weight: 500; font-size: var(--fs-label);
+  text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-2);
+  margin-bottom: 18px;
+}
+.capital .pillar__title { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(1.375rem, 0.9vw + 1.05rem, 1.75rem); color: var(--gold); margin-bottom: 12px; }
+.capital .pillar__body { font-family: var(--sans); font-size: var(--fs-card); line-height: 1.7; color: var(--muted); }
+
+/* ============================================================
+   TEAM — quiet portraits in monochrome that warm on hover.
+   ============================================================ */
+.capital .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 2vw, 28px); }
+.capital .member { margin: 0; }
+.capital .member__photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface); border: 1px solid var(--divider); }
+.capital .member__photo img {
+  object-fit: cover; object-position: top;
+  filter: grayscale(1) contrast(1.05) brightness(0.88);
+  transition: filter 800ms var(--ease), transform 1200ms var(--ease);
+}
+.capital .member:hover .member__photo img { filter: grayscale(0.15) contrast(1.02) brightness(0.95); transform: scale(1.025); }
+.capital .member__name { font-family: var(--serif); font-weight: 400; font-size: clamp(1.25rem, 0.8vw + 1rem, 1.5rem); color: var(--text); margin-top: 18px; line-height: 1.2; }
+.capital .member__role {
+  font-family: var(--sans); font-weight: 500; font-size: var(--fs-label);
+  text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted-2); margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .capital .pillars { grid-template-columns: 1fr; border-block: 0; }
+  .capital .pillar > .rule--y { display: none; }
+  .capital .pillar { border-top: 1px solid var(--divider); padding-inline: 0; }
+  .capital .pillar:last-child { border-bottom: 1px solid var(--divider); }
+}
+@media (max-width: 860px) {
+  .capital .rows--folio .row { grid-template-columns: 1fr; gap: 12px; padding-left: 0; }
+  .capital .rows--folio .row__num { position: static; display: block; margin-bottom: 8px; font-size: clamp(1.75rem, 7vw, 2.25rem); }
+  .capital .row__desc { max-width: none; }
+  .capital .team-grid { grid-template-columns: repeat(2, 1fr); }
+}

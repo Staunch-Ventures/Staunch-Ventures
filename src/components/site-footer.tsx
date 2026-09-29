@@ -1,20 +1,20 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Linkedin } from "lucide-react";
 import { PITCH_URL } from "@/lib/intake";
 import { CAPITAL_URL } from "@/lib/sites";
+import { StaunchLockup } from "./brand-lockup";
 
 export function SiteFooter() {
   return (
     // blur-sm is the ceiling here: the linework behind the footer is ~1px
     // strokes, so anything heavier erases the pattern the translucency exists
     // to reveal. Matches the scrolled header.
-    <footer className="border-t border-border bg-background/60 backdrop-blur-sm mt-20">
+    <footer className="relative z-10 border-t border-border bg-background/60 backdrop-blur-sm mt-20">
       <div className="mx-auto max-w-9xl py-16 px-4 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10">
           <div className="col-span-2 md:col-span-5 flex flex-col gap-5">
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/Transparent%20Logo.png" alt="Staunch Ventures" width={140} height={35} />
+            <Link href="/" aria-label="Staunch, home" className="flex items-center gap-2">
+              <StaunchLockup />
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs text-pretty">
               A cross-border venture platform connecting Africa with the US, Europe and Asia. Capital, execution and global market access for high-growth founders and investors.
@@ -33,10 +33,9 @@ export function SiteFooter() {
           </div>
           <div className="col-span-1 md:col-span-2 md:col-start-7 flex flex-col gap-3 text-sm">
             <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Platform</h4>
-            {/* Plain <a>: Staunch Capital is its own site with its own intro. */}
-            <a href={CAPITAL_URL} className="text-foreground/80 hover:text-foreground transition-colors">
+            <Link href={CAPITAL_URL} className="text-foreground/80 hover:text-foreground transition-colors">
               Staunch Capital
-            </a>
+            </Link>
             <Link href="/ventures" className="text-foreground/80 hover:text-foreground transition-colors">Staunch Ventures</Link>
           </div>
           <div className="col-span-1 md:col-span-2 flex flex-col gap-3 text-sm">

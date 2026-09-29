@@ -394,3 +394,80 @@
     backdrop-filter: blur(8px) !important;
   }
 }
+
+/* ============================================================
+   SITE THEMES — Staunch Ventures (navy, terracotta) and Staunch Capital
+   (warm black, gold). The whole site shares one nav and footer; SiteShell
+   sets data-site from the route (on its wrapper for first paint, and on
+   <html> so portals like the mobile sheet follow). Capital's palette is
+   applied by overriding the same tokens every component already reads,
+   and the shell transitions colour, so switching arms is a crossfade
+   rather than a page change.
+   ============================================================ */
+[data-site="capital"] {
+  --background: 40 11% 5%;
+  --foreground: 40 26% 93%;
+  --card: 36 14% 7%;
+  --card-foreground: 40 26% 93%;
+  --popover: 36 14% 7%;
+  --popover-foreground: 40 26% 93%;
+  --muted: 40 13% 9%;
+  --muted-foreground: 39 7% 62%;
+  --border: 40 10% 12%;
+  --border-strong: 38 9% 21%;
+  --input: 40 13% 9%;
+  --ring: 37 42% 61%;
+  --primary: 37 42% 61%;
+  --primary-foreground: 40 11% 5%;
+  --accent: 40 13% 9%;
+  --accent-foreground: 40 26% 93%;
+  --navy: 40 11% 5%;
+  --navy-deep: 40 11% 4%;
+}
+body:has([data-site="capital"]) { background-color: #0f0e0c; }
+
+body,
+.site-shell header,
+.site-shell header *,
+.site-shell footer,
+.site-shell footer * {
+  transition-property: color, background-color, border-color, box-shadow, opacity;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+.aurora { transition: opacity 900ms cubic-bezier(0.33, 1, 0.68, 1); }
+[data-site="capital"] .aurora { opacity: 0; }
+
+/* ============================================================
+   LOGO LOCKUP — bars + STAUNCH + the arm's name. STAUNCH never moves; on
+   the way into Capital the bars turn gold one by one, left to right, and
+   VENTURES rolls up and out as CAPITAL rolls in, letter by letter.
+   ============================================================ */
+.lockup-staunch {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-lockup), var(--font-sans), sans-serif;
+  font-weight: 700; font-size: 13px; line-height: 1;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: hsl(40 26% 93%);
+}
+.lockup-staunch__bars { display: block; height: 20px; width: auto; flex: none; }
+.lockup-staunch__bars rect {
+  fill: hsl(16 90% 57%);
+  transition: fill 600ms ease;
+  transition-delay: calc(var(--i) * 45ms);
+}
+[data-site="capital"] .lockup-staunch__bars rect { fill: #c5a572; }
+.lockup-staunch__word { display: inline-grid; overflow: hidden; padding-block: 2px; }
+.lockup-staunch__word > span { grid-area: 1 / 1; display: inline-flex; }
+.lockup-staunch__word i {
+  font-style: normal; display: inline-block;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease;
+  transition-delay: calc(var(--i) * 28ms);
+}
+.lockup-staunch__ventures i { color: hsl(16 90% 57%); }
+.lockup-staunch__capital i { color: #c5a572; transform: translateY(115%); opacity: 0; }
+[data-site="capital"] .lockup-staunch__ventures i { transform: translateY(-115%); opacity: 0; }
+[data-site="capital"] .lockup-staunch__capital i { transform: none; opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .lockup-staunch__bars rect, .lockup-staunch__word i { transition: none; }
+}

@@ -1,16 +1,21 @@
-import { BRIEF_MAILTO, INVEST_EMAIL, PITCH_URL, TEAM_URL } from "./chrome";
-import { mainUrl } from "@/lib/sites";
+import Image from "next/image";
+import Link from "next/link";
+import { team } from "@/lib/site-data";
+import { INVEST_EMAIL, PITCH_URL } from "@/lib/intake";
 
 /*
  * Staunch Capital is a fund page, not a brochure. Each block answers one
- * question a prospective investor arrives with, and nothing else:
- *   Hero    — what is this?
- *   Thesis  — why this fund?
- *   Fund    — what exactly? (the terms, and who stands behind it)
- *   Invest  — how do I get in?
- * Team, mission and the wider platform live on the main site; this page links
- * there instead of repeating them.
+ * question a prospective investor arrives with:
+ *   Hero       — what is this?
+ *   Thesis     — why this fund?
+ *   Fund       — what exactly?
+ *   Structure  — what does "permanent capital" mean, and why does it matter?
+ *   Platform   — what stands behind the cheque?
+ *   Team       — who runs it?
+ *   Invest     — how do I get in?
  */
+
+const BRIEF_MAILTO = `mailto:${INVEST_EMAIL}?subject=${encodeURIComponent("Staunch Capital: investor brief")}`;
 
 const TERMS = [
   { key: "Focus", value: "Disruptive African technology" },
@@ -18,6 +23,39 @@ const TERMS = [
   { key: "Cheque size", value: "$100k – $400k" },
   { key: "Vehicle", value: "Permanent capital vehicle" },
   { key: "Reach", value: "Africa, the US, Europe and Asia" },
+];
+
+const STRUCTURE = [
+  {
+    title: "No forced exits",
+    desc: "We never have to sell a company because a fund term is running out. We hold our best companies for as long as holding is the right call.",
+  },
+  {
+    title: "Returns go back to work",
+    desc: "Proceeds from exits can be reinvested in new founders, so the fund's capacity grows with its track record instead of resetting every vintage.",
+  },
+  {
+    title: "Built for Africa's timeline",
+    desc: "African technology rewards patience. The best companies compound for years before the rest of the market notices them. Permanent capital is built for that.",
+  },
+];
+
+const PLATFORM = [
+  {
+    kicker: "Staunch Ventures",
+    title: "Source",
+    body: "Our venture studio and co-investment network work with founders from day zero, so we see companies long before they reach a data room.",
+  },
+  {
+    kicker: "Staunch Capital",
+    title: "Invest",
+    body: "The fund writes $100k–$400k cheques from Pre-Seed to Series A into the companies that clear our mandate.",
+  },
+  {
+    kicker: "Africa · US · Europe · Asia",
+    title: "Scale",
+    body: "Our co-investment network brings in follow-on capital from Seed to Pre-IPO, and opens routes to customers and investors in the US, Europe and Asia.",
+  },
 ];
 
 export function Hero() {
@@ -35,14 +73,15 @@ export function Hero() {
           Backing Africa&rsquo;s boldest founders.
         </h1>
         <p className="hero-body" data-hero>
-          We invest in disruptive technology companies across Africa, from Pre-Seed to Series A.
+          A permanent capital vehicle investing in disruptive technology companies across Africa,
+          from Pre-Seed to Series A.
         </p>
         <div className="hero-cta-row" data-hero>
           <a className="cta" href="#invest" data-magnetic>
             Request the investor brief
           </a>
-          <a className="textlink" href={TEAM_URL}>
-            or meet the team &rarr;
+          <a className="textlink" href="#thesis">
+            or read the thesis &darr;
           </a>
         </div>
       </div>
@@ -89,11 +128,101 @@ export function FundSection() {
             </div>
           ))}
         </dl>
-        <p className="body fund-note" data-reveal="fade">
-          Staunch Capital is part of <a href={mainUrl("/")}>Staunch</a>, a cross-border venture
-          platform connecting Africa with the United States, Europe and Asia.{" "}
-          <a href={TEAM_URL}>Meet the team &rarr;</a>
-        </p>
+      </div>
+    </section>
+  );
+}
+
+export function StructureSection() {
+  return (
+    <section className="section" id="structure">
+      <div className="container">
+        <div className="head">
+          <span className="label" data-reveal="up">
+            Why Permanent Capital
+          </span>
+          <h2 className="display h-section" data-lines>
+            A fund without a clock.
+          </h2>
+          <p className="body structure-intro" data-reveal="up">
+            Most venture funds have about ten years to invest, grow and return their capital, and
+            every decision bends toward that deadline. Staunch Capital is a permanent capital
+            vehicle. It has no end date.
+          </p>
+        </div>
+        <div className="rows rows--folio" data-reveal-group=".row" data-rules=".rule--x">
+          {STRUCTURE.map((row, i) => (
+            <div className="row" key={row.title}>
+              <span className="rule rule--x" aria-hidden="true"></span>
+              <span className="row__num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="row__title">{row.title}</h3>
+              <p className="row__desc">{row.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function PlatformSection() {
+  return (
+    <section className="section" id="platform">
+      <div className="container">
+        <div className="head">
+          <span className="label" data-reveal="up">
+            The Platform
+          </span>
+          <h2 className="display h-section" data-lines>
+            More than a cheque.
+          </h2>
+          <p className="body structure-intro" data-reveal="up">
+            The fund is one arm of Staunch, a cross-border venture platform connecting Africa with
+            the United States, Europe and Asia.
+          </p>
+        </div>
+        <div className="pillars" data-reveal-group=".pillar" data-rules=".rule--y">
+          {PLATFORM.map((p, i) => (
+            <div className="pillar" key={p.title}>
+              {i > 0 && <span className="rule rule--y" aria-hidden="true"></span>}
+              <p className="pillar__kicker">{p.kicker}</p>
+              <p className="pillar__title">{p.title}</p>
+              <p className="pillar__body">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function TeamSection() {
+  return (
+    <section className="section" id="team">
+      <div className="container">
+        <div className="head">
+          <span className="label" data-reveal="up">
+            The Team
+          </span>
+          <h2 className="display h-section" data-lines>
+            The people behind the fund.
+          </h2>
+        </div>
+        <div className="team-grid" data-reveal-group=".member">
+          {team.map((m) => (
+            <figure className="member" key={m.name}>
+              <div className="member__photo">
+                <Image src={m.image} alt={m.name} fill sizes="(max-width: 860px) 50vw, 25vw" />
+              </div>
+              <figcaption>
+                <p className="member__name">{m.name}</p>
+                <p className="member__role">{m.role}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -119,7 +248,7 @@ export function InvestSection() {
         </div>
         <p className="final-contact" data-reveal="fade">
           <a href={`mailto:${INVEST_EMAIL}`}>{INVEST_EMAIL}</a> &middot; Founders,{" "}
-          <a href={mainUrl(PITCH_URL)}>pitch us here</a>
+          <Link href={PITCH_URL}>pitch us here</Link>
         </p>
         <p className="final-legal" data-reveal="fade">
           Nothing on this page is an offer to sell, or a solicitation of an offer to buy, any

@@ -1,15 +1,6 @@
 import type {NextConfig} from 'next';
 
-// Cross-site links resolve per environment: production links the real hosts
-// (the fund lives on its own subdomain), while previews and localhost keep
-// every link inside the one deployment so the whole ecosystem is testable.
-const isProduction = process.env.VERCEL_ENV === "production";
-
 const nextConfig: NextConfig = {
-  env: {
-    NEXT_PUBLIC_CAPITAL_URL: isProduction ? "https://capital.staunchventures.com" : "/capital",
-    NEXT_PUBLIC_MAIN_URL: isProduction ? "https://www.staunchventures.com" : "",
-  },
   async redirects() {
     return [
       // Nine pages became five: team, partners, initiatives, media and contact

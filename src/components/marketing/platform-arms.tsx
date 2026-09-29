@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Rocket } from "lucide-react";
+import { ArrowRight, Rocket } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
@@ -10,9 +10,9 @@ import { platformArms, type PlatformArm } from "@/lib/site-data";
  * The platform's arms, side by side. Each card is a summary and a door: the
  * detail lives at the arm's own home, never here.
  *
- * Staunch Capital's card is drawn in the fund site's own language (near-black
- * ground, gold hairline, serif, the gold bar mark) so the step across to the
- * subdomain feels like arriving somewhere expected, not somewhere else.
+ * Staunch Capital's card is drawn in the fund's own language (near-black
+ * ground, gold hairline, serif, the gold bar mark): a preview of the theme
+ * the whole site switches to on /capital.
  */
 const CAPITAL = {
   ground: "#0f0e0c",
@@ -23,9 +23,7 @@ const CAPITAL = {
 
 function CapitalCard({ arm }: { arm: PlatformArm }) {
   return (
-    // Plain <a>: a full load plays the fund site's intro, and on production
-    // it is a different host.
-    <a href={arm.href} className="group flex w-full">
+    <Link href={arm.href} className="group flex w-full">
       <div
         className="relative flex w-full flex-col overflow-hidden rounded-[var(--radius)] border p-8 transition-colors duration-500 md:p-12"
         style={{ background: CAPITAL.ground, borderColor: "rgba(197,165,114,0.22)", color: CAPITAL.text }}
@@ -56,11 +54,11 @@ function CapitalCard({ arm }: { arm: PlatformArm }) {
         <div className="relative mt-auto pt-10">
           <span className="inline-flex items-center gap-2 border border-[#c5a572] px-6 py-3 font-serif text-lg italic text-[#c5a572] transition-colors duration-500 group-hover:bg-[#c5a572] group-hover:text-[#0f0e0c]">
             {arm.cta}
-            <ArrowUpRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
           </span>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
@@ -100,7 +98,7 @@ export function PlatformArms() {
     <Stagger className="grid gap-4 lg:grid-cols-2">
       {platformArms.map((arm) => (
         <StaggerItem key={arm.name} className="flex">
-          {arm.external ? <CapitalCard arm={arm} /> : <ArmCard arm={arm} />}
+          {arm.capitalTheme ? <CapitalCard arm={arm} /> : <ArmCard arm={arm} />}
         </StaggerItem>
       ))}
     </Stagger>

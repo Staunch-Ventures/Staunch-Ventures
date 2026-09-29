@@ -13,7 +13,7 @@ export function AuroraBackground() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
+      className="aurora pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
     >
       {/* Base navy wash, deepening toward the bottom */}
       <div className="absolute inset-0 bg-[radial-gradient(125%_125%_at_50%_-10%,hsl(224_42%_12%)_0%,hsl(var(--navy))_45%,hsl(var(--navy-deep))_100%)]" />

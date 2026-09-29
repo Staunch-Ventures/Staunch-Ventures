@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 function escapeHtml(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -92,120 +91,32 @@ function wrapWords(el: HTMLElement) {
 }
 
 /**
- * Motion for the Staunch Capital page, ported from the Kanso site. Everything
- * it touches outside the .capital subtree (html flags, body classes) is
- * removed again on unmount, so client navigation back into the main site
- * leaves nothing behind.
+ * Motion for the Staunch Capital page: masked heading reveals, the scrubbed
+ * thesis, grouped reveals with drawn hairlines, and magnetic CTAs. Scrolling,
+ * the nav and the mobile menu belong to the shared site shell. Everything is
+ * reverted on unmount, so navigating away leaves nothing behind.
  */
 export default function CapitalFX() {
   useEffect(() => {
     const root = document.documentElement;
     const reduced = root.classList.contains("reduced");
     const cleanups: Array<() => void> = [];
-    let lenis: Lenis | null = null;
-
-    /* Nav: frost on scroll, hide on scroll down / show on scroll up */
-    const nav = document.getElementById("nav");
-    let lastY = window.scrollY;
-    function onScroll() {
-      const y = window.scrollY;
-      nav?.classList.toggle("scrolled", y > 24);
-      if (y > 560 && y > lastY + 4 && !document.body.classList.contains("menu-open")) {
-        nav?.classList.add("nav-hidden");
-      } else if (y < lastY - 4 || y <= 560) {
-        nav?.classList.remove("nav-hidden");
-      }
-      lastY = y;
-    }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    cleanups.push(() => window.removeEventListener("scroll", onScroll));
-
-    /* Mobile menu */
-    const burger = document.getElementById("burger");
-    const menu = document.getElementById("mobileMenu");
-    const menuClose = document.getElementById("menuClose");
-    function openMenu() {
-      menu?.classList.add("open");
-      menu?.setAttribute("aria-hidden", "false");
-      burger?.setAttribute("aria-expanded", "true");
-      document.body.classList.add("menu-open");
-      if (lenis) lenis.stop();
-      menuClose?.focus();
-    }
-    function closeMenu() {
-      if (!menu?.classList.contains("open")) return;
-      menu.classList.remove("open");
-      menu.setAttribute("aria-hidden", "true");
-      burger?.setAttribute("aria-expanded", "false");
-      document.body.classList.remove("menu-open");
-      if (lenis && !root.classList.contains("is-loading")) lenis.start();
-    }
-    function toggleMenu() {
-      if (menu?.classList.contains("open")) closeMenu();
-      else openMenu();
-    }
-    burger?.addEventListener("click", toggleMenu);
-    menuClose?.addEventListener("click", closeMenu);
-    function onKeydown(e: KeyboardEvent) {
-      if (e.key === "Escape") closeMenu();
-    }
-    document.addEventListener("keydown", onKeydown);
-    cleanups.push(() => {
-      burger?.removeEventListener("click", toggleMenu);
-      menuClose?.removeEventListener("click", closeMenu);
-      document.removeEventListener("keydown", onKeydown);
-    });
 
     /* Scroll cue → glide to the first section */
     const scrollCue = document.getElementById("scrollCue");
     function onScrollCue() {
       const target = document.getElementById("thesis");
       if (!target) return;
-      if (lenis) lenis.scrollTo(target, { offset: -40, duration: 1.4 });
-      else target.scrollIntoView({ behavior: "smooth" });
+      target.scrollIntoView({ behavior: "smooth" });
     }
     scrollCue?.addEventListener("click", onScrollCue);
     cleanups.push(() => scrollCue?.removeEventListener("click", onScrollCue));
 
-    if (reduced) {
-      root.classList.remove("is-loading");
-      return () => cleanups.forEach((fn) => fn());
-    }
+    if (reduced) return () => cleanups.forEach((fn) => fn());
 
     gsap.registerPlugin(ScrollTrigger);
     /* iOS: don't refresh (and jump scrubbed tweens) when the URL bar resizes the viewport */
     ScrollTrigger.config({ ignoreMobileResize: true });
-
-    /* Lenis smooth scroll */
-    lenis = new Lenis({ duration: 0.6, smoothWheel: true });
-    root.classList.add("lenis-on");
-    lenis.on("scroll", ScrollTrigger.update);
-    function raf(time: number) {
-      lenis?.raf(time * 1000);
-    }
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
-    lenis.stop();
-
-    /* Anchor links: smooth via Lenis */
-    const anchors = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
-    const anchorHandlers: Array<() => void> = [];
-    anchors.forEach((a) => {
-      const handler = (e: Event) => {
-        const id = a.getAttribute("href");
-        if (id === "#") return;
-        const target = id ? document.querySelector<HTMLElement>(id) : null;
-        if (!target) return;
-        e.preventDefault();
-        if (a.hasAttribute("data-menu-link")) closeMenu();
-        if (lenis) lenis.scrollTo(target, { offset: -80, duration: 1.4 });
-        else target.scrollIntoView({ behavior: "smooth" });
-      };
-      a.addEventListener("click", handler);
-      anchorHandlers.push(() => a.removeEventListener("click", handler));
-    });
-    cleanups.push(() => anchorHandlers.forEach((fn) => fn()));
 
     const ctx = gsap.context(() => {
       /* Heading reveals (masked lines) */
@@ -232,11 +143,9 @@ export default function CapitalFX() {
         });
       }
 
-      /* Preloader + hero intro — plays on every fresh load; skipped only when
-         the browser restored a mid-page scroll position (reload after scrolling) */
-      const preloader = document.getElementById("preloader");
-      const skipPreloader = window.scrollY > 60;
-
+      /* Hero intro. The page is usually reached by client-side navigation
+         while the shell crossfades to Capital's palette, so the headline
+         writes itself in as the colours settle. */
       function heroIntro(fast: boolean) {
         if (!heroHeadline) return;
         const inners = splitToLines(heroHeadline);
@@ -251,11 +160,6 @@ export default function CapitalFX() {
             { opacity: 1, y: 0, duration: 1.1, ease: "power3.out", stagger: 0.14 },
             0.4,
           );
-      }
-
-      function releasePage() {
-        root.classList.remove("is-loading");
-        if (lenis && !document.body.classList.contains("menu-open")) lenis.start();
       }
 
       const fontsReady = new Promise<void>((resolve) => {
@@ -276,39 +180,7 @@ export default function CapitalFX() {
           buildHeadingReveal(el);
         });
 
-        if (skipPreloader || !preloader) {
-          if (preloader) preloader.style.display = "none";
-          releasePage();
-          heroIntro(true);
-        } else {
-          const word = preloader.querySelector<HTMLElement>(".preloader__word");
-          const line = preloader.querySelector<HTMLElement>(".preloader__line");
-          gsap
-            .timeline({ onComplete: () => (preloader.style.display = "none") })
-            .fromTo(word, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.1)
-            .fromTo(line, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 0.35)
-            .to([word, line], { opacity: 0, duration: 0.4, ease: "power2.in" }, 1.35)
-            .to(
-              preloader,
-              {
-                yPercent: -100,
-                duration: 0.9,
-                ease: "power4.inOut",
-                onStart: () => {
-                  releasePage();
-                  heroIntro(false);
-                },
-              },
-              1.55,
-            );
-          setTimeout(() => {
-            if (root.classList.contains("is-loading")) {
-              preloader.style.display = "none";
-              releasePage();
-              heroIntro(true);
-            }
-          }, 4000);
-        }
+        heroIntro(window.scrollY > 60);
 
         ScrollTrigger.refresh();
       });
@@ -447,11 +319,7 @@ export default function CapitalFX() {
 
     return () => {
       cleanups.forEach((fn) => fn());
-      root.classList.remove("lenis-on", "is-loading");
-      document.body.classList.remove("menu-open");
       ctx.revert();
-      gsap.ticker.remove(raf);
-      lenis?.destroy();
     };
   }, []);
 
