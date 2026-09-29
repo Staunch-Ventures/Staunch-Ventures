@@ -4,11 +4,10 @@ import { ArrowRight, ArrowUpRight, Briefcase, Globe2, Layers, Lock } from "lucid
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { growthPartners, markets, startupsCofounded, ventures } from "@/lib/site-data";
+import { growthPartners, markets, ventures } from "@/lib/site-data";
 import { PITCH_URL } from "@/lib/intake";
 import { CAPITAL_URL } from "@/lib/sites";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
-import { HeroVisual } from "@/components/marketing/hero-visual";
 import { PlatformArms } from "@/components/marketing/platform-arms";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Marquee } from "@/components/ui/marquee";
@@ -43,60 +42,45 @@ export default function HomePage() {
   return (
     <div className="flex flex-col w-full">
       {/* Hero */}
-      {/* overflow-x-clip: the floating chip on HeroVisual pokes 20px past the
-          card edge, which is wider than the 16px mobile gutter — without the
-          clip it drags a few px of horizontal page scroll on small phones. */}
       <section className="relative w-full overflow-x-clip pt-28 md:pt-36 lg:pt-44 pb-20 lg:pb-28">
         <div className="mx-auto max-w-9xl px-4 lg:px-8 relative">
-          <div className="grid gap-16 lg:grid-cols-12 lg:gap-12 items-center">
-            <ScrollReveal className="lg:col-span-6 flex flex-col justify-center space-y-7">
-              <h1 className="text-balance text-5xl font-serif font-normal tracking-heading sm:text-6xl lg:text-[5.25rem] lg:leading-[1.0]">
-                <span className="text-gradient-brand">Backing the</span>
-                <br />
-                <span className="text-gradient-ember">boldest founders</span>
-              </h1>
-              <p className="max-w-[580px] text-muted-foreground text-lg md:text-xl text-pretty">
-                Staunch is a cross-border venture platform linking Africa with the US, Europe and
-                Asia. Capital, execution and global market access for high-growth founders and
-                investors.
-              </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <Magnetic>
-                  <Button asChild variant="brand" size="pill-lg">
-                    <Link href="/invest">
-                      Invest
-                      <ArrowRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </Magnetic>
-                <Button asChild variant="outline" size="pill-lg">
-                  <Link href={PITCH_URL}>Pitch Your Startup</Link>
+          <ScrollReveal className="flex max-w-3xl flex-col justify-center space-y-7">
+            <h1 className="text-balance text-5xl font-serif font-normal tracking-heading sm:text-6xl lg:text-[5.25rem] lg:leading-[1.0]">
+              <span className="text-gradient-brand">Backing the</span>
+              <br />
+              <span className="text-gradient-ember">boldest founders</span>
+            </h1>
+            <p className="max-w-[580px] text-muted-foreground text-lg md:text-xl text-pretty">
+              Staunch is a cross-border venture platform linking Africa with the US, Europe and
+              Asia. Capital, execution and global market access for high-growth founders and
+              investors.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Magnetic>
+                <Button asChild variant="brand" size="pill-lg">
+                  <Link href="/invest">
+                    Invest
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
                 </Button>
-              </div>
-
-              {/* Proof strip */}
-              <dl className="mt-2 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
-                <div>
-                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Markets</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{markets.length}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Cofounded</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{startupsCofounded}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs uppercase tracking-wider text-muted-foreground">Partners</dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{growthPartners.length}</dd>
-                </div>
-              </dl>
-            </ScrollReveal>
-
-            {/* Desktop only: on a phone it costs a full screen between the hero
-                and the platform's two doors. */}
-            <div className="hidden lg:col-span-6 relative lg:flex items-center justify-center lg:pl-8">
-              <HeroVisual />
+              </Magnetic>
+              <Button asChild variant="outline" size="pill-lg">
+                <Link href={PITCH_URL}>Pitch Your Startup</Link>
+              </Button>
             </div>
-          </div>
+
+            {/* Proof strip */}
+            <dl className="mt-2 grid max-w-xs grid-cols-2 gap-6 border-t border-border pt-6">
+              <div>
+                <dt className="text-xs uppercase tracking-wider text-muted-foreground">Markets</dt>
+                <dd className="mt-1 text-2xl font-semibold tabular-nums">{markets.length}</dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-wider text-muted-foreground">Partners</dt>
+                <dd className="mt-1 text-2xl font-semibold tabular-nums">{growthPartners.length}</dd>
+              </div>
+            </dl>
+          </ScrollReveal>
         </div>
       </section>
 
