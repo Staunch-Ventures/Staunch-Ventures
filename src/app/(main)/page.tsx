@@ -1,19 +1,45 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Network, Coins, Users2 } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Briefcase, Globe2, Layers, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { growthPartners, markets, startupsCofounded, team } from "@/lib/site-data";
+import { Badge } from "@/components/ui/badge";
+import { growthPartners, markets, startupsCofounded, ventures } from "@/lib/site-data";
 import { PITCH_URL } from "@/lib/intake";
+import { CAPITAL_URL } from "@/lib/sites";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { HeroVisual } from "@/components/marketing/hero-visual";
 import { PlatformArms } from "@/components/marketing/platform-arms";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
-import { TiltCard } from "@/components/ui/tilt-card";
 import { Marquee } from "@/components/ui/marquee";
 import { Magnetic } from "@/components/ui/magnetic";
 
+/*
+ * Home is Staunch Ventures: what Staunch is, what it does (the studio, the
+ * co-investment network and the fund), and the detail on the first two. The
+ * fund has its own page; team, mission and ecosystem live on /about.
+ */
+const networkPoints = [
+  {
+    icon: Globe2,
+    title: "Sourced across four markets",
+    body: "African companies we build and back, and international opportunities we source in the US, Europe and Asia, from Seed through Pre-IPO.",
+  },
+  {
+    icon: Layers,
+    title: "Deal by deal",
+    body: "We facilitate the deal flow; you choose exactly what you back, one opportunity at a time. Onboard once and every future deal reaches you.",
+  },
+  {
+    icon: Lock,
+    title: "By invitation",
+    body: "Opportunities are shared privately with network members, never listed publicly.",
+  },
+];
+
 export default function HomePage() {
+  const featured = ventures[0];
+
   return (
     <div className="flex flex-col w-full">
       {/* Hero */}
@@ -74,20 +100,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The platform — the home page's main job is routing. Each arm gets a
-          summary and a door; its detail lives at its own home. */}
+      {/* What we do — the overview. A visitor who only came for one thing sees
+          its door within a scroll of the hero. */}
       <section id="platform" className="w-full py-20 lg:py-28 scroll-mt-24">
         <div className="mx-auto max-w-9xl px-4 lg:px-8">
           <ScrollReveal>
             <div className="mb-12 max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The platform</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">What we do</p>
               <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
-                One platform. Two ways we put capital to work.
+                We build companies, open deals, and invest.
               </h2>
               <p className="text-muted-foreground text-lg text-pretty mt-4 max-w-prose">
-                Staunch Capital invests in Africa&apos;s boldest founders. Staunch Ventures builds
-                companies and opens global deals to our investor network. Both run on the same
-                team, network and four-market reach.
+                Staunch Ventures runs the venture studio and the co-investment network. Staunch
+                Capital is our fund.
               </p>
             </div>
           </ScrollReveal>
@@ -95,98 +120,130 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The Staunch Edge — reactive tilt cards */}
-      <section className="w-full py-20 lg:py-28">
-        <div className="mx-auto max-w-9xl px-4 lg:px-8">
-          <ScrollReveal className="mb-12 max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Why founders choose Staunch</p>
-            <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
-              Capital is just the beginning.
-            </h2>
-            <p className="text-muted-foreground text-lg text-pretty mt-4 max-w-prose">
-              Founders work with us because we bring three things money alone can&apos;t buy.
-            </p>
-          </ScrollReveal>
-
-          <Stagger className="grid md:grid-cols-3 gap-4">
-            {[
-              {
-                icon: Coins,
-                eyebrow: "Capital",
-                title: "Patient & founder-aligned.",
-                body: "Cheques sized to your milestones, structured to keep you in control of the journey you set out on.",
-              },
-              {
-                icon: Users2,
-                eyebrow: "Operators",
-                title: "We've scaled before.",
-                body: "Active partners, not passive money. Strategy, growth, hiring, infra. We step in where it matters.",
-              },
-              {
-                icon: Network,
-                eyebrow: "Network",
-                title: "Cross-border by design.",
-                body: "Routes to customers and capital in the US, Europe and Asia, through investors, advisors and partners in all four markets.",
-              },
-            ].map((p) => (
-              <StaggerItem key={p.eyebrow} className="flex">
-                <TiltCard className="w-full flex" intensity={7}>
-                  <Card variant="interactive" className="w-full flex flex-col p-8 md:p-10">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 mb-6">
-                      <p.icon className="h-5 w-5 text-primary" strokeWidth={1.75} />
-                    </span>
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-primary mb-2">{p.eyebrow}</p>
-                    <h3 className="text-2xl font-semibold tracking-tight text-foreground mb-4">
-                      {p.title}
-                    </h3>
-                    <p className="text-muted-foreground text-pretty flex-grow">{p.body}</p>
-                  </Card>
-                </TiltCard>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
+      {/* The studio and the co-investment network, in detail. */}
+      <div className="mx-auto max-w-9xl px-4 lg:px-8 w-full space-y-20 md:space-y-24 pb-20 lg:pb-28">
+      {/* The studio */}
+      <section id="studio" className="scroll-mt-24 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
+        <ScrollReveal>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The studio</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance">
+            Cofounding as a service.
+          </h2>
+        </ScrollReveal>
+        <ScrollReveal delay={0.05} className="flex gap-4">
+          <Briefcase className="h-6 w-6 shrink-0 text-primary mt-1" strokeWidth={1.5} />
+          <p className="text-muted-foreground text-lg text-pretty">
+            Staunch acts as an institutional cofounder: an execution partner helping founders build
+            and scale faster. Tech-stack architecture, MVP planning, go-to-market, business
+            development, core strategy frameworks, and more.
+          </p>
+        </ScrollReveal>
       </section>
 
-      {/* Team — the context every arm shares. Kept on the parent site only; the
-          sub-sites link here rather than repeating it. */}
-      <section className="w-full pb-20 lg:pb-28">
-        <div className="mx-auto max-w-9xl px-4 lg:px-8">
-          <ScrollReveal className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div className="max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The team</p>
-              <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
-                Operators behind every arm.
-              </h2>
-            </div>
-            <Button asChild variant="ghost" size="pill" className="self-start sm:self-auto">
-              <Link href="/about#team">
-                Meet the team
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-          </ScrollReveal>
-          <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {team.map((member) => (
-              <StaggerItem key={member.name}>
-                <Link href="/about#team" className="group block">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius)] border border-border bg-muted">
+      {/* Featured venture — full-width case study */}
+      <section>
+        <ScrollReveal className="flex items-end justify-between mb-10">
+          <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">Featured venture</h2>
+          <p className="hidden sm:block text-sm text-muted-foreground">Where we&apos;re building now.</p>
+        </ScrollReveal>
+        <ScrollReveal>
+          <SpotlightCard>
+            <Card variant="interactive" className="overflow-hidden p-0">
+              <div className="grid md:grid-cols-2">
+                <div className="p-8 md:p-12 flex flex-col">
+                  <div className="relative h-12 w-auto max-w-[180px] mb-6">
                     <Image
-                      src={member.image}
-                      alt={member.name}
+                      src={featured.logo}
+                      alt={`${featured.companyName} logo`}
                       fill
-                      sizes="(max-width: 1024px) 50vw, 25vw"
-                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      sizes="180px"
+                      className="object-contain object-left"
+                      data-ai-hint={featured.logoHint}
                     />
                   </div>
-                  <p className="mt-4 font-semibold tracking-tight text-foreground">{member.name}</p>
-                  <p className="text-sm text-muted-foreground">{member.role}</p>
-                </Link>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
+                  <Badge variant="secondary" className="w-fit bg-primary/10 text-primary border-primary/20 mb-5">
+                    {featured.sector}
+                  </Badge>
+                  <h3 className="text-3xl md:text-4xl font-serif font-normal tracking-heading mb-4">
+                    {featured.companyName}
+                  </h3>
+                  <p className="text-muted-foreground text-lg text-pretty flex-grow">
+                    {featured.description}
+                  </p>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    {featured.slug && (
+                      <Button asChild variant="brand" size="pill">
+                        <Link href={`/ventures/${featured.slug}`}>
+                          View venture
+                          <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
+                    {featured.website && (
+                      <Button asChild variant="outline" size="pill">
+                        <Link href={featured.website} target="_blank" rel="noopener noreferrer">
+                          Visit website
+                          <ArrowUpRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <div className="relative min-h-[280px] md:min-h-full bg-muted border-t md:border-t-0 md:border-l border-border">
+                  <Image
+                    src="/bag-learning-notes.png"
+                    alt={`${featured.companyName} product`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain p-8"
+                    data-ai-hint="app screenshot"
+                  />
+                </div>
+              </div>
+            </Card>
+          </SpotlightCard>
+        </ScrollReveal>
       </section>
+
+      {/* The co-investment network */}
+      <section id="network" className="scroll-mt-24">
+        <ScrollReveal className="mb-10 max-w-2xl">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The co-investment network</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance mb-4">
+            Global deals, Seed to Pre-IPO.
+          </h2>
+          <p className="text-muted-foreground text-lg text-pretty">
+            Members co-invest deal by deal alongside us. You see the opportunities we source and
+            back, and invest only in the ones you choose.
+          </p>
+        </ScrollReveal>
+        <Stagger className="grid md:grid-cols-3 gap-4">
+          {networkPoints.map((p) => (
+            <StaggerItem key={p.title} className="flex">
+              <SpotlightCard className="w-full flex">
+                <Card className="w-full p-8 flex flex-col">
+                  <p.icon className="h-5 w-5 text-primary mb-6" strokeWidth={1.75} />
+                  <h3 className="text-xl font-semibold tracking-tight text-foreground mb-2">{p.title}</h3>
+                  <p className="text-muted-foreground text-pretty">{p.body}</p>
+                </Card>
+              </SpotlightCard>
+            </StaggerItem>
+          ))}
+        </Stagger>
+        <ScrollReveal className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <Button asChild variant="brand" size="pill-lg">
+            <Link href="/invest#network">
+              Join the network
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+          <Link href={CAPITAL_URL} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Prefer a diversified portfolio? See the fund &rarr;
+          </Link>
+        </ScrollReveal>
+      </section>
+
+      </div>
 
       {/* Partners */}
       <section className="relative w-full pb-28 pt-8 overflow-hidden">

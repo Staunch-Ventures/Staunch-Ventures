@@ -83,13 +83,17 @@ export const startupsCofounded = 11;
 export const markets = ["Africa", "United States", "Europe", "Asia"] as const;
 
 /**
- * The arms of the platform. Each has exactly one home; the main site only
- * ever summarises them and links there. A new fund or service is a new entry
- * here, and the home page, /about and the footer pick it up.
+ * What Staunch does, as the home page's overview. Named for what a visitor
+ * gets, with the arm that does it as the kicker: Staunch Ventures runs the
+ * studio and the co-investment network (both detailed further down the home
+ * page); Staunch Capital is the fund, with its own page. A new fund or service
+ * is a new entry here.
  */
 export type PlatformArm = {
+  id: "studio" | "network" | "fund";
+  /** What it is, in plain words. */
   name: string;
-  /** What it is, in the fewest words. */
+  /** The arm of Staunch that runs it. */
   kind: string;
   summary: string;
   facts: string[];
@@ -101,23 +105,35 @@ export type PlatformArm = {
 
 export const platformArms: PlatformArm[] = [
   {
-    name: "Staunch Capital",
-    kind: "The fund",
+    id: "studio",
+    name: "Venture studio",
+    kind: "Staunch Ventures",
     summary:
-      "Backing Africa's boldest founders building disruptive technology, with $100k–$400k cheques from Pre-Seed through Series A.",
-    facts: ["$100k–$400k", "Pre-Seed to Series A", "African technology"],
-    href: CAPITAL_URL,
-    cta: "Visit Staunch Capital",
-    capitalTheme: true,
+      "We build companies from zero as an institutional cofounder: product, go-to-market, strategy, and a network that spans four markets.",
+    facts: ["0-to-1", "Cofounding as a service"],
+    href: "/#studio",
+    cta: "How we build",
   },
   {
-    name: "Staunch Ventures",
-    kind: "Studio & co-investment network",
+    id: "network",
+    name: "Co-investment network",
+    kind: "Staunch Ventures",
     summary:
-      "A 0-to-1 venture studio and co-investment network, opening routes to international markets and syndicating global deals from Seed through Pre-IPO.",
-    facts: ["0-to-1 studio", "Co-investment network", "Seed to Pre-IPO"],
-    href: "/ventures",
-    cta: "Explore Staunch Ventures",
+      "Global deals from Seed to Pre-IPO, shared privately with our investor network. You choose what you back, one opportunity at a time.",
+    facts: ["Seed to Pre-IPO", "Deal by deal"],
+    href: "/#network",
+    cta: "How it works",
+  },
+  {
+    id: "fund",
+    name: "The fund",
+    kind: "Staunch Capital",
+    summary:
+      "A permanent capital vehicle backing Africa's boldest founders with $100k–$400k, from Pre-Seed to Series A.",
+    facts: ["$100k–$400k", "Pre-Seed to Series A", "Disruptive African technology"],
+    href: CAPITAL_URL,
+    cta: "Visit the fund",
+    capitalTheme: true,
   },
 ];
 

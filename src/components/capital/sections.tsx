@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import { team } from "@/lib/site-data";
 import { INVEST_EMAIL, PITCH_URL } from "@/lib/intake";
 
 /*
@@ -10,9 +8,9 @@ import { INVEST_EMAIL, PITCH_URL } from "@/lib/intake";
  *   Thesis     — why this fund?
  *   Fund       — what exactly?
  *   Structure  — what does "permanent capital" mean, and why does it matter?
- *   Platform   — what stands behind the cheque?
- *   Team       — who runs it?
+ *   Platform   — what stands behind the cheque, and who runs it?
  *   Invest     — how do I get in?
+ * The team is shared across Staunch and lives on /about; this page links there.
  */
 
 const BRIEF_MAILTO = `mailto:${INVEST_EMAIL}?subject=${encodeURIComponent("Staunch Capital: investor brief")}`;
@@ -180,7 +178,10 @@ export function PlatformSection() {
           </h2>
           <p className="body structure-intro" data-reveal="up">
             The fund is one arm of Staunch, a cross-border venture platform connecting Africa with
-            the United States, Europe and Asia.
+            the United States, Europe and Asia, and the same team runs all of it.{" "}
+            <Link className="inline-link" href="/about#team">
+              Meet the team &rarr;
+            </Link>
           </p>
         </div>
         <div className="pillars" data-reveal-group=".pillar" data-rules=".rule--y">
@@ -191,36 +192,6 @@ export function PlatformSection() {
               <p className="pillar__title">{p.title}</p>
               <p className="pillar__body">{p.body}</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function TeamSection() {
-  return (
-    <section className="section" id="team">
-      <div className="container">
-        <div className="head">
-          <span className="label" data-reveal="up">
-            The Team
-          </span>
-          <h2 className="display h-section" data-lines>
-            The people behind the fund.
-          </h2>
-        </div>
-        <div className="team-grid" data-reveal-group=".member">
-          {team.map((m) => (
-            <figure className="member" key={m.name}>
-              <div className="member__photo">
-                <Image src={m.image} alt={m.name} fill sizes="(max-width: 860px) 50vw, 25vw" />
-              </div>
-              <figcaption>
-                <p className="member__name">{m.name}</p>
-                <p className="member__role">{m.role}</p>
-              </figcaption>
-            </figure>
           ))}
         </div>
       </div>

@@ -14,17 +14,18 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 
 /**
- * Three destinations, one per question a visitor arrives with: the fund
- * (Capital), the studio and co-investment network (Ventures), and who we are
- * (About). Everything else is an action — Pitch or Invest — not a page to
- * browse. Capital is a page like the others; going there re-themes the whole
- * site (see SiteShell) and the logo animates across.
+ * Three pages, named for what's there rather than for Staunch's internal arm
+ * names: Home (Staunch Ventures: the studio and co-investment network),
+ * About (mission, team, ecosystem), and Fund (Staunch Capital). Home gets its
+ * own link because on the fund page the logo reads "Staunch Capital", and
+ * clicking that shouldn't be the only way back. Fund sits last, beside the
+ * Invest button. Visiting it re-themes the whole site (see SiteShell).
  */
 const navItems: { href: string; label: string }[] = [
-  { href: CAPITAL_URL, label: "Capital" },
-  { href: "/ventures", label: "Ventures" },
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-];
+  { href: CAPITAL_URL, label: "Fund" },
+]
 
 export function MainNav() {
   const pathname = usePathname();

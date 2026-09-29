@@ -23,7 +23,6 @@ import { Marquee } from "@/components/ui/marquee";
 import { FieldImage } from "@/components/marketing/field-image";
 import { FieldVideo } from "@/components/marketing/field-video";
 import { VideoCard } from "@/components/marketing/video-card";
-import { PlatformArms } from "@/components/marketing/platform-arms";
 import { fieldPhotos, growthPartners, initiatives, markets, team, videos } from "@/lib/site-data";
 import { INVEST_EMAIL, PITCH_URL } from "@/lib/intake";
 
@@ -167,16 +166,6 @@ export default function AboutPage() {
             </StaggerItem>
           ))}
         </Stagger>
-      </section>
-
-      {/* How the platform is structured */}
-      <section>
-        <SectionHead
-          eyebrow="The platform"
-          title="How Staunch is structured"
-          aside="Each arm has its own home. The team, mission and network behind them are shared."
-        />
-        <PlatformArms />
       </section>
 
       {/* Values */}

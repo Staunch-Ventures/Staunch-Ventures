@@ -4,7 +4,6 @@ import {
   InvestSection,
   PlatformSection,
   StructureSection,
-  TeamSection,
   ThesisSection,
 } from "@/components/capital/sections";
 import CapitalFX from "@/components/capital/capital-fx";
@@ -20,7 +19,6 @@ export default function CapitalPage() {
       <FundSection />
       <StructureSection />
       <PlatformSection />
-      <TeamSection />
       <InvestSection />
       <CapitalFX />
     </>

@@ -32,23 +32,22 @@ export function SiteFooter() {
             </div>
           </div>
           <div className="col-span-1 md:col-span-2 md:col-start-7 flex flex-col gap-3 text-sm">
-            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Platform</h4>
-            <Link href={CAPITAL_URL} className="text-foreground/80 hover:text-foreground transition-colors">
-              Staunch Capital
-            </Link>
-            <Link href="/ventures" className="text-foreground/80 hover:text-foreground transition-colors">Staunch Ventures</Link>
-          </div>
-          <div className="col-span-1 md:col-span-2 flex flex-col gap-3 text-sm">
-            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Company</h4>
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Staunch</h4>
+            <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors">Home</Link>
             <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
             <Link href="/about#team" className="text-foreground/80 hover:text-foreground transition-colors">Team</Link>
-            <Link href="/about#ecosystem" className="text-foreground/80 hover:text-foreground transition-colors">Ecosystem</Link>
             <Link href="/about#contact" className="text-foreground/80 hover:text-foreground transition-colors">Contact</Link>
           </div>
+          <div className="col-span-1 md:col-span-2 flex flex-col gap-3 text-sm">
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Investors</h4>
+            <Link href={CAPITAL_URL} className="text-foreground/80 hover:text-foreground transition-colors">The fund</Link>
+            <Link href="/#network" className="text-foreground/80 hover:text-foreground transition-colors">Co-investment</Link>
+            <Link href="/invest" className="text-foreground/80 hover:text-foreground transition-colors">Ways to invest</Link>
+          </div>
           <div className="col-span-2 md:col-span-2 flex flex-col gap-3 text-sm">
-            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Get involved</h4>
-            <Link href="/invest" className="text-foreground/80 hover:text-foreground transition-colors">Invest</Link>
-            <Link href={PITCH_URL} className="text-foreground/80 hover:text-foreground transition-colors">Pitch Your Startup</Link>
+            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Founders</h4>
+            <Link href="/#studio" className="text-foreground/80 hover:text-foreground transition-colors">Venture studio</Link>
+            <Link href={PITCH_URL} className="text-foreground/80 hover:text-foreground transition-colors">Pitch your startup</Link>
           </div>
         </div>
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs text-muted-foreground">

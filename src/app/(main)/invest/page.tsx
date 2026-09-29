@@ -125,7 +125,7 @@ export default function InvestPage() {
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </a>
                 </Button>
-                <Link href="/ventures#network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/#network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   How the network works
                 </Link>
               </div>

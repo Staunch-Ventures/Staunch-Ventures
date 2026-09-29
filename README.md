@@ -16,12 +16,14 @@ and the parent site only summarises it and links there.
 
 | Where | What lives there |
 | --- | --- |
-| `/` | The switchboard: what Staunch is, then one door per arm (`platformArms` in `site-data.ts`) |
-| `/about` | Everything shared across arms: mission, markets, team, ecosystem, media, contact. Sub-sites link here instead of repeating it |
-| `/ventures` | Staunch Ventures: the studio and the co-investment network |
-| `/capital` | Staunch Capital, the fund. capital.staunchventures.com redirects here |
-| `/invest` | Every Invest button lands here: fund vs. deal-by-deal |
-| `/pitch` | One door for all founders, whichever arm ends up backing them |
+| `/` Home | Staunch Ventures: what Staunch is, what it does (`platformArms` in `site-data.ts`), then the venture studio and co-investment network in detail |
+| `/about` About | Everything shared: mission, markets, values, team, ecosystem, media, contact |
+| `/capital` Fund | Staunch Capital, the fund. capital.staunchventures.com redirects here |
+| `/invest` | Every Invest button lands here: the fund vs. deal-by-deal co-investment |
+| `/pitch` | One door for all founders |
+
+Nav labels say what's on the page (Home, About, Fund), not Staunch's internal
+arm names; the arm names appear on the pages and in the animated logo.
 
 A new fund or service is a new `platformArms` entry, not a new nav item.
 
@@ -46,7 +48,7 @@ npm run build      # production build
 
 | Path | What it is |
 | --- | --- |
-| `src/app/(main)/` | Main Staunch site: home, about (mission, team, ecosystem, media, contact), ventures, invest, pitch |
+| `src/app/(main)/` | The Staunch site: home, about (mission, team, ecosystem, media, contact), capital (the fund), invest, pitch |
 | `src/app/(main)/capital/` | Staunch Capital, the fund's page. Same nav and footer as the rest of the site; the whole shell re-themes to black and gold here (see Site architecture) |
 | `src/app/investor/`, `src/app/startup/` | Product demo dashboards |
 | `src/lib/site-data.ts` | **Single source of content**: ventures, growth partners, initiatives, team field photos, videos |

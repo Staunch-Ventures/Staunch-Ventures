@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Rocket } from "lucide-react";
+import { ArrowRight, Briefcase, Layers } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
@@ -7,13 +7,14 @@ import { BarMark } from "@/components/capital/marks";
 import { platformArms, type PlatformArm } from "@/lib/site-data";
 
 /*
- * The platform's arms, side by side. Each card is a summary and a door: the
- * detail lives at the arm's own home, never here.
+ * What Staunch does, as three doors: the studio and the co-investment
+ * network side by side, the fund beneath them at full width.
  *
- * Staunch Capital's card is drawn in the fund's own language (near-black
+ * The fund's card is drawn in Staunch Capital's own language (near-black
  * ground, gold hairline, serif, the gold bar mark): a preview of the theme
  * the whole site switches to on /capital.
  */
+const ICONS = { studio: Briefcase, network: Layers } as const;
 const CAPITAL = {
   ground: "#0f0e0c",
   gold: "#c5a572",
@@ -39,23 +40,27 @@ function CapitalCard({ arm }: { arm: PlatformArm }) {
             {arm.kind}
           </p>
         </div>
-        <h3 className="relative font-serif text-4xl font-light tracking-heading md:text-5xl">{arm.name}</h3>
-        <p className="relative mt-4 max-w-md text-pretty text-base md:text-lg" style={{ color: CAPITAL.muted }}>
-          {arm.summary}
-        </p>
-        <ul className="relative mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.16em]" style={{ color: CAPITAL.muted }}>
-          {arm.facts.map((f) => (
-            <li key={f} className="flex items-center gap-2">
-              <span className="h-1 w-1 rounded-full" style={{ background: CAPITAL.gold }} aria-hidden />
-              {f}
-            </li>
-          ))}
-        </ul>
-        <div className="relative mt-auto pt-10">
-          <span className="inline-flex items-center gap-2 border border-[#c5a572] px-6 py-3 font-serif text-lg italic text-[#c5a572] transition-colors duration-500 group-hover:bg-[#c5a572] group-hover:text-[#0f0e0c]">
-            {arm.cta}
-            <ArrowRight className="h-4 w-4" />
-          </span>
+        <div className="relative grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+          <div>
+            <h3 className="font-serif text-4xl font-light tracking-heading md:text-5xl">{arm.name}</h3>
+            <p className="mt-4 max-w-lg text-pretty text-base md:text-lg" style={{ color: CAPITAL.muted }}>
+              {arm.summary}
+            </p>
+          </div>
+          <div className="lg:justify-self-end">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.16em]" style={{ color: CAPITAL.muted }}>
+              {arm.facts.map((f) => (
+                <li key={f} className="flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full" style={{ background: CAPITAL.gold }} aria-hidden />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <span className="mt-8 inline-flex items-center gap-2 border border-[#c5a572] px-6 py-3 font-serif text-lg italic text-[#c5a572] transition-colors duration-500 group-hover:bg-[#c5a572] group-hover:text-[#0f0e0c]">
+              {arm.cta}
+              <ArrowRight className="h-4 w-4" />
+            </span>
+          </div>
         </div>
       </div>
     </Link>
@@ -63,13 +68,14 @@ function CapitalCard({ arm }: { arm: PlatformArm }) {
 }
 
 function ArmCard({ arm }: { arm: PlatformArm }) {
+  const Icon = ICONS[arm.id as keyof typeof ICONS] ?? Briefcase;
   return (
     <Link href={arm.href} className="group flex w-full">
       <SpotlightCard className="w-full flex">
         <Card variant="interactive" className="w-full flex flex-col p-8 md:p-12">
           <div className="flex items-center gap-3 mb-8">
             <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 border border-primary/20">
-              <Rocket className="h-5 w-5 text-primary" strokeWidth={1.75} />
+              <Icon className="h-5 w-5 text-primary" strokeWidth={1.75} />
             </span>
             <p className="text-[11px] uppercase tracking-[0.2em] text-primary">{arm.kind}</p>
           </div>
@@ -97,7 +103,7 @@ export function PlatformArms() {
   return (
     <Stagger className="grid gap-4 lg:grid-cols-2">
       {platformArms.map((arm) => (
-        <StaggerItem key={arm.name} className="flex">
+        <StaggerItem key={arm.id} className={arm.capitalTheme ? "flex lg:col-span-2" : "flex"}>
           {arm.capitalTheme ? <CapitalCard arm={arm} /> : <ArmCard arm={arm} />}
         </StaggerItem>
       ))}

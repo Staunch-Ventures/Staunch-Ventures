@@ -464,10 +464,9 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 .capital .cta:hover { text-shadow: none; }
 
 /* The fund's one line of context, and the fine print under the close. */
-.capital .fund-note { margin-top: clamp(32px, 4vw, 48px); max-width: 62ch; }
-.capital .fund-note a,
+.capital .inline-link,
 .capital .final-contact a { color: var(--muted); border-bottom: 1px solid var(--divider); transition: color 300ms var(--ease), border-color 300ms var(--ease); }
-.capital .fund-note a:hover,
+.capital .inline-link:hover,
 .capital .final-contact a:hover { color: var(--text); border-color: var(--gold-soft); }
 .capital .final-legal { margin-top: clamp(40px, 5vw, 64px); font-size: var(--fs-small); color: var(--faint); max-width: 60ch; }
 
@@ -510,24 +509,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 .capital .pillar__title { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(1.375rem, 0.9vw + 1.05rem, 1.75rem); color: var(--gold); margin-bottom: 12px; }
 .capital .pillar__body { font-family: var(--sans); font-size: var(--fs-card); line-height: 1.7; color: var(--muted); }
 
-/* ============================================================
-   TEAM — quiet portraits in monochrome that warm on hover.
-   ============================================================ */
-.capital .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 2vw, 28px); }
-.capital .member { margin: 0; }
-.capital .member__photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface); border: 1px solid var(--divider); }
-.capital .member__photo img {
-  object-fit: cover; object-position: top;
-  filter: grayscale(1) contrast(1.05) brightness(0.88);
-  transition: filter 800ms var(--ease), transform 1200ms var(--ease);
-}
-.capital .member:hover .member__photo img { filter: grayscale(0.15) contrast(1.02) brightness(0.95); transform: scale(1.025); }
-.capital .member__name { font-family: var(--serif); font-weight: 400; font-size: clamp(1.25rem, 0.8vw + 1rem, 1.5rem); color: var(--text); margin-top: 18px; line-height: 1.2; }
-.capital .member__role {
-  font-family: var(--sans); font-weight: 500; font-size: var(--fs-label);
-  text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted-2); margin-top: 8px;
-}
-
 @media (max-width: 900px) {
   .capital .pillars { grid-template-columns: 1fr; border-block: 0; }
   .capital .pillar > .rule--y { display: none; }
@@ -538,5 +519,4 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
   .capital .rows--folio .row { grid-template-columns: 1fr; gap: 12px; padding-left: 0; }
   .capital .rows--folio .row__num { position: static; display: block; margin-bottom: 8px; font-size: clamp(1.75rem, 7vw, 2.25rem); }
   .capital .row__desc { max-width: none; }
-  .capital .team-grid { grid-template-columns: repeat(2, 1fr); }
 }

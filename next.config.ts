@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     return [
       // Nine pages became five: team, partners, initiatives, media and contact
       // all live on /about now.
+      // Staunch Ventures' studio and co-investment network are the home page.
+      { source: "/ventures", destination: "/#studio", permanent: true },
       { source: "/team", destination: "/about#team", permanent: true },
       { source: "/ecosystem", destination: "/about#ecosystem", permanent: true },
       { source: "/media", destination: "/about#media", permanent: true },
