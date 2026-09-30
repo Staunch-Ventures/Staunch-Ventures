@@ -499,3 +499,38 @@ body,
 
 /* The brand weave follows the theme: gold linework in Capital. */
 [data-site="capital"] .bg-linework { background-image: url("/patterns/staunch-linework-gold.png"); }
+
+/* ============================================================
+   EDGES — how the shell meets the page. Soft, not ruled.
+   ============================================================ */
+/* The footer's top edge: a hairline that fades out at both ends, at the
+   page's measure, rather than a hard rule across the full width. */
+.site-footer::before {
+  content: ""; position: absolute; top: 0; left: 50%; translate: -50% 0;
+  width: min(100% - 2rem, 96rem); height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, hsl(var(--border-strong) / 0.55) 18%, hsl(var(--border-strong) / 0.55) 82%, transparent);
+}
+
+/* Staunch Capital's page has a light moving under it (the pattern light), and
+   frosted glass is the wrong material over that: backdrop blur smeared the
+   gold weave into a glow, and the header's 1px rule and the footer's top
+   edge then caught the glow. Here the shell is opaque ground that feathers
+   into the page instead. */
+.site-header::before {
+  content: ""; position: absolute; inset: 0 0 -32px 0; z-index: -1; pointer-events: none;
+  opacity: 0; transition: opacity 400ms cubic-bezier(0.33, 1, 0.68, 1);
+  background: linear-gradient(to bottom, hsl(var(--background)) 0, hsl(var(--background)) calc(100% - 32px), hsl(var(--background) / 0) 100%);
+}
+[data-site="capital"] .site-header.is-scrolled {
+  background-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+[data-site="capital"] .site-header.is-scrolled::before { opacity: 1; }
+[data-site="capital"] .site-header.is-scrolled::after { opacity: 0; }
+
+[data-site="capital"] .site-footer {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: linear-gradient(to bottom, hsl(var(--background) / 0) 0, hsl(var(--background)) 140px);
+}

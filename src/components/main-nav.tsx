@@ -77,11 +77,11 @@ export function MainNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-[background,border-color,backdrop-filter] duration-300",
+        "site-header sticky top-0 z-50 w-full transition-[background,border-color,backdrop-filter] duration-300",
         // While the mobile menu is open the bar goes clear: the menu is the
         // surface, and the logo and toggle simply sit on top of it.
         scrolled && !isMobileMenuOpen
-          ? "divider-fade-b bg-background/85 backdrop-blur-md"
+          ? "is-scrolled divider-fade-b bg-background/85 backdrop-blur-md"
           : ""
       )}
     >

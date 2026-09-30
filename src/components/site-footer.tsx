@@ -94,7 +94,7 @@ export function SiteFooter() {
     // blur-sm is the ceiling here: the linework behind the footer is ~1px
     // strokes, so anything heavier erases the pattern the translucency exists
     // to reveal. Matches the scrolled header.
-    <footer className="relative z-10 border-t border-border bg-background/60 backdrop-blur-sm mt-20">
+    <footer className="site-footer relative z-10 bg-background/60 backdrop-blur-sm mt-20">
       <div className="mx-auto max-w-9xl py-16 px-4 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10">
           <div className="col-span-2 md:col-span-5 flex flex-col gap-5">
