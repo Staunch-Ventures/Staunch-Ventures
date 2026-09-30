@@ -103,10 +103,10 @@ export const platformArms: PlatformArm[] = [
     name: "Venture studio",
     kind: "Staunch Ventures",
     summary:
-      "We build companies from zero as an institutional cofounder: product, go-to-market, strategy, and a network that spans four markets.",
-    facts: ["0-to-1", "Cofounding as a service"],
+      "An institutional cofounder for founders past MVP: we open routes to market and introductions to stakeholders, customers and investors across four markets.",
+    facts: ["Post-MVP", "Routes to market"],
     href: "/#studio",
-    cta: "How we build",
+    cta: "How we help",
   },
   {
     id: "network",

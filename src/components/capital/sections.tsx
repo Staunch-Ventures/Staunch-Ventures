@@ -42,7 +42,7 @@ const PLATFORM = [
   {
     kicker: "Staunch Ventures",
     title: "Source",
-    body: "Our venture studio and co-investment network work with founders from day zero, so we see companies long before they reach a data room.",
+    body: "Our venture studio and co-investment network open doors for founders early in their growth, so we see companies long before they reach a data room.",
   },
   {
     kicker: "Staunch Capital",

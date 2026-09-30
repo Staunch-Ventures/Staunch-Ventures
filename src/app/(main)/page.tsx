@@ -23,7 +23,7 @@ const networkPoints = [
   {
     icon: Globe2,
     title: "Sourced across four markets",
-    body: "African companies we build and back, and international opportunities we source in the US, Europe and Asia, from Seed through Pre-IPO.",
+    body: "African companies we back, and international opportunities we source in the US, Europe and Asia, from Seed through Pre-IPO.",
   },
   {
     icon: Layers,
@@ -98,7 +98,7 @@ export default function HomePage() {
             <div className="mb-12 max-w-2xl">
               <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">What we do</p>
               <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
-                We build companies, open deals, and invest.
+                We open doors, share deals, and invest.
               </h2>
               <p className="text-muted-foreground text-lg text-pretty mt-4 max-w-prose">
                 Staunch Ventures runs the venture studio and the co-investment network. Staunch
@@ -123,9 +123,8 @@ export default function HomePage() {
         <ScrollReveal delay={0.05} className="flex gap-4">
           <Briefcase className="h-6 w-6 shrink-0 text-primary mt-1" strokeWidth={1.5} />
           <p className="text-muted-foreground text-lg text-pretty">
-            Staunch acts as an institutional cofounder: an execution partner helping founders build
-            and scale faster. Tech-stack architecture, MVP planning, go-to-market, business
-            development, core strategy frameworks, and more.
+            Staunch acts as an institutional cofounder: providing key routes to market,
+            stakeholders, customers and investors.
           </p>
         </ScrollReveal>
       </section>
@@ -134,7 +133,7 @@ export default function HomePage() {
       <section>
         <ScrollReveal className="flex items-end justify-between mb-10">
           <h2 className="text-3xl md:text-4xl font-serif font-normal tracking-heading">Featured venture</h2>
-          <p className="hidden sm:block text-sm text-muted-foreground">Where we&apos;re building now.</p>
+          <p className="hidden sm:block text-sm text-muted-foreground">From our portfolio.</p>
         </ScrollReveal>
         <ScrollReveal>
           <SpotlightCard>

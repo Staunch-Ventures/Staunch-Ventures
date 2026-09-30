@@ -425,6 +425,14 @@
   --navy-deep: 40 11% 4%;
 }
 body:has([data-site="capital"]) { background-color: #0f0e0c; }
+/* The root canvas carries the theme too, with no transition. Phones tint the
+   status bar from the page: Android Chrome from <meta name="theme-color">
+   (which Next swaps per route), but recent iOS Safari ignores that and
+   samples the page's own background instead, and the root was transparent.
+   :has() makes it right on the server-rendered first paint as well as
+   after client-side navigation. */
+html { background-color: #0b0d12; }
+html:has([data-site="capital"]) { background-color: #0f0e0c; }
 
 body,
 .site-shell header,

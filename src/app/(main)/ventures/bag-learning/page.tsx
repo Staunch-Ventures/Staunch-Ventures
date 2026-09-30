@@ -120,12 +120,19 @@ export default function BagLearningPage() {
           <div className="flex flex-col">
             <p className="text-xs uppercase tracking-wider text-muted-foreground mb-4">In action</p>
             <div className="relative w-full max-w-sm rounded-xl overflow-hidden border border-border bg-muted">
+              {/* Transcoded from the 4K HEVC master (168MB) to 608x1080 H.264 at
+                  1.8Mbps (~17MB), fast-start, so it plays in every browser and
+                  begins before it finishes downloading. preload="metadata"
+                  keeps it off the wire until someone presses play. */}
               <video
-                src="/nation-wide.mp4"
-                className="w-full h-full object-cover"
+                src="/bag-learning-vsl.mp4"
+                poster="/bag-learning-vsl-poster.jpg"
+                width={608}
+                height={1080}
+                className="w-full h-auto object-cover"
                 controls
                 playsInline
-                data-ai-hint="person talking"
+                preload="metadata"
               />
             </div>
           </div>

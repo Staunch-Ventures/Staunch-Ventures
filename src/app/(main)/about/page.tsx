@@ -368,7 +368,7 @@ export default function AboutPage() {
           <SectionHead
             eyebrow="Media"
             title="Stories from the ecosystem"
-            aside="Interviews, founder stories, and moments from the events and ventures we build."
+            aside="Interviews, founder stories, and moments from the events and ventures we back."
           />
           <Stagger
             className={cn(
