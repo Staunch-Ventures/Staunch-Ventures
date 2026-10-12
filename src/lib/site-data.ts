@@ -134,7 +134,7 @@ export const platformArms: PlatformArm[] = [
 export const team = [
   {
     name: "Oliver Christodoulou",
-    role: "Founder & Managing Partner",
+    role: "Partner",
     image: "/oliver-headshot.jpg",
     quote:
       "African startups are uniquely positioned to solve local challenges with global applications. My vision is to create an ecosystem where innovation thrives and impact scales.",
@@ -155,7 +155,7 @@ export const team = [
   },
   {
     name: "Timo van de Koevering",
-    role: "Executive Partner",
+    role: "Partner",
     image: "/Timo.jpeg",
     quote:
       "While good ideas and talent is everywhere, the capacity for execution is what drives change. I am committed to build systemic innovation designed to tackle the world's most critical problems.",
