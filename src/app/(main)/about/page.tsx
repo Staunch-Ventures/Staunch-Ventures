@@ -389,13 +389,16 @@ export default function AboutPage() {
       {/* Contact */}
       <section id="contact" className="scroll-mt-24">
         <SectionHead eyebrow="Contact" title="Pick your door" />
-        <div className="grid lg:grid-cols-[auto_1fr] gap-4">
-          <ScrollReveal className="flex justify-center lg:justify-start">
+        <div className="grid lg:grid-cols-[245px_1fr] gap-4">
+          {/* On desktop the photo is pulled out of flow (absolute) so the cards
+              alone set the row height; a fixed-width column keeps its size from
+              depending on that height, which made it flip between two ratios. */}
+          <ScrollReveal className="relative flex justify-center lg:block lg:justify-start">
             <FieldImage
               src="/ollie-laughing.jpg"
               alt="Oliver Christodoulou, founder of Staunch"
-              sizes="(max-width: 1024px) 240px, 280px"
-              className="aspect-[2/3] h-72 w-auto lg:h-full lg:min-h-[240px]"
+              sizes="(max-width: 1024px) 240px, 245px"
+              className="aspect-[2/3] h-72 w-auto lg:absolute lg:inset-0 lg:aspect-auto lg:h-auto lg:w-auto"
             />
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 gap-4">
