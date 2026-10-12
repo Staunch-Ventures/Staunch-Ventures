@@ -14,7 +14,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const site = pathname === "/capital" || pathname.startsWith("/capital/") ? "capital" : "ventures";
 
   useEffect(() => {
-    document.documentElement.dataset.site = site;
+    const root = document.documentElement;
+    root.dataset.site = site;
+    // The investor and startup areas live outside this shell. Without this,
+    // leaving /capital for them by client-side navigation would strand
+    // data-site="capital" on <html> and theme the whole app gold.
+    return () => {
+      delete root.dataset.site;
+    };
   }, [site]);
 
   return (
