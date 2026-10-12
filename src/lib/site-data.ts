@@ -174,6 +174,72 @@ export const ventures: Venture[] = [
   },
 ];
 
+/**
+ * Companies we've backed through the co-investment network, shown on the home
+ * page as cards with a live preview of their site. Company only: no round,
+ * stage, date or terms.
+ *
+ * `backers` are the company's other investors, and the "Our founders are also
+ * backed by" ticker is built from them, so a name only shows while its company
+ * is listed. Only add an investor once the company has announced them publicly
+ * (its own site or the press).
+ */
+export type PortfolioCompany = {
+  name: string;
+  description: string;
+  website: string;
+  /** Light logo lockup in /public, with its display size in px. */
+  logo: { src: string; width: number; height: number };
+  /** 1600×1000 capture of the site's hero: shown first, and on touch devices instead of the live site. */
+  preview: string;
+  backers: string[];
+};
+
+export const portfolio: PortfolioCompany[] = [
+  {
+    name: "Physical Superintelligence",
+    description:
+      "An AI-native physics lab. Human scientists set the direction and virtual physicists carry out the research, starting with the physical infrastructure that AI runs on.",
+    website: "https://psi.inc/",
+    logo: { src: "/psi-logo.svg", width: 302, height: 18 },
+    preview: "/psi-site.jpg",
+    backers: [
+      "Breakthrough Energy Ventures",
+      "Dragon Global",
+      "Solari Capital",
+      "Robot Ventures",
+      "Susa Ventures",
+      "Variant",
+      "SV Angel",
+      "Valkyrie",
+      "021T",
+    ],
+  },
+  {
+    name: "Ornn",
+    description:
+      "The market for compute. An exchange and a price index that let GPU capacity be priced, financed and hedged like any other commodity.",
+    website: "https://ornn.com/",
+    logo: { src: "/ornn-logo.svg", width: 107, height: 24 },
+    preview: "/ornn-site.jpg",
+    backers: [
+      "a16z",
+      "Galaxy Ventures",
+      "SV Angel",
+      "Nordstar",
+      "Crucible",
+      "Vine Ventures",
+      "Link Ventures",
+      "BoxGroup",
+    ],
+  },
+];
+
+/** Every portfolio backer once, alphabetical, so no name reads as the headline. */
+export const portfolioBackers = [...new Set(portfolio.flatMap((c) => c.backers))].sort((a, b) =>
+  a.localeCompare(b, "en", { sensitivity: "base", numeric: true })
+);
+
 export const growthPartners: GrowthPartner[] = [
     {
         name: "Unknown Group",

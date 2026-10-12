@@ -10,14 +10,16 @@ import { CAPITAL_URL } from "@/lib/sites";
 import { ScrollReveal, Stagger, StaggerItem } from "@/components/ui/scroll-reveal";
 import { PlatformArms } from "@/components/marketing/platform-arms";
 import { HeroMap } from "@/components/marketing/hero-map";
+import { Portfolio } from "@/components/marketing/portfolio";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Marquee } from "@/components/ui/marquee";
 import { Magnetic } from "@/components/ui/magnetic";
 
 /*
  * Home is Staunch Ventures: what Staunch is, what it does (the studio, the
- * co-investment network and the fund), and the detail on the first two. The
- * fund has its own page; team, mission and ecosystem live on /about.
+ * co-investment network and the fund), the detail on the first two, and the
+ * companies we've backed through the network. The fund has its own page;
+ * team, mission and ecosystem live on /about.
  */
 const networkPoints = [
   {
@@ -96,7 +98,6 @@ export default function HomePage() {
         <div className="mx-auto max-w-9xl px-4 lg:px-8">
           <ScrollReveal>
             <div className="mb-12 max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">What we do</p>
               <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
                 We open doors, share deals, and invest.
               </h2>
@@ -115,7 +116,6 @@ export default function HomePage() {
       {/* The studio */}
       <section id="studio" className="scroll-mt-24 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
         <ScrollReveal>
-          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The studio</p>
           <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance">
             Cofounding as a service.
           </h2>
@@ -197,7 +197,6 @@ export default function HomePage() {
       {/* The co-investment network */}
       <section id="network" className="scroll-mt-24">
         <ScrollReveal className="mb-10 max-w-2xl">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">The co-investment network</p>
           <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance mb-4">
             Global deals, Seed to Pre-IPO.
           </h2>
@@ -232,17 +231,19 @@ export default function HomePage() {
         </ScrollReveal>
       </section>
 
+      {/* Who else backs our founders, then the companies we've backed through the network */}
+      <Portfolio />
+
       </div>
 
       {/* Partners */}
       <section className="relative w-full pb-28 pt-8 overflow-hidden">
-        {/* Top hairline + ambient glow */}
+        {/* Top hairline */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-strong to-transparent" aria-hidden />
         <div className="mx-auto max-w-9xl px-4 lg:px-8">
           <ScrollReveal>
             <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Partners</p>
                 <h2 className="text-4xl lg:text-5xl font-serif font-normal tracking-heading text-balance">
                   Trusted by leaders across the globe
                 </h2>

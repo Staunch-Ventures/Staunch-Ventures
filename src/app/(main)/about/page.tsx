@@ -72,11 +72,10 @@ const sections = [
   { id: "contact", label: "Contact" },
 ];
 
-function SectionHead({ eyebrow, title, aside }: { eyebrow: string; title: string; aside?: string }) {
+function SectionHead({ title, aside }: { title: string; aside?: string }) {
   return (
     <ScrollReveal className="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
       <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">{eyebrow}</p>
         <h2 className="text-3xl md:text-5xl font-serif font-normal tracking-heading text-balance">{title}</h2>
       </div>
       {aside && <p className="text-sm text-muted-foreground max-w-xs sm:text-right">{aside}</p>}
@@ -89,7 +88,6 @@ export default function AboutPage() {
     <div className="mx-auto max-w-9xl py-24 md:py-32 px-4 lg:px-8 space-y-24 md:space-y-32">
       <div>
         <ScrollReveal className="text-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">About Staunch</p>
           <h1 className="text-balance text-5xl md:text-7xl font-serif font-normal tracking-heading leading-[1.0]">
             <span className="text-foreground">Africa&apos;s</span>{" "}
             <span className="text-primary">network of networks</span>
@@ -157,9 +155,6 @@ export default function AboutPage() {
           {markets.map((m) => (
             <StaggerItem key={m} className="flex">
               <Card className="w-full p-5 md:p-8">
-                <p className="text-[10px] sm:text-xs uppercase tracking-wider text-primary mb-2 sm:mb-3">
-                  {m === "Africa" ? "Home market" : "Connected market"}
-                </p>
                 <h3 className="text-xl sm:text-2xl font-serif font-normal tracking-heading mb-2">{m}</h3>
                 <p className="text-sm text-muted-foreground text-pretty">{marketRoles[m]}</p>
               </Card>
@@ -170,7 +165,7 @@ export default function AboutPage() {
 
       {/* Values */}
       <section>
-        <SectionHead eyebrow="Our Values" title="Tools, knowledge, and confidence." />
+        <SectionHead title="Tools, knowledge, and confidence." />
         <div className="grid lg:grid-cols-[auto_1fr] gap-4 items-stretch">
           <ScrollReveal className="flex justify-center lg:justify-start">
             <FieldImage
@@ -204,7 +199,6 @@ export default function AboutPage() {
       <section id="team" className="scroll-mt-24 space-y-16">
         <div>
           <SectionHead
-            eyebrow="Team"
             title="The people behind Staunch"
             aside="One team across every arm of the platform."
           />
@@ -264,7 +258,7 @@ export default function AboutPage() {
       {/* Ecosystem: initiatives + partners */}
       <section id="ecosystem" className="scroll-mt-24 space-y-16">
         <div>
-          <SectionHead eyebrow="Ecosystem" title="Initiatives" aside="Programs we run and partnerships we lead." />
+          <SectionHead title="Initiatives" aside="Programs we run and partnerships we lead." />
           <Stagger className="grid md:grid-cols-2 gap-4">
             {initiatives.map((initiative) => {
               const href = initiative.slug ? `/ecosystem/${initiative.slug}` : initiative.href ?? "#";
@@ -322,7 +316,7 @@ export default function AboutPage() {
         </div>
 
         <div id="partners" className="scroll-mt-24">
-          <SectionHead eyebrow="Ecosystem" title="Growth Partners" aside={`${growthPartners.length} partners`} />
+          <SectionHead title="Growth Partners" aside={`${growthPartners.length} partners`} />
           <Stagger className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {growthPartners.map((partner) => (
               <StaggerItem key={partner.name} className="flex">
@@ -366,7 +360,6 @@ export default function AboutPage() {
       {videos.length > 0 && (
         <section id="media" className="scroll-mt-24">
           <SectionHead
-            eyebrow="Media"
             title="Stories from the ecosystem"
             aside="Interviews, founder stories, and moments from the events and ventures we back."
           />
@@ -388,7 +381,7 @@ export default function AboutPage() {
 
       {/* Contact */}
       <section id="contact" className="scroll-mt-24">
-        <SectionHead eyebrow="Contact" title="Pick your door" />
+        <SectionHead title="Pick your door" />
         <div className="grid lg:grid-cols-[245px_1fr] gap-4">
           {/* On desktop the photo is pulled out of flow (absolute) so the cards
               alone set the row height; a fixed-width column keeps its size from

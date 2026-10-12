@@ -57,7 +57,6 @@ export default function GetInTheRingPage() {
             />
           </div>
         )}
-        <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">{initiative.tag ?? "Initiative"}</p>
         <h1 className="text-balance text-4xl md:text-6xl font-serif font-normal tracking-heading mb-6 leading-[1.0] text-foreground">
           {initiative.title}
         </h1>
