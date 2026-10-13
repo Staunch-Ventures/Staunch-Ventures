@@ -68,14 +68,26 @@ function BackersTicker() {
       <div className="relative mt-5 py-5">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-strong to-transparent" aria-hidden />
         <Marquee
-          speed={90}
+          speed={50}
           fade={false}
           className="[mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
         >
-          {portfolioBackers.map((name) => (
-            <span key={name} className="flex items-center whitespace-nowrap">
-              <span className="px-8 text-sm uppercase tracking-[0.18em] text-muted-foreground">{name}</span>
-              <span className="h-1 w-1 rounded-full bg-primary/50" aria-hidden />
+          {portfolioBackers.map((backer) => (
+            <span key={backer.name} className="flex h-10 items-center px-10 opacity-60">
+              {backer.logo ? (
+                // Every logo drawn pure white, whatever its own colours
+                <Image
+                  src={backer.logo.src}
+                  alt={backer.name}
+                  width={backer.logo.width}
+                  height={backer.logo.height}
+                  // Tiny SVGs that scroll in from offscreen: load them up front so none pops in
+                  loading="eager"
+                  className="max-w-none brightness-0 invert"
+                />
+              ) : (
+                <span className="whitespace-nowrap font-serif text-xl text-foreground">{backer.name}</span>
+              )}
             </span>
           ))}
         </Marquee>
@@ -93,7 +105,7 @@ export function Portfolio() {
       </ScrollReveal>
       <ScrollReveal className="mt-20 md:mt-24 mb-10 max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-heading text-balance">
-          Our recent investments
+          New to the portfolio
         </h2>
       </ScrollReveal>
       <Stagger className="grid gap-4 lg:grid-cols-2">

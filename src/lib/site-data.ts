@@ -179,10 +179,10 @@ export const ventures: Venture[] = [
  * page as cards with a live preview of their site. Company only: no round,
  * stage, date or terms.
  *
- * `backers` are the company's other investors, and the "Our founders are also
- * backed by" ticker is built from them, so a name only shows while its company
- * is listed. Only add an investor once the company has announced them publicly
- * (its own site or the press).
+ * `backers` are each company's notable other investors, and the "Our founders
+ * are backed by" ticker is built from them, so a name only shows while its
+ * company is listed. A backer with an entry in `backerLogos` shows its logo;
+ * anyone else (people, firms without a usable logo) is set in type.
  */
 export type PortfolioCompany = {
   name: string;
@@ -203,17 +203,7 @@ export const portfolio: PortfolioCompany[] = [
     website: "https://psi.inc/",
     logo: { src: "/psi-logo.svg", width: 302, height: 18 },
     preview: "/psi-site.jpg",
-    backers: [
-      "Breakthrough Energy Ventures",
-      "Dragon Global",
-      "Solari Capital",
-      "Robot Ventures",
-      "Susa Ventures",
-      "Variant",
-      "SV Angel",
-      "Valkyrie",
-      "021T",
-    ],
+    backers: ["Thiel Macro", "Ron Conway", "Thomas Wolf", "021T"],
   },
   {
     name: "Ornn",
@@ -223,22 +213,53 @@ export const portfolio: PortfolioCompany[] = [
     logo: { src: "/ornn-logo.svg", width: 107, height: 24 },
     preview: "/ornn-site.jpg",
     backers: [
+      "Thrive Capital",
       "a16z",
-      "Galaxy Ventures",
-      "SV Angel",
-      "Nordstar",
-      "Crucible",
-      "Vine Ventures",
-      "Link Ventures",
-      "BoxGroup",
+      "General Catalyst",
+      "NVIDIA",
+      "Goldman Sachs",
+      "021T",
+      "Drake",
+      "Bill Ackman",
     ],
   },
 ];
 
-/** Every portfolio backer once, alphabetical, so no name reads as the headline. */
-export const portfolioBackers = [...new Set(portfolio.flatMap((c) => c.backers))].sort((a, b) =>
-  a.localeCompare(b, "en", { sensitivity: "base", numeric: true })
-);
+type BackerLogo = { src: string; width: number; height: number };
+export type Backer = { name: string; logo?: BackerLogo };
+
+/**
+ * Official logos in /public/backers, drawn white in the ticker. Sizes are
+ * display px, balanced by area rather than height so a long wordmark and a
+ * stacked one carry the same weight.
+ */
+const backerLogos: Record<string, BackerLogo> = {
+  "021T": { src: "/backers/021t.svg", width: 87, height: 29 },
+  a16z: { src: "/backers/a16z.svg", width: 106, height: 24 },
+  "General Catalyst": { src: "/backers/general-catalyst.svg", width: 141, height: 18 },
+  "Goldman Sachs": { src: "/backers/goldman-sachs.svg", width: 73, height: 32 },
+  NVIDIA: { src: "/backers/nvidia.svg", width: 120, height: 22 },
+  "Thrive Capital": { src: "/backers/thrive-capital.svg", width: 140, height: 18 },
+};
+
+const byName = (a: string, b: string) => a.localeCompare(b, "en", { sensitivity: "base", numeric: true });
+
+/**
+ * Every portfolio backer once. Logos and typeset names alternate (each run
+ * alphabetical) so the strip never bunches into a block of text, and no
+ * name sits first as the headline.
+ */
+export const portfolioBackers: Backer[] = (() => {
+  const names = [...new Set(portfolio.flatMap((c) => c.backers))];
+  const logos = names.filter((n) => backerLogos[n]).sort(byName);
+  const typeset = names.filter((n) => !backerLogos[n]).sort(byName);
+  const out: Backer[] = [];
+  for (let i = 0; i < Math.max(logos.length, typeset.length); i++) {
+    if (logos[i]) out.push({ name: logos[i], logo: backerLogos[logos[i]] });
+    if (typeset[i]) out.push({ name: typeset[i] });
+  }
+  return out;
+})();
 
 export const growthPartners: GrowthPartner[] = [
     {
