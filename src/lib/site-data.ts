@@ -179,8 +179,8 @@ export const ventures: Venture[] = [
  * page as cards with a live preview of their site. Company only: no round,
  * stage, date or terms.
  *
- * `backers` are each company's notable other investors, and the "Our founders
- * are backed by" ticker is built from them, so a name only shows while its
+ * `backers` are each company's notable other investors, and the "We've invested
+ * alongside" ticker is built from them, so a name only shows while its
  * company is listed. A backer with an entry in `backerLogos` shows its logo;
  * anyone else (people, firms without a usable logo) is set in type.
  */

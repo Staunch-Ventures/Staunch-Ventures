@@ -63,7 +63,7 @@ function BackersTicker() {
   return (
     <div>
       <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        Our founders are backed by
+        We&apos;ve invested alongside
       </p>
       <div className="relative mt-5 py-5">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-strong to-transparent" aria-hidden />
