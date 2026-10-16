@@ -17,8 +17,9 @@ import { Magnetic } from "@/components/ui/magnetic";
 
 /*
  * Home is Staunch Ventures: what Staunch is, what it does (the studio, the
- * co-investment network and the fund), the detail on the first two, and the
- * companies we've backed through the network. The fund has its own page;
+ * co-investment network and the fund), and the detail on the first two. The
+ * companies we've backed, and who we've invested alongside, come before the
+ * featured venture so those names are seen first. The fund has its own page;
  * team, mission and ecosystem live on /about.
  */
 const networkPoints = [
@@ -129,6 +130,9 @@ export default function HomePage() {
         </ScrollReveal>
       </section>
 
+      {/* Who else backs our founders, then the companies we've backed through the network */}
+      <Portfolio />
+
       {/* Featured venture — full-width case study */}
       <section>
         <ScrollReveal className="flex items-end justify-between mb-10">
@@ -230,9 +234,6 @@ export default function HomePage() {
           </Link>
         </ScrollReveal>
       </section>
-
-      {/* Who else backs our founders, then the companies we've backed through the network */}
-      <Portfolio />
 
       </div>
 
