@@ -221,10 +221,6 @@ export function InvestSection() {
           <a href={`mailto:${INVEST_EMAIL}`}>{INVEST_EMAIL}</a> &middot; Founders,{" "}
           <Link href={PITCH_URL}>pitch us here</Link>
         </p>
-        <p className="final-legal" data-reveal="fade">
-          Nothing on this page is an offer to sell, or a solicitation of an offer to buy, any
-          security.
-        </p>
       </div>
     </section>
   );

@@ -489,7 +489,6 @@ html.js:not(.reduced) .capital [data-reveal-group] > * { opacity: 0; }
 .capital .final-contact a { color: var(--muted); border-bottom: 1px solid var(--divider); transition: color 300ms var(--ease), border-color 300ms var(--ease); }
 .capital .inline-link:hover,
 .capital .final-contact a:hover { color: var(--text); border-color: var(--gold-soft); }
-.capital .final-legal { margin-top: clamp(40px, 5vw, 64px); font-size: var(--fs-small); color: var(--faint); max-width: 60ch; }
 
 /* ============================================================
    STRUCTURE — why permanent capital. Large serif folios hang in the margin,
