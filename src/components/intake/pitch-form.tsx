@@ -24,6 +24,7 @@ import {
   committedShare,
   formatZar,
   formatPercent,
+  PITCH_EMAIL,
   type PitchInput,
 } from "@/lib/intake";
 import { FieldLabel, ChipGroup, CharCount, CheckRow, NumberField, Stepper } from "./form-bits";
@@ -418,8 +419,8 @@ export function PitchForm() {
           We&apos;d rather tell you now than leave you waiting. If your circumstances
           change — or you think we&apos;ve read this wrong — you&apos;re welcome to reach
           us at{" "}
-          <a href="mailto:hello@staunchventures.com" className="text-foreground hover:text-primary transition-colors">
-            hello@staunchventures.com
+          <a href={`mailto:${PITCH_EMAIL}`} className="text-foreground hover:text-primary transition-colors">
+            {PITCH_EMAIL}
           </a>
           .
         </p>
@@ -884,10 +885,10 @@ export function PitchForm() {
                 circumstances change — or you think we&apos;ve read this wrong —
                 you&apos;re welcome to reach us at{" "}
                 <a
-                  href="mailto:hello@staunchventures.com"
+                  href={`mailto:${PITCH_EMAIL}`}
                   className="text-foreground transition-colors hover:text-primary"
                 >
-                  hello@staunchventures.com
+                  {PITCH_EMAIL}
                 </a>
                 .
               </p>

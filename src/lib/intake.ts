@@ -15,10 +15,11 @@ import { z } from "zod";
 
 /**
  * Public-facing link targets. Startup pitches route to the in-house form at
- * /pitch, which writes straight into the Notion pipeline; investor inquiries
- * route to Oliver's inbox rather than /invest.
+ * /pitch, which writes straight into the Notion pipeline, and founders write to
+ * Adam; investor inquiries route to Oliver's inbox rather than /invest.
  */
 export const PITCH_URL = "/pitch";
+export const PITCH_EMAIL = "adam@staunchventures.com";
 export const INVEST_EMAIL = "oliver@staunchventures.com";
 export const INVEST_MAILTO = `mailto:${INVEST_EMAIL}`;
 
